@@ -274,16 +274,13 @@ def run_isort(file_list, args):
         return 1
 
     print_tool_header("isort")
-    # TODO: isort apparently decides to avoid writing colored output at all unless the
-    # output is a tty, even when --color is provided.
-    check_fix_args = () if args.fix else ("--check", "--diff", "--color")
+    check_fix_args = () if args.fix else ("--check", "--diff")
 
     pat = re.compile("ERROR: (.*) Imports are incorrectly sorted and/or formatted")
     replacement = "ERROR: {0} Imports are incorrectly sorted and/or formatted"
     returncode = 0
     for chunk in grouper(file_list, 100):
-        # TODO: py2 does not support multiple * unpacking expressions in a single call.
-        packed_args = check_fix_args + chunk
+        packed_args = check_fix_args + tuple(chunk)
         output = isort_cmd(*packed_args, fail_on_error=False, output=str, error=str)
         returncode |= isort_cmd.returncode
 

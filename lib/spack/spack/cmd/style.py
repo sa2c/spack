@@ -11,8 +11,10 @@ import re
 import sys
 
 import llnl.util.tty as tty
-import spack.paths
+import llnl.util.tty.color as color
 from llnl.util.filesystem import working_dir
+
+import spack.paths
 from spack.util.executable import which
 
 if sys.version_info < (3, 0):
@@ -195,23 +197,26 @@ def rewrite_and_print_output(
 
 
 def print_style_header(file_list, args):
-    tty.msg("style: running code checks on spack.")
-    tools = []
-    if args.flake8:
-        tools.append("flake8")
-    if args.mypy:
-        tools.append("mypy")
-    if args.black:
-        tools.append("black")
-    tty.msg("style: tools selected: " + ", ".join(tools))
+    tools = [
+        tool for tool in ("isort", "flake8", "mypy", "black")
+        if getattr(args, tool)
+    ]
+    tty.msg("Running style checks on spack:", "selected: " + ", ".join(tools))
     tty.msg("Modified files:", *[filename.strip() for filename in file_list])
     sys.stdout.flush()
 
 
 def print_tool_header(tool):
     sys.stdout.flush()
-    tty.msg("style: running %s checks on spack." % tool)
+    tty.msg("Running %s checks." % tool)
     sys.stdout.flush()
+
+
+def print_tool_result(tool, returncode):
+    if returncode == 0:
+        color.cprint("  @g{%s checks were clean}" % tool)
+    else:
+        color.cprint("  @r{%s found errors}" % tool)
 
 
 def run_flake8(file_list, args):
@@ -237,17 +242,14 @@ def run_flake8(file_list, args):
 
         rewrite_and_print_output(output, args)
 
-    if returncode == 0:
-        tty.msg("Flake8 style checks were clean")
-    else:
-        tty.error("Flake8 style checks found errors")
+    print_tool_result("flake8", returncode)
     return returncode
 
 
 def run_mypy(file_list, args):
     mypy_cmd = which("mypy")
     if mypy_cmd is None:
-        tty.error("style: mypy is not available in path, skipping")
+        tty.error("mypy is not available in path, skipping")
         return 1
 
     print_tool_header("mypy")
@@ -261,17 +263,14 @@ def run_mypy(file_list, args):
 
     rewrite_and_print_output(output, args)
 
-    if returncode == 0:
-        tty.msg("mypy checks were clean")
-    else:
-        tty.error("mypy checks found errors")
+    print_tool_result("mypy", returncode)
     return returncode
 
 
 def run_isort(file_list, args):
     isort_cmd = which("isort")
     if isort_cmd is None:
-        tty.error("style: isort is not available in path, skipping")
+        tty.error("isort is not available in path, skipping")
         return 1
 
     print_tool_header("isort")
@@ -290,17 +289,14 @@ def run_isort(file_list, args):
 
         rewrite_and_print_output(output, args, pat, replacement)
 
-    if returncode == 0:
-        tty.msg("isort style checks were clean")
-    else:
-        tty.error("isort checks found errors")
+    print_tool_result("isort", returncode)
     return returncode
 
 
 def run_black(file_list, args):
     black_cmd = which("black")
     if black_cmd is None:
-        tty.error("style: black is not available in path, skipping")
+        tty.error("black is not available in path, skipping")
         return 1
 
     print_tool_header("black")
@@ -320,10 +316,7 @@ def run_black(file_list, args):
 
         rewrite_and_print_output(output, args, pat, replacement)
 
-    if returncode == 0:
-        tty.msg("black style checks were clean")
-    else:
-        tty.error("black checks found errors")
+    print_tool_result("black", returncode)
     return returncode
 
 
@@ -355,8 +348,9 @@ def style(parser, args):
         if args.black:
             returncode |= run_black(file_list, args)
 
-    if returncode != 0:
-        print("spack style found errors.")
-        sys.exit(1)
+    if returncode == 0:
+        tty.msg("spack style checks were clean.")
     else:
-        print("spack style checks were clean.")
+        tty.error("spack style found errors.")
+
+    return returncode

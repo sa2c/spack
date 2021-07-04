@@ -4,9 +4,9 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 import glob
-from os import path
-import subprocess
 import platform
+import subprocess
+from os import path
 
 from spack import *
 

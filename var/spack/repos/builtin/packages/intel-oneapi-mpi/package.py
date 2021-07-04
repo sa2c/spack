@@ -4,9 +4,8 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 
-import subprocess
 import platform
-
+import subprocess
 
 from spack import *
 

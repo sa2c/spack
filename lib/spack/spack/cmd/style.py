@@ -41,8 +41,9 @@ def grouper(iterable, n, fillvalue=None):
 #: List of directories to exclude from checks.
 exclude_directories = [spack.paths.external_path]
 
-#: max line length we're enforcing (note: this duplicates what's in .flake8)
-max_line_length = 79
+#: order in which tools should be run. flake8 is last so that it can
+#: double-check the results of other tools (if, e.g., --fix was provided)
+tool_order = ["isort", "mypy", "black", "flake8"]
 
 
 def is_package(f):
@@ -179,7 +180,8 @@ def rewrite_and_print_output(
     """rewrite ouput with <file>:<line>: format to respect path args"""
     if args.root_relative or re_obj is None:
         # print results relative to repo root.
-        print(output)
+        for line in output.split("\n"):
+            print("  " + output)
     else:
         # print results relative to current working directory
         def cwd_relative(path):
@@ -193,12 +195,12 @@ def rewrite_and_print_output(
         for line in output.split("\n"):
             if not line:
                 continue
-            print(re_obj.sub(cwd_relative, line))
+            print("  " + re_obj.sub(cwd_relative, line))
 
 
 def print_style_header(file_list, args):
     tools = [
-        tool for tool in ("isort", "flake8", "mypy", "black")
+        tool for tool in tool_order
         if getattr(args, tool)
     ]
     tty.msg("Running style checks on spack:", "selected: " + ", ".join(tools))
@@ -333,21 +335,17 @@ def style(parser, args):
         if not file_list:
             file_list = changed_files(args.base, args.untracked, args.all)
         print_style_header(file_list, args)
-        if args.isort:
-            # We run isort before flake8, assuming that #23947 with flake8-import-order
-            # is also in, to allow flake8 to double-check the result of executing isort,
-            # if --fix was provided.
-            returncode = run_isort(file_list, args)
-        if args.flake8:
-            returncode |= run_flake8(file_list, args)
-        if args.mypy:
-            returncode |= run_mypy(file_list, args)
-        if args.black:
-            returncode |= run_black(file_list, args)
+
+        # run tools in order defined in tool_order
+        returncode = 0
+        for tool in tool_order:
+            if getattr(args, tool):
+                run_function = globals()["run_" + tool]
+                returncode |= run_function(file_list, args)
 
     if returncode == 0:
-        tty.msg("spack style checks were clean.")
+        tty.msg(color.colorize("@*{spack style checks were clean.}"))
     else:
-        tty.error("spack style found errors.")
+        tty.error(color.colorize("@*{spack style found errors.}"))
 
     return returncode

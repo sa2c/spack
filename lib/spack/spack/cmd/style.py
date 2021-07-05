@@ -276,7 +276,7 @@ def run_isort(file_list, args):
     print_tool_header("isort")
     check_fix_args = () if args.fix else ("--check", "--diff")
 
-    pat = re.compile("ERROR: (.*) Imports are incorrectly sorted and/or formatted")
+    pat = re.compile("ERROR: (.*) Imports are incorrectly sorted")
     replacement = "ERROR: {0} Imports are incorrectly sorted and/or formatted"
     returncode = 0
     for chunk in grouper(file_list, 100):

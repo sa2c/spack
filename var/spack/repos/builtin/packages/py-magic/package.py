@@ -10,9 +10,12 @@ class PyMagic(PythonPackage):
     """A python wrapper for libmagic."""
 
     homepage = "https://github.com/ahupp/python-magic"
-    url      = "https://github.com/ahupp/python-magic/archive/0.4.15.tar.gz"
+    url = "https://github.com/ahupp/python-magic/archive/0.4.15.tar.gz"
 
-    version('0.4.15', sha256='6d730389249ab1e34ffb0a3c5beaa44e116687ffa081e0176dab6c59ff271593')
+    version(
+        "0.4.15",
+        sha256="6d730389249ab1e34ffb0a3c5beaa44e116687ffa081e0176dab6c59ff271593",
+    )
 
-    depends_on('py-setuptools', type='build')
-    depends_on('file', type='run')
+    depends_on("py-setuptools", type="build")
+    depends_on("file", type="run")

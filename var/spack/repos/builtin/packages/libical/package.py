@@ -12,11 +12,14 @@ class Libical(CMakePackage):
     homepage = "https://github.com/libical/libical"
     url = "https://github.com/libical/libical/archive/v3.0.8.tar.gz"
 
-    version('3.0.8', sha256='09fecacaf75ba5a242159e3a9758a5446b5ce4d0ab684f98a7040864e1d1286f')
+    version(
+        "3.0.8",
+        sha256="09fecacaf75ba5a242159e3a9758a5446b5ce4d0ab684f98a7040864e1d1286f",
+    )
 
-    depends_on('cmake@3.11.0:', type='build')
-    depends_on('perl', type='build')
-    depends_on('icu4c')
+    depends_on("cmake@3.11.0:", type="build")
+    depends_on("perl", type="build")
+    depends_on("icu4c")
 
     def cmake_args(self):
-        return ['-DENABLE_GTK_DOC=OFF']
+        return ["-DENABLE_GTK_DOC=OFF"]

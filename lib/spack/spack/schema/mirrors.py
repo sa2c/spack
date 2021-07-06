@@ -12,22 +12,22 @@
 
 #: Properties for inclusion in other schemas
 properties = {
-    'mirrors': {
-        'type': 'object',
-        'default': {},
-        'additionalProperties': False,
-        'patternProperties': {
-            r'\w[\w-]*': {
-                'anyOf': [
-                    {'type': 'string'},
+    "mirrors": {
+        "type": "object",
+        "default": {},
+        "additionalProperties": False,
+        "patternProperties": {
+            r"\w[\w-]*": {
+                "anyOf": [
+                    {"type": "string"},
                     {
-                        'type': 'object',
-                        'required': ['fetch', 'push'],
-                        'properties': {
-                            'fetch': {'type': 'string'},
-                            'push': {'type': 'string'}
-                        }
-                    }
+                        "type": "object",
+                        "required": ["fetch", "push"],
+                        "properties": {
+                            "fetch": {"type": "string"},
+                            "push": {"type": "string"},
+                        },
+                    },
                 ]
             },
         },
@@ -37,9 +37,9 @@ properties = {
 
 #: Full schema with metadata
 schema = {
-    '$schema': 'http://json-schema.org/schema#',
-    'title': 'Spack mirror configuration file schema',
-    'type': 'object',
-    'additionalProperties': False,
-    'properties': properties,
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Spack mirror configuration file schema",
+    "type": "object",
+    "additionalProperties": False,
+    "properties": properties,
 }

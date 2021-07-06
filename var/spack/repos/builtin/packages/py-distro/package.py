@@ -10,6 +10,9 @@ class PyDistro(PythonPackage):
     homepage = "https://github.com/nir0s/distro"
     pypi = "distro/distro-1.5.0.tar.gz"
 
-    version('1.5.0', sha256='0e58756ae38fbd8fc3020d54badb8eae17c5b9dcbed388b17bb55b8a5928df92')
+    version(
+        "1.5.0",
+        sha256="0e58756ae38fbd8fc3020d54badb8eae17c5b9dcbed388b17bb55b8a5928df92",
+    )
 
-    depends_on('py-setuptools', type='build')
+    depends_on("py-setuptools", type="build")

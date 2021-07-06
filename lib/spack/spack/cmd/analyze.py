@@ -23,31 +23,45 @@ level = "long"
 
 
 def setup_parser(subparser):
-    sp = subparser.add_subparsers(metavar='SUBCOMMAND', dest='analyze_command')
+    sp = subparser.add_subparsers(metavar="SUBCOMMAND", dest="analyze_command")
 
-    sp.add_parser('list-analyzers',
-                  description="list available analyzers",
-                  help="show list of analyzers that are available to run.")
+    sp.add_parser(
+        "list-analyzers",
+        description="list available analyzers",
+        help="show list of analyzers that are available to run.",
+    )
 
     # This adds the monitor group to the subparser
     spack.monitor.get_monitor_group(subparser)
 
     # Run Parser
-    run_parser = sp.add_parser('run', description="run an analyzer",
-                               help="provide the name of the analyzer to run.")
+    run_parser = sp.add_parser(
+        "run",
+        description="run an analyzer",
+        help="provide the name of the analyzer to run.",
+    )
 
     run_parser.add_argument(
-        '--overwrite', action='store_true',
-        help="re-analyze even if the output file already exists.")
+        "--overwrite",
+        action="store_true",
+        help="re-analyze even if the output file already exists.",
+    )
     run_parser.add_argument(
-        '-p', '--path', default=None,
-        dest='path',
-        help="write output to a different directory than ~/.spack/analyzers")
+        "-p",
+        "--path",
+        default=None,
+        dest="path",
+        help="write output to a different directory than ~/.spack/analyzers",
+    )
     run_parser.add_argument(
-        '-a', '--analyzers', default=None,
-        dest="analyzers", action="append",
-        help="add an analyzer (defaults to all available)")
-    arguments.add_common_arguments(run_parser, ['spec'])
+        "-a",
+        "--analyzers",
+        default=None,
+        dest="analyzers",
+        action="append",
+        help="add an analyzer (defaults to all available)",
+    )
+    arguments.add_common_arguments(run_parser, ["spec"])
 
 
 def analyze_spec(spec, analyzers=None, outdir=None, monitor=None, overwrite=False):
@@ -95,7 +109,7 @@ def analyze(parser, args, **kwargs):
         sys.exit(0)
 
     # handle active environment, if any
-    env = ev.get_env(args, 'analyze')
+    env = ev.get_env(args, "analyze")
 
     # Get an disambiguate spec (we should only have one)
     specs = spack.cmd.parse_specs(args.spec)

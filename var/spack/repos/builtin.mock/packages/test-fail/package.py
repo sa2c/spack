@@ -10,12 +10,12 @@ class TestFail(Package):
     """This package has a test method that fails in a subprocess."""
 
     homepage = "http://www.example.com/test-failure"
-    url      = "http://www.test-failure.test/test-failure-1.0.tar.gz"
+    url = "http://www.test-failure.test/test-failure-1.0.tar.gz"
 
-    version('1.0', 'foobarbaz')
+    version("1.0", "foobarbaz")
 
     def install(self, spec, prefix):
         mkdirp(prefix.bin)
 
     def test(self):
-        self.run_test('true', expected=['not in the output'])
+        self.run_test("true", expected=["not in the output"])

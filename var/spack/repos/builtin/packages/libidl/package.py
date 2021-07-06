@@ -11,9 +11,12 @@ class Libidl(AutotoolsPackage):
     """libraries for Interface Definition Language files"""
 
     homepage = "https://developer.gnome.org/"
-    url      = "https://ftp.gnome.org/pub/gnome/sources/libIDL/0.8/libIDL-0.8.14.tar.bz2"
+    url = "https://ftp.gnome.org/pub/gnome/sources/libIDL/0.8/libIDL-0.8.14.tar.bz2"
 
-    version('0.8.14', sha256='c5d24d8c096546353fbc7cedf208392d5a02afe9d56ebcc1cccb258d7c4d2220')
+    version(
+        "0.8.14",
+        sha256="c5d24d8c096546353fbc7cedf208392d5a02afe9d56ebcc1cccb258d7c4d2220",
+    )
 
-    depends_on('pkgconfig', type='build')
-    depends_on('glib')
+    depends_on("pkgconfig", type="build")
+    depends_on("glib")

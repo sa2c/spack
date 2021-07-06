@@ -15,22 +15,30 @@ class PyTraitsui(PythonPackage):
     homepage = "https://docs.enthought.com/traitsui"
     pypi = "traitsui/traitsui-6.1.3.tar.gz"
 
-    version('6.1.3', sha256='48381763b181efc58eaf288431d1d92d028d0d97dfdd33eba7809aae8aef814f')
+    version(
+        "6.1.3",
+        sha256="48381763b181efc58eaf288431d1d92d028d0d97dfdd33eba7809aae8aef814f",
+    )
 
-    variant('backend', default='pyqt5', description='Default backend',
-            values=('wx', 'pyqt', 'pyqt5', 'pyside'), multi=False)
+    variant(
+        "backend",
+        default="pyqt5",
+        description="Default backend",
+        values=("wx", "pyqt", "pyqt5", "pyside"),
+        multi=False,
+    )
 
-    depends_on('py-setuptools', type='build')
-    depends_on('py-traits', type=('build', 'run'))
-    depends_on('py-pyface@6.0.0:', type=('build', 'run'))
-    depends_on('py-six', type=('build', 'run'))
+    depends_on("py-setuptools", type="build")
+    depends_on("py-traits", type=("build", "run"))
+    depends_on("py-pyface@6.0.0:", type=("build", "run"))
+    depends_on("py-six", type=("build", "run"))
 
     # Backends
-    depends_on('py-wxpython@2.8.10:', when='backend=wx', type=('build', 'run'))
-    depends_on('py-numpy', when='backend=wx', type=('build', 'run'))
-    depends_on('py-pyqt4@4.10:', when='backend=pyqt', type=('build', 'run'))
-    depends_on('py-pygments', when='backend=pyqt', type=('build', 'run'))
-    depends_on('py-pyqt5@5:', when='backend=pyqt5', type=('build', 'run'))
-    depends_on('py-pygments', when='backend=pyqt5', type=('build', 'run'))
-    depends_on('py-pyside@1.2:', when='backend=pyside', type=('build', 'run'))
-    depends_on('py-pygments', when='backend=pyside', type=('build', 'run'))
+    depends_on("py-wxpython@2.8.10:", when="backend=wx", type=("build", "run"))
+    depends_on("py-numpy", when="backend=wx", type=("build", "run"))
+    depends_on("py-pyqt4@4.10:", when="backend=pyqt", type=("build", "run"))
+    depends_on("py-pygments", when="backend=pyqt", type=("build", "run"))
+    depends_on("py-pyqt5@5:", when="backend=pyqt5", type=("build", "run"))
+    depends_on("py-pygments", when="backend=pyqt5", type=("build", "run"))
+    depends_on("py-pyside@1.2:", when="backend=pyside", type=("build", "run"))
+    depends_on("py-pygments", when="backend=pyside", type=("build", "run"))

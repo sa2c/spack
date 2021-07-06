@@ -56,9 +56,9 @@ def test_all_same_but_install(tmpdir, mock_packages, config):
 
 def compare_sans_name(eq, spec1, spec2):
     content1 = package_content(spec1)
-    content1 = content1.replace(spec1.package.__class__.__name__, '')
+    content1 = content1.replace(spec1.package.__class__.__name__, "")
     content2 = package_content(spec2)
-    content2 = content2.replace(spec2.package.__class__.__name__, '')
+    content2 = content2.replace(spec2.package.__class__.__name__, "")
     if eq:
         assert content1 == content2
     else:

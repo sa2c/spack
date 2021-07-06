@@ -8,11 +8,11 @@ from spack import *
 
 class Callpath(Package):
     homepage = "https://github.com/tgamblin/callpath"
-    url      = "http://github.com/tgamblin/callpath-1.0.tar.gz"
+    url = "http://github.com/tgamblin/callpath-1.0.tar.gz"
 
-    version(0.8, 'foobarbaz')
-    version(0.9, 'foobarbaz')
-    version(1.0, 'foobarbaz')
+    version(0.8, "foobarbaz")
+    version(0.9, "foobarbaz")
+    version(1.0, "foobarbaz")
 
     depends_on("dyninst")
     depends_on("mpi")
@@ -23,4 +23,4 @@ class Callpath(Package):
         make("install")
 
     def setup_environment(self, senv, renv):
-        renv.set('FOOBAR', self.name)
+        renv.set("FOOBAR", self.name)

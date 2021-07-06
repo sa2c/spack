@@ -19,11 +19,14 @@ class RLifecycle(RPackage):
     verbosity."""
 
     homepage = "https://lifecycle.r-lib.org/"
-    url      = "https://cloud.r-project.org/src/contrib/lifecycle_0.2.0.tar.gz"
+    url = "https://cloud.r-project.org/src/contrib/lifecycle_0.2.0.tar.gz"
     list_url = "https://cloud.r-project.org/src/contrib/Archive/lifecycle"
 
-    version('0.2.0', sha256='29746e8dee05d4e36f9c612e8c7a903a4f648a36b3b94c9776e518c38a412224')
+    version(
+        "0.2.0",
+        sha256="29746e8dee05d4e36f9c612e8c7a903a4f648a36b3b94c9776e518c38a412224",
+    )
 
-    depends_on('r@3.2:', type=('build', 'run'))
-    depends_on('r-glue', type=('build', 'run'))
-    depends_on('r-rlang@0.4.0:', type=('build', 'run'))
+    depends_on("r@3.2:", type=("build", "run"))
+    depends_on("r-glue", type=("build", "run"))
+    depends_on("r-rlang@0.4.0:", type=("build", "run"))

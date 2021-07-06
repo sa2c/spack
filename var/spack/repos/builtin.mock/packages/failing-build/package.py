@@ -10,9 +10,9 @@ class FailingBuild(Package):
     """This package has a trivial install method that fails."""
 
     homepage = "http://www.example.com/trivial_install"
-    url      = "http://www.unit-test-should-replace-this-url/trivial_install-1.0.tar.gz"
+    url = "http://www.unit-test-should-replace-this-url/trivial_install-1.0.tar.gz"
 
-    version('1.0', 'foobarbaz')
+    version("1.0", "foobarbaz")
 
     def install(self, spec, prefix):
         raise InstallError("Expected failure.")

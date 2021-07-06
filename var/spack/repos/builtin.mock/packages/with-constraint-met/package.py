@@ -12,9 +12,9 @@ class WithConstraintMet(Package):
     homepage = "http://www.example.com"
     url = "http://www.example.com/example-1.0.tar.gz"
 
-    version('2.0', '0123456789abcdef0123456789abcdef')
-    version('1.0', '0123456789abcdef0123456789abcdef')
+    version("2.0", "0123456789abcdef0123456789abcdef")
+    version("1.0", "0123456789abcdef0123456789abcdef")
 
-    with when('@1.0'):
-        depends_on('b')
-        conflicts('%gcc')
+    with when("@1.0"):
+        depends_on("b")
+        conflicts("%gcc")

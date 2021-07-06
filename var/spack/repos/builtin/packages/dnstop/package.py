@@ -10,15 +10,13 @@ class Dnstop(AutotoolsPackage):
     """Stay on top of your DNS traffic."""
 
     homepage = "https://github.com/measurement-factory/dnstop"
-    git      = "https://github.com/measurement-factory/dnstop.git"
+    git = "https://github.com/measurement-factory/dnstop.git"
 
-    version('master', branch='master')
+    version("master", branch="master")
 
-    depends_on('libpcap')
+    depends_on("libpcap")
 
     def install(self, spec, prefix):
         mkdirp(prefix.bin)
         mkdirp(prefix.share.man.man8)
-        make('BINPATH={0}'.format(prefix.bin),
-             'MANPATH={0}/'.format(prefix),
-             'install')
+        make("BINPATH={0}".format(prefix.bin), "MANPATH={0}/".format(prefix), "install")

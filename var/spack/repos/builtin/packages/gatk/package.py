@@ -78,7 +78,7 @@ class Gatk(Package):
     )
     version(
         "3.8-1",
-        sha256='a0829534d2d0ca3ebfbd3b524a9b50427ff238e0db400d6e9e479242d98cbe5c',
+        sha256="a0829534d2d0ca3ebfbd3b524a9b50427ff238e0db400d6e9e479242d98cbe5c",
         extension="tar.bz2",
         url="https://storage.googleapis.com/gatk-software/package-archive/gatk/GenomeAnalysisTK-3.8-1-0-gf15c1c3ef.tar.bz2",
     )
@@ -86,7 +86,7 @@ class Gatk(Package):
         "3.8-0",
         sha256="d1017b851f0cc6442b75ac88dd438e58203fa3ef1d1c38eb280071ae3803b9f1",
         extension="tar.bz2",
-        url="https://storage.googleapis.com/gatk-software/package-archive/gatk/GenomeAnalysisTK-3.8-0-ge9d806836.tar.bz2"
+        url="https://storage.googleapis.com/gatk-software/package-archive/gatk/GenomeAnalysisTK-3.8-0-ge9d806836.tar.bz2",
     )
 
     # Make r a variant. According to the gatk docs it is not essential and not
@@ -98,7 +98,7 @@ class Gatk(Package):
     # R is still required by several of the unit tests. Plotting is currently
     # untested and should be viewed as a convenience rather than a primary
     # output.
-    variant('r', default=False, description='Use R for plotting')
+    variant("r", default=False, description="Use R for plotting")
 
     depends_on("java@8", type="run")
     depends_on("python@2.6:2.8,3.6:", type="run", when="@4.0:")
@@ -136,6 +136,4 @@ class Gatk(Package):
             )
 
     def setup_run_environment(self, env):
-        env.prepend_path(
-            "GATK", join_path(self.prefix.bin, "GenomeAnalysisTK.jar")
-        )
+        env.prepend_path("GATK", join_path(self.prefix.bin, "GenomeAnalysisTK.jar"))

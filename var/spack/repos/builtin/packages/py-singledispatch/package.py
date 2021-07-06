@@ -11,8 +11,11 @@ class PySingledispatch(PythonPackage):
 
     pypi = "singledispatch/singledispatch-3.4.0.3.tar.gz"
 
-    version('3.4.0.3', sha256='5b06af87df13818d14f08a028e42f566640aef80805c3b50c5056b086e3c2b9c')
+    version(
+        "3.4.0.3",
+        sha256="5b06af87df13818d14f08a028e42f566640aef80805c3b50c5056b086e3c2b9c",
+    )
 
-    depends_on('py-setuptools', type='build')
-    depends_on('py-six', type=('build', 'run'))
-    depends_on('py-ordereddict', when="^python@:2.6", type=('build', 'run'))
+    depends_on("py-setuptools", type="build")
+    depends_on("py-six", type=("build", "run"))
+    depends_on("py-ordereddict", when="^python@:2.6", type=("build", "run"))

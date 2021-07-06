@@ -13,30 +13,37 @@ class Xsdktrilinos(CMakePackage):
     because they would cause a circular dependency if built as part of
     Trilinos.
     """
+
     homepage = "https://trilinos.org/"
-    url      = "https://github.com/trilinos/xSDKTrilinos/archive/trilinos-release-12-8-1.tar.gz"
-    git      = "https://github.com/trilinos/xSDKTrilinos.git"
+    url = "https://github.com/trilinos/xSDKTrilinos/archive/trilinos-release-12-8-1.tar.gz"
+    git = "https://github.com/trilinos/xSDKTrilinos.git"
 
-    version('develop', tag='master')
-    version('xsdk-0.2.0', tag='xsdk-0.2.0')
-    version('12.8.1', sha256='f545c0821743f23af3b48f242c66bbc4593e3804436336db4eb3bb08622ad794')
-    version('12.6.4', sha256='a7664afeab37ccfcbb5aae0bb03cb73ca8e511e0fecc365b9ccd32ba208318e3')
+    version("develop", tag="master")
+    version("xsdk-0.2.0", tag="xsdk-0.2.0")
+    version(
+        "12.8.1",
+        sha256="f545c0821743f23af3b48f242c66bbc4593e3804436336db4eb3bb08622ad794",
+    )
+    version(
+        "12.6.4",
+        sha256="a7664afeab37ccfcbb5aae0bb03cb73ca8e511e0fecc365b9ccd32ba208318e3",
+    )
 
-    variant('hypre',  default=True, description='Compile with Hypre preconditioner')
-    variant('petsc',  default=True, description='Compile with PETSc solvers')
-    variant('shared', default=True, description='Enables the build of shared libraries')
+    variant("hypre", default=True, description="Compile with Hypre preconditioner")
+    variant("petsc", default=True, description="Compile with PETSc solvers")
+    variant("shared", default=True, description="Enables the build of shared libraries")
 
     # MPI related dependencies
-    depends_on('mpi')
-    depends_on('hypre~internal-superlu', when='+hypre')
-    depends_on('hypre@xsdk-0.2.0~internal-superlu', when='@xsdk-0.2.0+hypre')
-    depends_on('hypre@develop~internal-superlu', when='@develop+hypre')
-    depends_on('petsc@xsdk-0.2.0+mpi~complex', when='@xsdk-0.2.0+petsc')
-    depends_on('petsc@main+mpi~complex', when='@develop+petsc')
-    depends_on('trilinos@12.6.4', when='@12.6.4')
-    depends_on('trilinos@12.8.1', when='@12.8.1')
-    depends_on('trilinos@xsdk-0.2.0', when='@xsdk-0.2.0')
-    depends_on('trilinos@develop', when='@develop')
+    depends_on("mpi")
+    depends_on("hypre~internal-superlu", when="+hypre")
+    depends_on("hypre@xsdk-0.2.0~internal-superlu", when="@xsdk-0.2.0+hypre")
+    depends_on("hypre@develop~internal-superlu", when="@develop+hypre")
+    depends_on("petsc@xsdk-0.2.0+mpi~complex", when="@xsdk-0.2.0+petsc")
+    depends_on("petsc@main+mpi~complex", when="@develop+petsc")
+    depends_on("trilinos@12.6.4", when="@12.6.4")
+    depends_on("trilinos@12.8.1", when="@12.8.1")
+    depends_on("trilinos@xsdk-0.2.0", when="@xsdk-0.2.0")
+    depends_on("trilinos@develop", when="@develop")
 
     def url_for_version(self, version):
         url = "https://github.com/trilinos/xSDKTrilinos/archive/trilinos-release-{0}.tar.gz"
@@ -47,32 +54,40 @@ class Xsdktrilinos(CMakePackage):
 
         options = []
 
-        mpi_bin = spec['mpi'].prefix.bin
-        options.extend([
-            '-DxSDKTrilinos_VERBOSE_CONFIGURE:BOOL=OFF',
-            '-DxSDKTrilinos_ENABLE_TESTS:BOOL=ON',
-            '-DxSDKTrilinos_ENABLE_EXAMPLES:BOOL=ON',
-            '-DTrilinos_INSTALL_DIR=%s' % spec['trilinos'].prefix,
-            self.define_from_variant('BUILD_SHARED_LIBS', 'shared'),
-            '-DTPL_ENABLE_MPI:BOOL=ON',
-            '-DMPI_BASE_DIR:PATH=%s' % spec['mpi'].prefix,
-            '-DxSDKTrilinos_ENABLE_CXX11:BOOL=ON',
-            self.define_from_variant('TPL_ENABLE_HYPRE', 'hypre'),
-            self.define_from_variant('TPL_ENABLE_PETSC', 'petsc'),
-            '-DCMAKE_INSTALL_NAME_DIR:PATH=%s/lib' % self.prefix
-        ])
+        mpi_bin = spec["mpi"].prefix.bin
+        options.extend(
+            [
+                "-DxSDKTrilinos_VERBOSE_CONFIGURE:BOOL=OFF",
+                "-DxSDKTrilinos_ENABLE_TESTS:BOOL=ON",
+                "-DxSDKTrilinos_ENABLE_EXAMPLES:BOOL=ON",
+                "-DTrilinos_INSTALL_DIR=%s" % spec["trilinos"].prefix,
+                self.define_from_variant("BUILD_SHARED_LIBS", "shared"),
+                "-DTPL_ENABLE_MPI:BOOL=ON",
+                "-DMPI_BASE_DIR:PATH=%s" % spec["mpi"].prefix,
+                "-DxSDKTrilinos_ENABLE_CXX11:BOOL=ON",
+                self.define_from_variant("TPL_ENABLE_HYPRE", "hypre"),
+                self.define_from_variant("TPL_ENABLE_PETSC", "petsc"),
+                "-DCMAKE_INSTALL_NAME_DIR:PATH=%s/lib" % self.prefix,
+            ]
+        )
 
         # Fortran lib
-        if (spec.satisfies('%gcc') or
-                spec.satisfies('%clang') or
-                spec.satisfies('%apple-clang')):
-            libgfortran = os.path.dirname(os.popen(
-                '%s --print-file-name libgfortran.a' %
-                join_path(mpi_bin, 'mpif90')).read())
-            options.extend([
-                '-DxSDKTrilinos_EXTRA_LINK_FLAGS:STRING=-L%s/ -lgfortran' % (
-                    libgfortran),
-                '-DxSDKTrilinos_ENABLE_Fortran=ON'
-            ])
+        if (
+            spec.satisfies("%gcc")
+            or spec.satisfies("%clang")
+            or spec.satisfies("%apple-clang")
+        ):
+            libgfortran = os.path.dirname(
+                os.popen(
+                    "%s --print-file-name libgfortran.a" % join_path(mpi_bin, "mpif90")
+                ).read()
+            )
+            options.extend(
+                [
+                    "-DxSDKTrilinos_EXTRA_LINK_FLAGS:STRING=-L%s/ -lgfortran"
+                    % (libgfortran),
+                    "-DxSDKTrilinos_ENABLE_Fortran=ON",
+                ]
+            )
 
         return options

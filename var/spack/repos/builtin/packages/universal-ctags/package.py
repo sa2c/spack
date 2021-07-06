@@ -13,12 +13,12 @@ class UniversalCtags(AutotoolsPackage):
     the indexed items."""
 
     homepage = "https://ctags.io/"
-    git      = "https://github.com/universal-ctags/ctags.git"
+    git = "https://github.com/universal-ctags/ctags.git"
 
-    version('master', branch='master')
+    version("master", branch="master")
 
-    depends_on('autoconf', type='build')
-    depends_on('automake', type='build')
-    depends_on('libtool',  type='build')
-    depends_on('m4',       type='build')
-    depends_on('libiconv', type='link')
+    depends_on("autoconf", type="build")
+    depends_on("automake", type="build")
+    depends_on("libtool", type="build")
+    depends_on("m4", type="build")
+    depends_on("libiconv", type="link")

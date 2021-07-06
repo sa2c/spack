@@ -50,7 +50,7 @@ class Eigenexa(AutotoolsPackage):
             ),
         )
 
-    @run_after('install')
+    @run_after("install")
     def cache_test_sources(self):
         self.cache_extra_test_sources("benchmark")
 
@@ -58,11 +58,9 @@ class Eigenexa(AutotoolsPackage):
         test_dir = self.test_suite.current_test_data_dir
         exe_name = join_path(test_dir, "run-test.sh")
         mpi_name = self.spec["mpi"].prefix.bin.mpirun
-        test_file = join_path(
-            self.install_test_root, "benchmark", "eigenexa_benchmark"
-        )
+        test_file = join_path(self.install_test_root, "benchmark", "eigenexa_benchmark")
         input_file = join_path(self.install_test_root, "benchmark", "IN")
-        opts = [exe_name, mpi_name, '-n', '1', test_file, '-f', input_file]
+        opts = [exe_name, mpi_name, "-n", "1", test_file, "-f", input_file]
         env["OMP_NUM_THREADS"] = "1"
         self.run_test(
             "sh", options=opts, expected="EigenExa Test Passed !", work_dir=test_dir

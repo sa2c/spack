@@ -19,13 +19,16 @@ class SstDumpi(AutotoolsPackage):
     """
 
     homepage = "http://sst.sandia.gov/about_dumpi.html"
-    url      = "https://github.com/sstsimulator/sst-dumpi/archive/6.1.0.tar.gz"
-    git      = "https://github.com/sstsimulator/sst-dumpi.git"
+    url = "https://github.com/sstsimulator/sst-dumpi/archive/6.1.0.tar.gz"
+    git = "https://github.com/sstsimulator/sst-dumpi.git"
 
-    version('master', branch='master')
-    version('6.1.0', sha256='d4f6afcff5ba67fcc3a29f461afbb59855053840f5f320552a77b4e14c687bb6')
+    version("master", branch="master")
+    version(
+        "6.1.0",
+        sha256="d4f6afcff5ba67fcc3a29f461afbb59855053840f5f320552a77b4e14c687bb6",
+    )
 
-    depends_on('autoconf@1.68:', type='build')
-    depends_on('automake@1.11.1:', type='build')
-    depends_on('libtool@1.2.4:', type='build')
-    depends_on('m4', type='build')
+    depends_on("autoconf@1.68:", type="build")
+    depends_on("automake@1.11.1:", type="build")
+    depends_on("libtool@1.2.4:", type="build")
+    depends_on("m4", type="build")

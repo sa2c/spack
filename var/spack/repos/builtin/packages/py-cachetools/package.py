@@ -14,6 +14,9 @@ class PyCachetools(PythonPackage):
     homepage = "https://github.com/tkem/cachetools"
     pypi = "cachetools/cachetools-3.1.1.tar.gz"
 
-    version('3.1.1', sha256='8ea2d3ce97850f31e4a08b0e2b5e6c34997d7216a9d2c98e0f3978630d4da69a')
+    version(
+        "3.1.1",
+        sha256="8ea2d3ce97850f31e4a08b0e2b5e6c34997d7216a9d2c98e0f3978630d4da69a",
+    )
 
-    depends_on('py-setuptools', type='build')
+    depends_on("py-setuptools", type="build")

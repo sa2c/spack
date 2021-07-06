@@ -19,7 +19,7 @@ import spack.store
 #: OS-imposed character limit for shebang line: 127 for Linux; 511 for Mac.
 #: Different Linux distributions have different limits, but 127 is the
 #: smallest among all modern versions.
-if sys.platform == 'darwin':
+if sys.platform == "darwin":
     shebang_limit = 511
 else:
     shebang_limit = 127
@@ -31,7 +31,8 @@ def sbang_install_path():
     install_path = os.path.join(sbang_root, "bin", "sbang")
     if len(install_path) > shebang_limit:
         raise SbangPathError(
-            'Install tree root is too long. Spack cannot patch shebang lines.')
+            "Install tree root is too long. Spack cannot patch shebang lines."
+        )
     return install_path
 
 
@@ -44,7 +45,7 @@ def sbang_shebang_line():
     This should be the only place in Spack that knows about what
     interpreter we use for ``sbang``.
     """
-    return '#!/bin/sh %s' % sbang_install_path()
+    return "#!/bin/sh %s" % sbang_install_path()
 
 
 def shebang_too_long(path):
@@ -52,9 +53,9 @@ def shebang_too_long(path):
     if not os.path.isfile(path):
         return False
 
-    with open(path, 'rb') as script:
+    with open(path, "rb") as script:
         bytes = script.read(2)
-        if bytes != b'#!':
+        if bytes != b"#!":
             return False
 
         line = bytes + script.readline()
@@ -63,15 +64,15 @@ def shebang_too_long(path):
 
 def filter_shebang(path):
     """Adds a second shebang line, using sbang, at the beginning of a file."""
-    with open(path, 'rb') as original_file:
+    with open(path, "rb") as original_file:
         original = original_file.read()
         if sys.version_info >= (2, 7):
-            original = original.decode(encoding='UTF-8')
+            original = original.decode(encoding="UTF-8")
         else:
-            original = original.decode('UTF-8')
+            original = original.decode("UTF-8")
 
     # This line will be prepended to file
-    new_sbang_line = '%s\n' % sbang_shebang_line()
+    new_sbang_line = "%s\n" % sbang_shebang_line()
 
     # Skip files that are already using sbang.
     if original.startswith(new_sbang_line):
@@ -81,16 +82,16 @@ def filter_shebang(path):
     # else any mention of "lua" in the document will lead to spurious matches.
 
     # Use --! instead of #! on second line for lua.
-    if re.search(r'^#!(/[^/\n]*)*lua\b', original):
-        original = re.sub(r'^#', '--', original)
+    if re.search(r"^#!(/[^/\n]*)*lua\b", original):
+        original = re.sub(r"^#", "--", original)
 
     # Use <?php #! instead of #! on second line for php.
-    if re.search(r'^#!(/[^/\n]*)*php\b', original):
-        original = re.sub(r'^#', '<?php #', original) + ' ?>'
+    if re.search(r"^#!(/[^/\n]*)*php\b", original):
+        original = re.sub(r"^#", "<?php #", original) + " ?>"
 
     # Use //! instead of #! on second line for node.js.
-    if re.search(r'^#!(/[^/\n]*)*node\b', original):
-        original = re.sub(r'^#', '//', original)
+    if re.search(r"^#!(/[^/\n]*)*node\b", original):
+        original = re.sub(r"^#", "//", original)
 
     # Change non-writable files to be writable if needed.
     saved_mode = None
@@ -99,13 +100,13 @@ def filter_shebang(path):
         saved_mode = st.st_mode
         os.chmod(path, saved_mode | stat.S_IWRITE)
 
-    with open(path, 'wb') as new_file:
+    with open(path, "wb") as new_file:
         if sys.version_info >= (2, 7):
-            new_file.write(new_sbang_line.encode(encoding='UTF-8'))
-            new_file.write(original.encode(encoding='UTF-8'))
+            new_file.write(new_sbang_line.encode(encoding="UTF-8"))
+            new_file.write(original.encode(encoding="UTF-8"))
         else:
-            new_file.write(new_sbang_line.encode('UTF-8'))
-            new_file.write(original.encode('UTF-8'))
+            new_file.write(new_sbang_line.encode("UTF-8"))
+            new_file.write(original.encode("UTF-8"))
 
     # Restore original permissions.
     if saved_mode is not None:
@@ -144,8 +145,7 @@ def install_sbang():
     """
     # copy in a new version of sbang if it differs from what's in spack
     sbang_path = sbang_install_path()
-    if os.path.exists(sbang_path) and filecmp.cmp(
-            spack.paths.sbang_script, sbang_path):
+    if os.path.exists(sbang_path) and filecmp.cmp(spack.paths.sbang_script, sbang_path):
         return
 
     # make $install_tree/bin and copy in a new version of sbang if needed
@@ -161,7 +161,7 @@ def post_install(spec):
     shebang limit.
     """
     if spec.external:
-        tty.debug('SKIP: shebang filtering [external package]')
+        tty.debug("SKIP: shebang filtering [external package]")
         return
 
     install_sbang()

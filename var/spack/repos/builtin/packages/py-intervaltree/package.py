@@ -10,9 +10,12 @@ class PyIntervaltree(PythonPackage):
     """Editable interval tree data structure for Python 2 and 3."""
 
     homepage = "https://github.com/chaimleib/intervaltree"
-    url      = "https://github.com/chaimleib/intervaltree/archive/3.0.2.tar.gz"
+    url = "https://github.com/chaimleib/intervaltree/archive/3.0.2.tar.gz"
 
-    version('3.0.2', sha256='e8ab75b66077f2e5fb85ac56cb6df834689edb048d38601d53d8867cce3b77d1')
+    version(
+        "3.0.2",
+        sha256="e8ab75b66077f2e5fb85ac56cb6df834689edb048d38601d53d8867cce3b77d1",
+    )
 
-    depends_on('py-sortedcontainers@2:2.999', type=('build', 'run'))
-    depends_on('py-setuptools', type='build')
+    depends_on("py-sortedcontainers@2:2.999", type=("build", "run"))
+    depends_on("py-setuptools", type="build")

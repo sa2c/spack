@@ -15,32 +15,30 @@ class Dalton(CMakePackage):
     """
 
     homepage = "https://daltonprogram.org"
-    git      = 'https://gitlab.com/dalton/dalton.git'
+    git = "https://gitlab.com/dalton/dalton.git"
 
-    version('2020.0', branch='Dalton2020.0', submodules=True)
+    version("2020.0", branch="Dalton2020.0", submodules=True)
 
-    depends_on('blas')
-    depends_on('lapack')
-    depends_on('mpi')
+    depends_on("blas")
+    depends_on("lapack")
+    depends_on("mpi")
 
     def setup_run_environment(self, env):
-        env.prepend_path('PATH', self.spec.prefix.join('dalton'))
+        env.prepend_path("PATH", self.spec.prefix.join("dalton"))
 
     def cmake_args(self):
         spec = self.spec
 
-        args = ['-DENABLE_BUILTIN_BLAS=OFF',
-                '-DENABLE_BUILTIN_LAPACK=OFF',
-                '-DUSE_BUILTIN_LAPACK=OFF',
-                '-DENABLE_STATIC_LINKING=OFF',
-                '-DENABLE_MPI=ON',
-                '-DCMAKE_C_COMPILER={0}'.format(
-                    spec['mpi'].prefix.bin.mpicc),
-                '-DCMAKE_CXX_COMPILER={0}'.format(
-                    spec['mpi'].prefix.bin.mpicxx),
-                '-DCMAKE_Fortran_COMPILER={0}'.format(
-                    spec['mpi'].prefix.bin.mpif90),
-                '-DMPIEXEC_MAX_NUMPROCS=128'
-                ]
+        args = [
+            "-DENABLE_BUILTIN_BLAS=OFF",
+            "-DENABLE_BUILTIN_LAPACK=OFF",
+            "-DUSE_BUILTIN_LAPACK=OFF",
+            "-DENABLE_STATIC_LINKING=OFF",
+            "-DENABLE_MPI=ON",
+            "-DCMAKE_C_COMPILER={0}".format(spec["mpi"].prefix.bin.mpicc),
+            "-DCMAKE_CXX_COMPILER={0}".format(spec["mpi"].prefix.bin.mpicxx),
+            "-DCMAKE_Fortran_COMPILER={0}".format(spec["mpi"].prefix.bin.mpif90),
+            "-DMPIEXEC_MAX_NUMPROCS=128",
+        ]
 
         return args

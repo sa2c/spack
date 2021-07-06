@@ -10,9 +10,12 @@ class PyGoogleAuthOauthlib(PythonPackage):
     homepage = "https://github.com/googleapis/google-auth-library-python-oauthlib"
     pypi = "google-auth-oauthlib/google-auth-oauthlib-0.4.1.tar.gz"
 
-    version('0.4.1', sha256='88d2cd115e3391eb85e1243ac6902e76e77c5fe438b7276b297fbe68015458dd')
+    version(
+        "0.4.1",
+        sha256="88d2cd115e3391eb85e1243ac6902e76e77c5fe438b7276b297fbe68015458dd",
+    )
 
-    depends_on('python@2.7:2.8,3.4:', type=('build', 'run'))
-    depends_on('py-setuptools', type='build')
-    depends_on('py-google-auth', type=('build', 'run'))
-    depends_on('py-requests-oauthlib@0.7.0:', type=('build', 'run'))
+    depends_on("python@2.7:2.8,3.4:", type=("build", "run"))
+    depends_on("py-setuptools", type="build")
+    depends_on("py-google-auth", type=("build", "run"))
+    depends_on("py-requests-oauthlib@0.7.0:", type=("build", "run"))

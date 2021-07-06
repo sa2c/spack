@@ -11,6 +11,9 @@ class PyWcwidth(PythonPackage):
 
     pypi = "wcwidth/wcwidth-0.1.7.tar.gz"
 
-    version('0.1.7', sha256='3df37372226d6e63e1b1e1eda15c594bca98a22d33a23832a90998faa96bc65e')
+    version(
+        "0.1.7",
+        sha256="3df37372226d6e63e1b1e1eda15c594bca98a22d33a23832a90998faa96bc65e",
+    )
 
-    depends_on('py-setuptools', type='build')
+    depends_on("py-setuptools", type="build")

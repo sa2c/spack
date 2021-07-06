@@ -26,27 +26,30 @@ class RBrms(RPackage):
     Carpenter et al. (2017) <doi:10.18637/jss.v076.i01>."""
 
     homepage = "https://github.com/paul-buerkner/brms"
-    cran     = "brms"
+    cran = "brms"
 
-    version('2.15.0', sha256='c11701d1d8758590b74bb845b568b736e4455a81b114c7dfde0b27b7bd1bcc2f')
+    version(
+        "2.15.0",
+        sha256="c11701d1d8758590b74bb845b568b736e4455a81b114c7dfde0b27b7bd1bcc2f",
+    )
 
-    depends_on('r@3.5.0:', type=('build', 'run'))
-    depends_on('r-rcpp@0.12.0:', type=('build', 'run'))
-    depends_on('r-rstan@2.19.2:', type=('build', 'run'))
-    depends_on('r-ggplot2@2.0.0:', type=('build', 'run'))
-    depends_on('r-loo@2.3.1:', type=('build', 'run'))
-    depends_on('r-matrix@1.1.1:', type=('build', 'run'))
-    depends_on('r-mgcv@1.8-13:', type=('build', 'run'))
-    depends_on('r-rstantools@2.1.1:', type=('build', 'run'))
-    depends_on('r-bayesplot@1.5.0:', type=('build', 'run'))
-    depends_on('r-shinystan@2.4.0:', type=('build', 'run'))
-    depends_on('r-projpred@2.0.0:', type=('build', 'run'))
-    depends_on('r-bridgesampling@0.3-0:', type=('build', 'run'))
-    depends_on('r-glue@1.3.0:', type=('build', 'run'))
-    depends_on('r-future@1.19.0:', type=('build', 'run'))
-    depends_on('r-matrixstats', type=('build', 'run'))
-    depends_on('r-nleqslv', type=('build', 'run'))
-    depends_on('r-nlme', type=('build', 'run'))
-    depends_on('r-coda', type=('build', 'run'))
-    depends_on('r-abind', type=('build', 'run'))
-    depends_on('r-backports', type=('build', 'run'))
+    depends_on("r@3.5.0:", type=("build", "run"))
+    depends_on("r-rcpp@0.12.0:", type=("build", "run"))
+    depends_on("r-rstan@2.19.2:", type=("build", "run"))
+    depends_on("r-ggplot2@2.0.0:", type=("build", "run"))
+    depends_on("r-loo@2.3.1:", type=("build", "run"))
+    depends_on("r-matrix@1.1.1:", type=("build", "run"))
+    depends_on("r-mgcv@1.8-13:", type=("build", "run"))
+    depends_on("r-rstantools@2.1.1:", type=("build", "run"))
+    depends_on("r-bayesplot@1.5.0:", type=("build", "run"))
+    depends_on("r-shinystan@2.4.0:", type=("build", "run"))
+    depends_on("r-projpred@2.0.0:", type=("build", "run"))
+    depends_on("r-bridgesampling@0.3-0:", type=("build", "run"))
+    depends_on("r-glue@1.3.0:", type=("build", "run"))
+    depends_on("r-future@1.19.0:", type=("build", "run"))
+    depends_on("r-matrixstats", type=("build", "run"))
+    depends_on("r-nleqslv", type=("build", "run"))
+    depends_on("r-nlme", type=("build", "run"))
+    depends_on("r-coda", type=("build", "run"))
+    depends_on("r-abind", type=("build", "run"))
+    depends_on("r-backports", type=("build", "run"))

@@ -12,12 +12,6 @@ from __future__ import absolute_import
 from .lmod import LmodModulefileWriter
 from .tcl import TclModulefileWriter
 
-__all__ = [
-    'TclModulefileWriter',
-    'LmodModulefileWriter'
-]
+__all__ = ["TclModulefileWriter", "LmodModulefileWriter"]
 
-module_types = {
-    'tcl': TclModulefileWriter,
-    'lmod': LmodModulefileWriter
-}
+module_types = {"tcl": TclModulefileWriter, "lmod": LmodModulefileWriter}

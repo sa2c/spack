@@ -12,6 +12,9 @@ class PyPyperclip(PythonPackage):
     homepage = "https://github.com/asweigart/pyperclip"
     pypi = "pyperclip/pyperclip-1.7.0.tar.gz"
 
-    version('1.7.0', sha256='979325468ccf682104d5dcaf753f869868100631301d3e72f47babdea5700d1c')
+    version(
+        "1.7.0",
+        sha256="979325468ccf682104d5dcaf753f869868100631301d3e72f47babdea5700d1c",
+    )
 
-    depends_on('py-setuptools', type='build')
+    depends_on("py-setuptools", type="build")

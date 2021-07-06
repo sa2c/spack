@@ -12,7 +12,10 @@ class PyPythonRapidjson(PythonPackage):
     homepage = "https://github.com/python-rapidjson/python-rapidjson"
     pypi = "python-rapidjson/python-rapidjson-0.9.1.tar.gz"
 
-    version('0.9.1', sha256='ad80bd7e4bb15d9705227630037a433e2e2a7982b54b51de2ebabdd1611394a1')
+    version(
+        "0.9.1",
+        sha256="ad80bd7e4bb15d9705227630037a433e2e2a7982b54b51de2ebabdd1611394a1",
+    )
 
-    depends_on('python@3.4:', type=('build', 'run'))
-    depends_on('py-setuptools', type='build')
+    depends_on("python@3.4:", type=("build", "run"))
+    depends_on("py-setuptools", type="build")

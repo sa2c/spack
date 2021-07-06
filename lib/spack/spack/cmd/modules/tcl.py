@@ -10,10 +10,10 @@ import spack.cmd.modules
 
 def add_command(parser, command_dict):
     tcl_parser = parser.add_parser(
-        'tcl', help='manipulate non-hierarchical module files'
+        "tcl", help="manipulate non-hierarchical module files"
     )
     spack.cmd.modules.setup_parser(tcl_parser)
 
-    command_dict['tcl'] = functools.partial(
-        spack.cmd.modules.modules_cmd, module_type='tcl'
+    command_dict["tcl"] = functools.partial(
+        spack.cmd.modules.modules_cmd, module_type="tcl"
     )

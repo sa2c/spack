@@ -24,22 +24,27 @@ level = "long"
 
 def setup_parser(subparser):
     subparser.add_argument(
-        '--keep-stage', action='store_true',
-        help="don't clean up staging area when command completes")
+        "--keep-stage",
+        action="store_true",
+        help="don't clean up staging area when command completes",
+    )
     subparser.add_argument(
-        '-b', '--batch', action='store_true',
-        help="don't ask which versions to checksum")
-    arguments.add_common_arguments(subparser, ['package'])
+        "-b",
+        "--batch",
+        action="store_true",
+        help="don't ask which versions to checksum",
+    )
+    arguments.add_common_arguments(subparser, ["package"])
     subparser.add_argument(
-        'versions', nargs=argparse.REMAINDER,
-        help='versions to generate checksums for')
+        "versions", nargs=argparse.REMAINDER, help="versions to generate checksums for"
+    )
 
 
 def checksum(parser, args):
     # Did the user pass 'package@version' string?
-    if len(args.versions) == 0 and '@' in args.package:
-        args.versions = [args.package.split('@')[1]]
-        args.package = args.package.split('@')[0]
+    if len(args.versions) == 0 and "@" in args.package:
+        args.versions = [args.package.split("@")[1]]
+        args.package = args.package.split("@")[0]
 
     # Make sure the user provided a package and not a URL
     if not valid_fully_qualified_module_name(args.package):
@@ -54,8 +59,10 @@ def checksum(parser, args):
         for version in args.versions:
             version = ver(version)
             if not isinstance(version, Version):
-                tty.die("Cannot generate checksums for version lists or "
-                        "version ranges. Use unambiguous versions.")
+                tty.die(
+                    "Cannot generate checksums for version lists or "
+                    "version ranges. Use unambiguous versions."
+                )
             url_dict[version] = pkg.url_for_version(version)
     else:
         # Otherwise, see what versions we can find online
@@ -64,9 +71,12 @@ def checksum(parser, args):
             tty.die("Could not find any versions for {0}".format(pkg.name))
 
     version_lines = spack.stage.get_checksums_for_versions(
-        url_dict, pkg.name, keep_stage=args.keep_stage,
+        url_dict,
+        pkg.name,
+        keep_stage=args.keep_stage,
         batch=(args.batch or len(args.versions) > 0 or len(url_dict) == 1),
-        fetch_options=pkg.fetch_options)
+        fetch_options=pkg.fetch_options,
+    )
 
     print()
     print(version_lines)

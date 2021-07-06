@@ -34,34 +34,25 @@ class Ascent(Package, CudaPackage):
     simulations."""
 
     homepage = "https://github.com/Alpine-DAV/ascent"
-    git      = "https://github.com/Alpine-DAV/ascent.git"
-    url      = "https://github.com/Alpine-DAV/ascent/releases/download/v0.5.1/ascent-v0.5.1-src-with-blt.tar.gz"
+    git = "https://github.com/Alpine-DAV/ascent.git"
+    url = "https://github.com/Alpine-DAV/ascent/releases/download/v0.5.1/ascent-v0.5.1-src-with-blt.tar.gz"
 
-    maintainers = ['cyrush']
+    maintainers = ["cyrush"]
 
-    version('develop',
-            branch='develop',
-            submodules=True)
+    version("develop", branch="develop", submodules=True)
 
-    version('0.7.1',
-            tag='v0.7.1',
-            submodules=True,
-            preferred=True)
+    version("0.7.1", tag="v0.7.1", submodules=True, preferred=True)
 
-    version('0.7.0',
-            tag='v0.7.0',
-            submodules=True)
+    version("0.7.0", tag="v0.7.0", submodules=True)
 
-    version('0.6.0',
-            tag='v0.6.0',
-            submodules=True)
+    version("0.6.0", tag="v0.6.0", submodules=True)
 
     ###########################################################################
     # package variants
     ###########################################################################
 
     variant("shared", default=True, description="Build Ascent as shared libs")
-    variant('test', default=True, description='Enable Ascent unit tests')
+    variant("test", default=True, description="Enable Ascent unit tests")
 
     variant("mpi", default=True, description="Build Ascent MPI Support")
     variant("serial", default=True, description="build serial (non-mpi) libraries")
@@ -71,11 +62,13 @@ class Ascent(Package, CudaPackage):
     variant("fortran", default=True, description="Build Ascent Fortran support")
 
     # variants for runtime features
-    variant("vtkh", default=True,
-            description="Build VTK-h filter and rendering support")
+    variant(
+        "vtkh", default=True, description="Build VTK-h filter and rendering support"
+    )
 
-    variant("openmp", default=(sys.platform != 'darwin'),
-            description="build openmp support")
+    variant(
+        "openmp", default=(sys.platform != "darwin"), description="build openmp support"
+    )
     variant("cuda", default=False, description="Build cuda support")
     variant("mfem", default=False, description="Build MFEM filter support")
     variant("adios", default=False, description="Build Adios filter support")
@@ -92,7 +85,7 @@ class Ascent(Package, CudaPackage):
     ###########################################################################
 
     # Certain CMake versions have been found to break for our use cases
-    depends_on("cmake@3.14.1:3.14.99,3.18.2:", type='build')
+    depends_on("cmake@3.14.1:3.14.99,3.18.2:", type="build")
     depends_on("conduit~python", when="~python")
     depends_on("conduit+python", when="+python+shared")
     depends_on("conduit~shared~python", when="~shared")
@@ -107,8 +100,8 @@ class Ascent(Package, CudaPackage):
     # causes duplicate state issues when running compiled python modules.
     depends_on("python+shared", when="+python+shared")
     extends("python", when="+python+shared")
-    depends_on("py-numpy", when="+python+shared", type=('build', 'run'))
-    depends_on("py-pip", when="+python+shared", type=('build', 'run'))
+    depends_on("py-numpy", when="+python+shared", type=("build", "run"))
+    depends_on("py-pip", when="+python+shared", type=("build", "run"))
 
     #######################
     # MPI
@@ -119,21 +112,21 @@ class Ascent(Package, CudaPackage):
     #######################
     # BabelFlow
     #######################
-    depends_on('babelflow', when='+babelflow+mpi')
-    depends_on('parallelmergetree', when='+babelflow+mpi')
+    depends_on("babelflow", when="+babelflow+mpi")
+    depends_on("parallelmergetree", when="+babelflow+mpi")
 
     #############################
     # TPLs for Runtime Features
     #############################
 
-    depends_on("vtk-h",             when="+vtkh")
-    depends_on("vtk-h~openmp",      when="+vtkh~openmp")
+    depends_on("vtk-h", when="+vtkh")
+    depends_on("vtk-h~openmp", when="+vtkh~openmp")
     depends_on("vtk-h+cuda+openmp", when="+vtkh+cuda+openmp")
     depends_on("vtk-h+cuda~openmp", when="+vtkh+cuda~openmp")
 
-    depends_on("vtk-h~shared",             when="~shared+vtkh")
-    depends_on("vtk-h~shared~openmp",      when="~shared+vtkh~openmp")
-    depends_on("vtk-h~shared+cuda",        when="~shared+vtkh+cuda")
+    depends_on("vtk-h~shared", when="~shared+vtkh")
+    depends_on("vtk-h~shared~openmp", when="~shared+vtkh~openmp")
+    depends_on("vtk-h~shared+cuda", when="~shared+vtkh+cuda")
     depends_on("vtk-h~shared+cuda~openmp", when="~shared+vtkh+cuda~openmp")
 
     # mfem
@@ -147,50 +140,59 @@ class Ascent(Package, CudaPackage):
 
     # devil ray variants with mpi
     # we have to specify both because mfem makes us
-    depends_on("dray+mpi~test~utils+shared+cuda",        when="+dray+mpi+cuda+shared")
-    depends_on("dray+mpi~test~utils+shared+openmp",      when="+dray+mpi+openmp+shared")
-    depends_on("dray+mpi~test~utils+shared~openmp~cuda", when="+dray+mpi~openmp~cuda+shared")
+    depends_on("dray+mpi~test~utils+shared+cuda", when="+dray+mpi+cuda+shared")
+    depends_on("dray+mpi~test~utils+shared+openmp", when="+dray+mpi+openmp+shared")
+    depends_on(
+        "dray+mpi~test~utils+shared~openmp~cuda", when="+dray+mpi~openmp~cuda+shared"
+    )
 
-    depends_on("dray+mpi~test~utils~shared+cuda",        when="+dray+mpi+cuda~shared")
-    depends_on("dray+mpi~test~utils~shared+openmp",      when="+dray+mpi+openmp~shared")
-    depends_on("dray+mpi~test~utils~shared~openmp~cuda", when="+dray+mpi~openmp~cuda~shared")
+    depends_on("dray+mpi~test~utils~shared+cuda", when="+dray+mpi+cuda~shared")
+    depends_on("dray+mpi~test~utils~shared+openmp", when="+dray+mpi+openmp~shared")
+    depends_on(
+        "dray+mpi~test~utils~shared~openmp~cuda", when="+dray+mpi~openmp~cuda~shared"
+    )
 
     # devil ray variants without mpi
-    depends_on("dray~mpi~test~utils+shared+cuda",        when="+dray~mpi+cuda+shared")
-    depends_on("dray~mpi~test~utils+shared+openmp",      when="+dray~mpi+openmp+shared")
-    depends_on("dray~mpi~test~utils+shared~openmp~cuda", when="+dray~mpi~openmp~cuda+shared")
+    depends_on("dray~mpi~test~utils+shared+cuda", when="+dray~mpi+cuda+shared")
+    depends_on("dray~mpi~test~utils+shared+openmp", when="+dray~mpi+openmp+shared")
+    depends_on(
+        "dray~mpi~test~utils+shared~openmp~cuda", when="+dray~mpi~openmp~cuda+shared"
+    )
 
-    depends_on("dray~mpi~test~utils~shared+cuda",        when="+dray~mpi+cuda~shared")
-    depends_on("dray~mpi~test~utils~shared+openmp",      when="+dray~mpi+openmp~shared")
-    depends_on("dray~mpi~test~utils~shared~openmp~cuda", when="+dray~mpi~openmp~cuda~shared")
+    depends_on("dray~mpi~test~utils~shared+cuda", when="+dray~mpi+cuda~shared")
+    depends_on("dray~mpi~test~utils~shared+openmp", when="+dray~mpi+openmp~shared")
+    depends_on(
+        "dray~mpi~test~utils~shared~openmp~cuda", when="+dray~mpi~openmp~cuda~shared"
+    )
 
     #######################
     # Documentation related
     #######################
-    depends_on("py-sphinx", when="+python+doc", type='build')
-    depends_on("py-sphinx-rtd-theme", when="+python+doc", type='build')
+    depends_on("py-sphinx", when="+python+doc", type="build")
+    depends_on("py-sphinx-rtd-theme", when="+python+doc", type="build")
 
     ###########
     # Conflicts
     ###########
-    conflicts("+shared", when="+cuda",
-              msg="Ascent needs to be built with ~shared for CUDA builds.")
+    conflicts(
+        "+shared",
+        when="+cuda",
+        msg="Ascent needs to be built with ~shared for CUDA builds.",
+    )
 
     def setup_build_environment(self, env):
-        env.set('CTEST_OUTPUT_ON_FAILURE', '1')
+        env.set("CTEST_OUTPUT_ON_FAILURE", "1")
 
     def install(self, spec, prefix):
         """
         Build and install Ascent.
         """
-        with working_dir('spack-build', create=True):
+        with working_dir("spack-build", create=True):
             py_site_pkgs_dir = None
             if "+python" in spec:
                 py_site_pkgs_dir = site_packages_dir
 
-            host_cfg_fname = self.create_host_config(spec,
-                                                     prefix,
-                                                     py_site_pkgs_dir)
+            host_cfg_fname = self.create_host_config(spec, prefix, py_site_pkgs_dir)
             cmake_args = []
             # if we have a static build, we need to avoid any of
             # spack's default cmake settings related to rpaths
@@ -201,7 +203,7 @@ class Ascent(Package, CudaPackage):
                 for arg in std_cmake_args:
                     if arg.count("RPATH") == 0:
                         cmake_args.append(arg)
-            if self.spec.satisfies('%cce'):
+            if self.spec.satisfies("%cce"):
                 cmake_args.extend(["-DCMAKE_Fortran_FLAGS=-ef"])
             cmake_args.extend(["-C", host_cfg_fname, "../src"])
             print("Configuring Ascent...")
@@ -217,7 +219,7 @@ class Ascent(Package, CudaPackage):
             # install copy of host config for provenance
             install(host_cfg_fname, prefix)
 
-    @run_after('install')
+    @run_after("install")
     @on_package_attributes(run_tests=True)
     def check_install(self):
         """
@@ -227,34 +229,32 @@ class Ascent(Package, CudaPackage):
         print("Checking Ascent installation...")
         spec = self.spec
         install_prefix = spec.prefix
-        example_src_dir = join_path(install_prefix,
-                                    "examples",
-                                    "ascent",
-                                    "using-with-cmake")
+        example_src_dir = join_path(
+            install_prefix, "examples", "ascent", "using-with-cmake"
+        )
         print("Checking using-with-cmake example...")
-        with working_dir("check-ascent-using-with-cmake-example",
-                         create=True):
-            cmake_args = ["-DASCENT_DIR={0}".format(install_prefix),
-                          "-DCONDUIT_DIR={0}".format(spec['conduit'].prefix),
-                          "-DVTKM_DIR={0}".format(spec['vtk-m'].prefix),
-                          "-DVTKH_DIR={0}".format(spec['vtk-h'].prefix),
-                          example_src_dir]
+        with working_dir("check-ascent-using-with-cmake-example", create=True):
+            cmake_args = [
+                "-DASCENT_DIR={0}".format(install_prefix),
+                "-DCONDUIT_DIR={0}".format(spec["conduit"].prefix),
+                "-DVTKM_DIR={0}".format(spec["vtk-m"].prefix),
+                "-DVTKH_DIR={0}".format(spec["vtk-h"].prefix),
+                example_src_dir,
+            ]
             cmake(*cmake_args)
             make()
-            example = Executable('./ascent_render_example')
+            example = Executable("./ascent_render_example")
             example()
         print("Checking using-with-make example...")
-        example_src_dir = join_path(install_prefix,
-                                    "examples",
-                                    "ascent",
-                                    "using-with-make")
+        example_src_dir = join_path(
+            install_prefix, "examples", "ascent", "using-with-make"
+        )
         example_files = glob.glob(join_path(example_src_dir, "*"))
-        with working_dir("check-ascent-using-with-make-example",
-                         create=True):
+        with working_dir("check-ascent-using-with-make-example", create=True):
             for example_file in example_files:
                 shutil.copy(example_file, ".")
             make("ASCENT_DIR={0}".format(install_prefix))
-            example = Executable('./ascent_render_example')
+            example = Executable("./ascent_render_example")
             example()
 
     def create_host_config(self, spec, prefix, py_site_pkgs_dir=None):
@@ -303,17 +303,19 @@ class Ascent(Package, CudaPackage):
         ##############################################
 
         if "+cmake" in spec:
-            cmake_exe = spec['cmake'].command.path
+            cmake_exe = spec["cmake"].command.path
         else:
             cmake_exe = which("cmake")
             if cmake_exe is None:
-                msg = 'failed to find CMake (and cmake variant is off)'
+                msg = "failed to find CMake (and cmake variant is off)"
                 raise RuntimeError(msg)
             cmake_exe = cmake_exe.path
 
-        host_cfg_fname = "%s-%s-%s-ascent.cmake" % (socket.gethostname(),
-                                                    sys_type,
-                                                    spec.compiler)
+        host_cfg_fname = "%s-%s-%s-ascent.cmake" % (
+            socket.gethostname(),
+            sys_type,
+            spec.compiler,
+        )
 
         cfg = open(host_cfg_fname, "w")
         cfg.write("##################################\n")
@@ -340,8 +342,7 @@ class Ascent(Package, CudaPackage):
         cfg.write("# fortran compiler used by spack\n")
         if "+fortran" in spec and f_compiler is not None:
             cfg.write(cmake_cache_entry("ENABLE_FORTRAN", "ON"))
-            cfg.write(cmake_cache_entry("CMAKE_Fortran_COMPILER",
-                                        f_compiler))
+            cfg.write(cmake_cache_entry("CMAKE_Fortran_COMPILER", f_compiler))
         else:
             cfg.write("# no fortran compiler found\n\n")
             cfg.write(cmake_cache_entry("ENABLE_FORTRAN", "OFF"))
@@ -353,18 +354,18 @@ class Ascent(Package, CudaPackage):
             cfg.write(cmake_cache_entry("BUILD_SHARED_LIBS", "OFF"))
 
         # use global spack compiler flags
-        cppflags = ' '.join(spec.compiler_flags['cppflags'])
+        cppflags = " ".join(spec.compiler_flags["cppflags"])
         if cppflags:
             # avoid always ending up with ' ' with no flags defined
-            cppflags += ' '
-        cflags = cppflags + ' '.join(spec.compiler_flags['cflags'])
+            cppflags += " "
+        cflags = cppflags + " ".join(spec.compiler_flags["cflags"])
         if cflags:
             cfg.write(cmake_cache_entry("CMAKE_C_FLAGS", cflags))
-        cxxflags = cppflags + ' '.join(spec.compiler_flags['cxxflags'])
+        cxxflags = cppflags + " ".join(spec.compiler_flags["cxxflags"])
         if cxxflags:
             cfg.write(cmake_cache_entry("CMAKE_CXX_FLAGS", cxxflags))
-        fflags = ' '.join(spec.compiler_flags['fflags'])
-        if self.spec.satisfies('%cce'):
+        fflags = " ".join(spec.compiler_flags["fflags"])
+        if self.spec.satisfies("%cce"):
             fflags += " -ef"
         if fflags:
             cfg.write(cmake_cache_entry("CMAKE_Fortran_FLAGS", fflags))
@@ -386,7 +387,7 @@ class Ascent(Package, CudaPackage):
         #######################
 
         cfg.write("# conduit from spack \n")
-        cfg.write(cmake_cache_entry("CONDUIT_DIR", spec['conduit'].prefix))
+        cfg.write(cmake_cache_entry("CONDUIT_DIR", spec["conduit"].prefix))
 
         #######################################################################
         # Optional Dependencies
@@ -402,12 +403,14 @@ class Ascent(Package, CudaPackage):
             cfg.write("# Enable python module builds\n")
             cfg.write(cmake_cache_entry("ENABLE_PYTHON", "ON"))
             cfg.write("# python from spack \n")
-            cfg.write(cmake_cache_entry("PYTHON_EXECUTABLE",
-                      spec['python'].command.path))
+            cfg.write(
+                cmake_cache_entry("PYTHON_EXECUTABLE", spec["python"].command.path)
+            )
             # only set dest python site packages dir if passed
             if py_site_pkgs_dir:
-                cfg.write(cmake_cache_entry("PYTHON_MODULE_INSTALL_PREFIX",
-                                            py_site_pkgs_dir))
+                cfg.write(
+                    cmake_cache_entry("PYTHON_MODULE_INSTALL_PREFIX", py_site_pkgs_dir)
+                )
         else:
             cfg.write(cmake_cache_entry("ENABLE_PYTHON", "OFF"))
 
@@ -415,8 +418,7 @@ class Ascent(Package, CudaPackage):
             cfg.write(cmake_cache_entry("ENABLE_DOCS", "ON"))
 
             cfg.write("# sphinx from spack \n")
-            sphinx_build_exe = join_path(spec['py-sphinx'].prefix.bin,
-                                         "sphinx-build")
+            sphinx_build_exe = join_path(spec["py-sphinx"].prefix.bin, "sphinx-build")
             cfg.write(cmake_cache_entry("SPHINX_EXECUTABLE", sphinx_build_exe))
         else:
             cfg.write(cmake_cache_entry("ENABLE_DOCS", "OFF"))
@@ -437,9 +439,9 @@ class Ascent(Package, CudaPackage):
         cfg.write("# MPI Support\n")
 
         if "+mpi" in spec:
-            mpicc_path = spec['mpi'].mpicc
-            mpicxx_path = spec['mpi'].mpicxx
-            mpifc_path = spec['mpi'].mpifc
+            mpicc_path = spec["mpi"].mpicc
+            mpicxx_path = spec["mpi"].mpicxx
+            mpifc_path = spec["mpi"].mpifc
             # if we are using compiler wrappers on cray systems
             # use those for mpi wrappers, b/c  spec['mpi'].mpicxx
             # etc make return the spack compiler wrappers
@@ -452,26 +454,24 @@ class Ascent(Package, CudaPackage):
             cfg.write(cmake_cache_entry("MPI_C_COMPILER", mpicc_path))
             cfg.write(cmake_cache_entry("MPI_CXX_COMPILER", mpicxx_path))
             cfg.write(cmake_cache_entry("MPI_Fortran_COMPILER", mpifc_path))
-            mpiexe_bin = join_path(spec['mpi'].prefix.bin, 'mpiexec')
+            mpiexe_bin = join_path(spec["mpi"].prefix.bin, "mpiexec")
             if os.path.isfile(mpiexe_bin):
                 # starting with cmake 3.10, FindMPI expects MPIEXEC_EXECUTABLE
                 # vs the older versions which expect MPIEXEC
-                if self.spec["cmake"].satisfies('@3.10:'):
-                    cfg.write(cmake_cache_entry("MPIEXEC_EXECUTABLE",
-                                                mpiexe_bin))
+                if self.spec["cmake"].satisfies("@3.10:"):
+                    cfg.write(cmake_cache_entry("MPIEXEC_EXECUTABLE", mpiexe_bin))
                 else:
-                    cfg.write(cmake_cache_entry("MPIEXEC",
-                                                mpiexe_bin))
+                    cfg.write(cmake_cache_entry("MPIEXEC", mpiexe_bin))
 
             ###################################
             # BABELFLOW (also depends on mpi)
             ###################################
             if "+babelflow" in spec:
                 cfg.write(cmake_cache_entry("ENABLE_BABELFLOW", "ON"))
-                cfg.write(cmake_cache_entry("BabelFlow_DIR",
-                                            spec['babelflow'].prefix))
-                cfg.write(cmake_cache_entry("PMT_DIR",
-                                            spec['parallelmergetree'].prefix))
+                cfg.write(cmake_cache_entry("BabelFlow_DIR", spec["babelflow"].prefix))
+                cfg.write(
+                    cmake_cache_entry("PMT_DIR", spec["parallelmergetree"].prefix)
+                )
         else:
             cfg.write(cmake_cache_entry("ENABLE_MPI", "OFF"))
 
@@ -499,15 +499,16 @@ class Ascent(Package, CudaPackage):
 
         if "+vtkh" in spec:
             cfg.write("# vtk-m from spack\n")
-            cfg.write(cmake_cache_entry("VTKM_DIR", spec['vtk-m'].prefix))
+            cfg.write(cmake_cache_entry("VTKM_DIR", spec["vtk-m"].prefix))
 
             cfg.write("# vtk-h from spack\n")
-            cfg.write(cmake_cache_entry("VTKH_DIR", spec['vtk-h'].prefix))
+            cfg.write(cmake_cache_entry("VTKH_DIR", spec["vtk-h"].prefix))
 
             if "+cuda" in spec:
                 cfg.write(cmake_cache_entry("VTKm_ENABLE_CUDA", "ON"))
-                cfg.write(cmake_cache_entry("CMAKE_CUDA_HOST_COMPILER",
-                          env["SPACK_CXX"]))
+                cfg.write(
+                    cmake_cache_entry("CMAKE_CUDA_HOST_COMPILER", env["SPACK_CXX"])
+                )
             else:
                 cfg.write(cmake_cache_entry("VTKm_ENABLE_CUDA", "OFF"))
 
@@ -519,7 +520,7 @@ class Ascent(Package, CudaPackage):
         #######################
         if "+mfem" in spec:
             cfg.write("# mfem from spack \n")
-            cfg.write(cmake_cache_entry("MFEM_DIR", spec['mfem'].prefix))
+            cfg.write(cmake_cache_entry("MFEM_DIR", spec["mfem"].prefix))
         else:
             cfg.write("# mfem not built by spack \n")
 
@@ -528,7 +529,7 @@ class Ascent(Package, CudaPackage):
         #######################
         if "+dray" in spec:
             cfg.write("# devil ray from spack \n")
-            cfg.write(cmake_cache_entry("DRAY_DIR", spec['dray'].prefix))
+            cfg.write(cmake_cache_entry("DRAY_DIR", spec["dray"].prefix))
         else:
             cfg.write("# devil ray not built by spack \n")
 
@@ -539,7 +540,7 @@ class Ascent(Package, CudaPackage):
         cfg.write("# adios support\n")
 
         if "+adios" in spec:
-            cfg.write(cmake_cache_entry("ADIOS_DIR", spec['adios'].prefix))
+            cfg.write(cmake_cache_entry("ADIOS_DIR", spec["adios"].prefix))
         else:
             cfg.write("# adios not built by spack \n")
 

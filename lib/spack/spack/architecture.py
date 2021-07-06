@@ -81,13 +81,15 @@ from spack.util.spack_yaml import syaml_dict
 class NoPlatformError(serr.SpackError):
     def __init__(self):
         super(NoPlatformError, self).__init__(
-            "Could not determine a platform for this machine.")
+            "Could not determine a platform for this machine."
+        )
 
 
 def _ensure_other_is_target(method):
     """Decorator to be used in dunder methods taking a single argument to
     ensure that the argument is an instance of ``Target`` too.
     """
+
     @functools.wraps(method)
     def _impl(self, other):
         if isinstance(other, six.string_types):
@@ -125,8 +127,10 @@ class Target(object):
 
     @_ensure_other_is_target
     def __eq__(self, other):
-        return self.microarchitecture == other.microarchitecture and \
-            self.module_name == other.module_name
+        return (
+            self.microarchitecture == other.microarchitecture
+            and self.module_name == other.module_name
+        )
 
     def __ne__(self, other):
         # This method is necessary as long as we support Python 2. In Python 3
@@ -157,7 +161,7 @@ class Target(object):
         # TODO: just the name. We can use that information to reconstruct an
         # TODO: "old" micro-architecture or check the current definition.
         target_info = dict_or_value
-        return Target(target_info['name'])
+        return Target(target_info["name"])
 
     def to_dict_or_value(self):
         """Returns a dict or a value representing the current target.
@@ -169,18 +173,15 @@ class Target(object):
         """
         # Generic targets represent either an architecture
         # family (like x86_64) or a custom micro-architecture
-        if self.microarchitecture.vendor == 'generic':
+        if self.microarchitecture.vendor == "generic":
             return str(self)
 
-        return syaml_dict(
-            self.microarchitecture.to_dict(return_list_of_items=True)
-        )
+        return syaml_dict(self.microarchitecture.to_dict(return_list_of_items=True))
 
     def __repr__(self):
         cls_name = self.__class__.__name__
-        fmt = cls_name + '({0}, {1})'
-        return fmt.format(repr(self.microarchitecture),
-                          repr(self.module_name))
+        fmt = cls_name + "({0}, {1})"
+        return fmt.format(repr(self.microarchitecture), repr(self.module_name))
 
     def __str__(self):
         return str(self.microarchitecture)
@@ -198,27 +199,29 @@ class Target(object):
         """
         # Mixed toolchains are not supported yet
         import spack.compilers
+
         if isinstance(compiler, spack.compiler.Compiler):
             if spack.compilers.is_mixed_toolchain(compiler):
-                msg = ('microarchitecture specific optimizations are not '
-                       'supported yet on mixed compiler toolchains [check'
-                       ' {0.name}@{0.version} for further details]')
+                msg = (
+                    "microarchitecture specific optimizations are not "
+                    "supported yet on mixed compiler toolchains [check"
+                    " {0.name}@{0.version} for further details]"
+                )
                 warnings.warn(msg.format(compiler))
-                return ''
+                return ""
 
         # Try to check if the current compiler comes with a version number or
         # has an unexpected suffix. If so, treat it as a compiler with a
         # custom spec.
         compiler_version = compiler.version
-        version_number, suffix = archspec.cpu.version_components(
-            compiler.version
-        )
-        if not version_number or suffix not in ('', 'apple'):
+        version_number, suffix = archspec.cpu.version_components(compiler.version)
+        if not version_number or suffix not in ("", "apple"):
             # Try to deduce the underlying version of the compiler, regardless
             # of its name in compilers.yaml. Depending on where this function
             # is called we might get either a CompilerSpec or a fully fledged
             # compiler object.
             import spack.spec
+
             if isinstance(compiler, spack.spec.CompilerSpec):
                 compiler = spack.compilers.compilers_for_spec(compiler).pop()
             try:
@@ -234,26 +237,26 @@ class Target(object):
 
 @lang.lazy_lexicographic_ordering
 class Platform(object):
-    """ Abstract class that each type of Platform will subclass.
-        Will return a instance of it once it is returned.
+    """Abstract class that each type of Platform will subclass.
+    Will return a instance of it once it is returned.
     """
 
     # Subclass sets number. Controls detection order
-    priority        = None   # type: int
+    priority = None  # type: int
 
     #: binary formats used on this platform; used by relocation logic
-    binary_formats  = ['elf']
+    binary_formats = ["elf"]
 
-    front_end       = None   # type: str
-    back_end        = None   # type: str
-    default         = None   # type: str # The default back end target.
+    front_end = None  # type: str
+    back_end = None  # type: str
+    default = None  # type: str # The default back end target.
 
-    front_os        = None   # type: str
-    back_os         = None   # type: str
-    default_os      = None   # type: str
+    front_os = None  # type: str
+    back_os = None  # type: str
+    default_os = None  # type: str
 
-    reserved_targets = ['default_target', 'frontend', 'fe', 'backend', 'be']
-    reserved_oss = ['default_os', 'frontend', 'fe', 'backend', 'be']
+    reserved_targets = ["default_target", "frontend", "fe", "backend", "be"]
+    reserved_oss = ["default_os", "frontend", "fe", "backend", "be"]
 
     def __init__(self, name):
         self.targets = {}
@@ -268,7 +271,8 @@ class Platform(object):
         if name in Platform.reserved_targets:
             raise ValueError(
                 "%s is a spack reserved alias "
-                "and cannot be the name of a target" % name)
+                "and cannot be the name of a target" % name
+            )
         self.targets[name] = target
 
     def target(self, name):
@@ -279,47 +283,47 @@ class Platform(object):
         """
         # TODO: Check if we can avoid using strings here
         name = str(name)
-        if name == 'default_target':
+        if name == "default_target":
             name = self.default
-        elif name == 'frontend' or name == 'fe':
+        elif name == "frontend" or name == "fe":
             name = self.front_end
-        elif name == 'backend' or name == 'be':
+        elif name == "backend" or name == "be":
             name = self.back_end
 
         return self.targets.get(name, None)
 
     def add_operating_system(self, name, os_class):
-        """ Add the operating_system class object into the
-            platform.operating_sys dictionary
+        """Add the operating_system class object into the
+        platform.operating_sys dictionary
         """
         if name in Platform.reserved_oss:
             raise ValueError(
-                "%s is a spack reserved alias "
-                "and cannot be the name of an OS" % name)
+                "%s is a spack reserved alias " "and cannot be the name of an OS" % name
+            )
         self.operating_sys[name] = os_class
 
     def operating_system(self, name):
-        if name == 'default_os':
+        if name == "default_os":
             name = self.default_os
-        if name == 'frontend' or name == "fe":
+        if name == "frontend" or name == "fe":
             name = self.front_os
-        if name == 'backend' or name == 'be':
+        if name == "backend" or name == "be":
             name = self.back_os
 
         return self.operating_sys.get(name, None)
 
     @classmethod
     def setup_platform_environment(cls, pkg, env):
-        """ Subclass can override this method if it requires any
-            platform-specific build environment modifications.
+        """Subclass can override this method if it requires any
+        platform-specific build environment modifications.
         """
 
     @classmethod
     def detect(cls):
-        """ Subclass is responsible for implementing this method.
-            Returns True if the Platform class detects that
-            it is the current platform
-            and False if it's not.
+        """Subclass is responsible for implementing this method.
+        Returns True if the Platform class detects that
+        it is the current platform
+        and False if it's not.
         """
         raise NotImplementedError()
 
@@ -341,25 +345,27 @@ class Platform(object):
         def targets():
             for t in sorted(self.targets.values()):
                 yield t._cmp_iter
+
         yield targets
 
         def oses():
             for o in sorted(self.operating_sys.values()):
                 yield o._cmp_iter
+
         yield oses
 
 
 @lang.lazy_lexicographic_ordering
 class OperatingSystem(object):
-    """ Operating System will be like a class similar to platform extended
-        by subclasses for the specifics. Operating System will contain the
-        compiler finding logic. Instead of calling two separate methods to
-        find compilers we call find_compilers method for each operating system
+    """Operating System will be like a class similar to platform extended
+    by subclasses for the specifics. Operating System will contain the
+    compiler finding logic. Instead of calling two separate methods to
+    find compilers we call find_compilers method for each operating system
     """
 
     def __init__(self, name, version):
-        self.name = name.replace('-', '_')
-        self.version = str(version).replace('-', '_')
+        self.name = name.replace("-", "_")
+        self.version = str(version).replace("-", "_")
 
     def __str__(self):
         return "%s%s" % (self.name, self.version)
@@ -372,10 +378,7 @@ class OperatingSystem(object):
         yield self.version
 
     def to_dict(self):
-        return syaml_dict([
-            ('name', self.name),
-            ('version', self.version)
-        ])
+        return syaml_dict([("name", self.name), ("version", self.version)])
 
 
 @lang.lazy_lexicographic_ordering
@@ -400,32 +403,37 @@ class Arch(object):
 
     @property
     def concrete(self):
-        return all((self.platform is not None,
-                    isinstance(self.platform, Platform),
-                    self.os is not None,
-                    isinstance(self.os, OperatingSystem),
-                    self.target is not None, isinstance(self.target, Target)))
+        return all(
+            (
+                self.platform is not None,
+                isinstance(self.platform, Platform),
+                self.os is not None,
+                isinstance(self.os, OperatingSystem),
+                self.target is not None,
+                isinstance(self.target, Target),
+            )
+        )
 
     def __str__(self):
         if self.platform or self.os or self.target:
-            if self.platform.name == 'darwin':
+            if self.platform.name == "darwin":
                 os_name = self.os.name if self.os else "None"
             else:
                 os_name = str(self.os)
 
-            return (str(self.platform) + "-" +
-                    os_name + "-" + str(self.target))
+            return str(self.platform) + "-" + os_name + "-" + str(self.target)
         else:
-            return ''
+            return ""
 
     def __contains__(self, string):
         return string in str(self)
 
     # TODO: make this unnecessary: don't include an empty arch on *every* spec.
     def __nonzero__(self):
-        return (self.platform is not None or
-                self.os is not None or
-                self.target is not None)
+        return (
+            self.platform is not None or self.os is not None or self.target is not None
+        )
+
     __bool__ = __nonzero__
 
     def _cmp_iter(self):
@@ -446,11 +454,14 @@ class Arch(object):
 
     def to_dict(self):
         str_or_none = lambda v: str(v) if v else None
-        d = syaml_dict([
-            ('platform', str_or_none(self.platform)),
-            ('platform_os', str_or_none(self.os)),
-            ('target', self.target.to_dict_or_value())])
-        return syaml_dict([('arch', d)])
+        d = syaml_dict(
+            [
+                ("platform", str_or_none(self.platform)),
+                ("platform_os", str_or_none(self.os)),
+                ("target", self.target.to_dict_or_value()),
+            ]
+        )
+        return syaml_dict([("arch", d)])
 
     def to_spec(self):
         """Convert this Arch to an anonymous Spec with architecture defined."""
@@ -474,15 +485,17 @@ def get_platform(platform_name):
 
 
 def verify_platform(platform_name):
-    """ Determines whether or not the platform with the given name is supported
-        in Spack.  For more information, see the 'spack.platforms' submodule.
+    """Determines whether or not the platform with the given name is supported
+    in Spack.  For more information, see the 'spack.platforms' submodule.
     """
     platform_name = platform_name.replace("_", "").lower()
     platform_names = [p.__name__.lower() for p in all_platforms()]
 
     if platform_name not in platform_names:
-        tty.die("%s is not a supported platform; supported platforms are %s" %
-                (platform_name, platform_names))
+        tty.die(
+            "%s is not a supported platform; supported platforms are %s"
+            % (platform_name, platform_names)
+        )
 
 
 def arch_for_spec(arch_spec):
@@ -491,11 +504,13 @@ def arch_for_spec(arch_spec):
     assert arch_spec.concrete
 
     arch_plat = get_platform(arch_spec.platform)
-    if not (arch_plat.operating_system(arch_spec.os) and
-            arch_plat.target(arch_spec.target)):
+    if not (
+        arch_plat.operating_system(arch_spec.os) and arch_plat.target(arch_spec.target)
+    ):
         raise ValueError(
             "Can't recreate arch for spec %s on current arch %s; "
-            "spec architecture is too different" % (arch_spec, sys_type()))
+            "spec architecture is too different" % (arch_spec, sys_type())
+        )
 
     return Arch(arch_plat, arch_spec.os, arch_spec.target)
 
@@ -543,7 +558,7 @@ def default_arch():
 
     See ``sys_type()``.
     """
-    return Arch(platform(), 'default_os', 'default_target')
+    return Arch(platform(), "default_os", "default_target")
 
 
 def sys_type():
@@ -568,7 +583,7 @@ def compatible_sys_types():
     current_host = archspec.cpu.host()
     compatible_targets = [current_host] + current_host.ancestors
     for target in compatible_targets:
-        arch = Arch(platform(), 'default_os', target)
+        arch = Arch(platform(), "default_os", target)
         compatible_archs.append(str(arch))
     return compatible_archs
 
@@ -578,6 +593,7 @@ class _PickleableCallable(object):
     _platform or _all_platforms. Lambda or nested functions are
     not pickleable.
     """
+
     def __init__(self, return_value):
         self.return_value = return_value
 

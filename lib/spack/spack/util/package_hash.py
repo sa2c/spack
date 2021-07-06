@@ -16,10 +16,12 @@ import spack.util.naming
 
 class RemoveDocstrings(ast.NodeTransformer):
     """Transformer that removes docstrings from a Python AST."""
+
     def remove_docstring(self, node):
         if node.body:
-            if isinstance(node.body[0], ast.Expr) and \
-               isinstance(node.body[0].value, ast.Str):
+            if isinstance(node.body[0], ast.Expr) and isinstance(
+                node.body[0].value, ast.Str
+            ):
                 node.body.pop(0)
 
         self.generic_visit(node)
@@ -37,6 +39,7 @@ class RemoveDocstrings(ast.NodeTransformer):
 
 class RemoveDirectives(ast.NodeTransformer):
     """Remove Spack directives from a package AST."""
+
     def __init__(self, spec):
         self.spec = spec
 
@@ -55,26 +58,35 @@ class RemoveDirectives(ast.NodeTransformer):
             (bool): ``True`` if the node represents a known directive,
                 ``False`` otherwise
         """
-        return (isinstance(node, ast.Expr) and
-                node.value and isinstance(node.value, ast.Call) and
-                isinstance(node.value.func, ast.Name) and
-                node.value.func.id in spack.directives.__all__)
+        return (
+            isinstance(node, ast.Expr)
+            and node.value
+            and isinstance(node.value, ast.Call)
+            and isinstance(node.value.func, ast.Name)
+            and node.value.func.id in spack.directives.__all__
+        )
 
     def is_spack_attr(self, node):
-        return (isinstance(node, ast.Assign) and
-                node.targets and isinstance(node.targets[0], ast.Name) and
-                node.targets[0].id in spack.package.Package.metadata_attrs)
+        return (
+            isinstance(node, ast.Assign)
+            and node.targets
+            and isinstance(node.targets[0], ast.Name)
+            and node.targets[0].id in spack.package.Package.metadata_attrs
+        )
 
     def visit_ClassDef(self, node):  # noqa
         if node.name == spack.util.naming.mod_to_class(self.spec.name):
             node.body = [
-                c for c in node.body
-                if (not self.is_directive(c) and not self.is_spack_attr(c))]
+                c
+                for c in node.body
+                if (not self.is_directive(c) and not self.is_spack_attr(c))
+            ]
         return node
 
 
 class TagMultiMethods(ast.NodeVisitor):
     """Tag @when-decorated methods in a spec."""
+
     def __init__(self, spec):
         self.spec = spec
         self.methods = {}
@@ -83,11 +95,10 @@ class TagMultiMethods(ast.NodeVisitor):
         nodes = self.methods.setdefault(node.name, [])
         if node.decorator_list:
             dec = node.decorator_list[0]
-            if isinstance(dec, ast.Call) and dec.func.id == 'when':
+            if isinstance(dec, ast.Call) and dec.func.id == "when":
                 try:
                     cond = dec.args[0].s
-                    nodes.append(
-                        (node, self.spec.satisfies(cond, strict=True)))
+                    nodes.append((node, self.spec.satisfies(cond, strict=True)))
                 except AttributeError:
                     # In this case the condition for the 'when' decorator is
                     # not a string literal (for example it may be a Python
@@ -101,13 +112,13 @@ class TagMultiMethods(ast.NodeVisitor):
 
 class ResolveMultiMethods(ast.NodeTransformer):
     """Remove methods which do not exist if their @when is not satisfied."""
+
     def __init__(self, methods):
         self.methods = methods
 
     def resolve(self, node):
         if node.name not in self.methods:
-            raise PackageHashError(
-                "Future traversal visited new node: %s" % node.name)
+            raise PackageHashError("Future traversal visited new node: %s" % node.name)
 
         result = None
         for n, cond in self.methods[node.name]:
@@ -131,7 +142,7 @@ def package_content(spec):
 def package_hash(spec, content=None):
     if content is None:
         content = package_content(spec)
-    return hashlib.sha256(content.encode('utf-8')).digest().lower()
+    return hashlib.sha256(content.encode("utf-8")).digest().lower()
 
 
 def package_ast(spec):

@@ -9,28 +9,26 @@ from spack.architecture import OperatingSystem, Platform, Target
 
 
 class Test(Platform):
-    priority    = 1000000
+    priority = 1000000
 
-    if platform.system().lower() == 'darwin':
-        binary_formats = ['macho']
+    if platform.system().lower() == "darwin":
+        binary_formats = ["macho"]
 
-    front_end = 'x86_64'
-    back_end = 'core2'
-    default = 'core2'
+    front_end = "x86_64"
+    back_end = "core2"
+    default = "core2"
 
-    front_os = 'redhat6'
-    back_os = 'debian6'
-    default_os = 'debian6'
+    front_os = "redhat6"
+    back_os = "debian6"
+    default_os = "debian6"
 
     def __init__(self):
-        super(Test, self).__init__('test')
+        super(Test, self).__init__("test")
         self.add_target(self.default, Target(self.default))
         self.add_target(self.front_end, Target(self.front_end))
 
-        self.add_operating_system(
-            self.default_os, OperatingSystem('debian', 6))
-        self.add_operating_system(
-            self.front_os, OperatingSystem('redhat', 6))
+        self.add_operating_system(self.default_os, OperatingSystem("debian", 6))
+        self.add_operating_system(self.front_os, OperatingSystem("redhat", 6))
 
     @classmethod
     def detect(cls):

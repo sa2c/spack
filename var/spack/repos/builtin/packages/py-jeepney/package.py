@@ -10,6 +10,9 @@ class PyJeepney(PythonPackage):
     homepage = "https://gitlab.com/takluyver/jeepney"
     pypi = "jeepney/jeepney-0.4.3.tar.gz"
 
-    version('0.4.3', sha256='3479b861cc2b6407de5188695fa1a8d57e5072d7059322469b62628869b8e36e')
+    version(
+        "0.4.3",
+        sha256="3479b861cc2b6407de5188695fa1a8d57e5072d7059322469b62628869b8e36e",
+    )
 
-    depends_on('python@3.5:', type=('build', 'run'))
+    depends_on("python@3.5:", type=("build", "run"))

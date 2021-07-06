@@ -13,8 +13,14 @@ class PyEmcee(PythonPackage):
     homepage = "http://dan.iel.fm/emcee/current/"
     pypi = "emcee/emcee-2.2.1.tar.gz"
 
-    version('2.2.1', sha256='b83551e342b37311897906b3b8acf32979f4c5542e0a25786ada862d26241172')
-    version('2.1.0', sha256='5ce1039a3d78fb9e7d53fcd768517585c5998193743bfcfaac407927d375ca63')
+    version(
+        "2.2.1",
+        sha256="b83551e342b37311897906b3b8acf32979f4c5542e0a25786ada862d26241172",
+    )
+    version(
+        "2.1.0",
+        sha256="5ce1039a3d78fb9e7d53fcd768517585c5998193743bfcfaac407927d375ca63",
+    )
 
-    depends_on('py-setuptools', type='build')
-    depends_on('py-numpy', type=('build', 'run'))
+    depends_on("py-setuptools", type="build")
+    depends_on("py-numpy", type=("build", "run"))

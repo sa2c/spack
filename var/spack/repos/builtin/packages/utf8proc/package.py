@@ -11,8 +11,11 @@ class Utf8proc(CMakePackage):
     normalization, case-folding, graphemes, and more"""
 
     homepage = "https://juliastrings.github.io/utf8proc/"
-    url      = "https://github.com/JuliaStrings/utf8proc/archive/v2.4.0.tar.gz"
+    url = "https://github.com/JuliaStrings/utf8proc/archive/v2.4.0.tar.gz"
 
-    version('2.4.0', sha256='b2e5d547c1d94762a6d03a7e05cea46092aab68636460ff8648f1295e2cdfbd7')
+    version(
+        "2.4.0",
+        sha256="b2e5d547c1d94762a6d03a7e05cea46092aab68636460ff8648f1295e2cdfbd7",
+    )
 
-    depends_on('cmake@2.8.12:', type='build')
+    depends_on("cmake@2.8.12:", type="build")

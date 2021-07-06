@@ -8,48 +8,59 @@ from spack.compiler import Compiler
 
 class Oneapi(Compiler):
     # Subclasses use possible names of C compiler
-    cc_names = ['icx']
+    cc_names = ["icx"]
 
     # Subclasses use possible names of C++ compiler
-    cxx_names = ['icpx']
+    cxx_names = ["icpx"]
 
     # Subclasses use possible names of Fortran 77 compiler
-    f77_names = ['ifx']
+    f77_names = ["ifx"]
 
     # Subclasses use possible names of Fortran 90 compiler
-    fc_names = ['ifx']
+    fc_names = ["ifx"]
 
     # Named wrapper links within build_env_path
-    link_paths = {'cc': 'oneapi/icx',
-                  'cxx': 'oneapi/icpx',
-                  'f77': 'oneapi/ifx',
-                  'fc': 'oneapi/ifx'}
+    link_paths = {
+        "cc": "oneapi/icx",
+        "cxx": "oneapi/icpx",
+        "f77": "oneapi/ifx",
+        "fc": "oneapi/ifx",
+    }
 
-    PrgEnv = 'PrgEnv-oneapi'
-    PrgEnv_compiler = 'oneapi'
+    PrgEnv = "PrgEnv-oneapi"
+    PrgEnv_compiler = "oneapi"
 
-    version_argument = '--version'
-    version_regex = r'(?:(?:oneAPI DPC\+\+ Compiler)|(?:\(IFORT\))) (\S+)'
+    version_argument = "--version"
+    version_regex = r"(?:(?:oneAPI DPC\+\+ Compiler)|(?:\(IFORT\))) (\S+)"
 
     @property
     def verbose_flag(self):
         return "-v"
 
-    required_libs = ['libirc', 'libifcore', 'libifcoremt', 'libirng',
-                     'libsvml', 'libintlc', 'libimf', 'libsycl',
-                     'libOpenCL']
+    required_libs = [
+        "libirc",
+        "libifcore",
+        "libifcoremt",
+        "libirng",
+        "libsvml",
+        "libintlc",
+        "libimf",
+        "libsycl",
+        "libOpenCL",
+    ]
 
     @property
     def debug_flags(self):
-        return ['-debug', '-g', '-g0', '-g1', '-g2', '-g3']
+        return ["-debug", "-g", "-g0", "-g1", "-g2", "-g3"]
 
     @property
     def opt_flags(self):
-        return ['-O', '-O0', '-O1', '-O2', '-O3', '-Ofast', '-Os']
+        return ["-O", "-O0", "-O1", "-O2", "-O3", "-Ofast", "-Os"]
 
     @property
     def openmp_flag(self):
         return "-fiopenmp"
+
     # There may be some additional options here for offload, e.g. :
     #  -fopenmp-simd           Emit OpenMP code only for SIMD-based constructs.
     #  -fopenmp-targets=<value>
@@ -104,4 +115,4 @@ class Oneapi(Compiler):
 
     @property
     def stdcxx_libs(self):
-        return ('-cxxlib', )
+        return ("-cxxlib",)

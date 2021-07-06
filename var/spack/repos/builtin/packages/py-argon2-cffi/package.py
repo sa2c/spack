@@ -10,9 +10,12 @@ class PyArgon2Cffi(PythonPackage):
     homepage = "https://argon2-cffi.readthedocs.io/"
     pypi = "argon2-cffi/argon2-cffi-20.1.0.tar.gz"
 
-    version('20.1.0', sha256='d8029b2d3e4b4cea770e9e5a0104dd8fa185c1724a0f01528ae4826a6d25f97d')
+    version(
+        "20.1.0",
+        sha256="d8029b2d3e4b4cea770e9e5a0104dd8fa185c1724a0f01528ae4826a6d25f97d",
+    )
 
-    depends_on('py-setuptools', type='build')
-    depends_on('py-cffi@1.0.0:', type=('build', 'run'))
-    depends_on('py-six', type=('build', 'run'))
-    depends_on('py-enum34', when='^python@:3.3', type=('build', 'run'))
+    depends_on("py-setuptools", type="build")
+    depends_on("py-cffi@1.0.0:", type=("build", "run"))
+    depends_on("py-six", type=("build", "run"))
+    depends_on("py-enum34", when="^python@:3.3", type=("build", "run"))

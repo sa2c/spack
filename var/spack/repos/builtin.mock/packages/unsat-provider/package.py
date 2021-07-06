@@ -4,12 +4,13 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 class UnsatProvider(Package):
     """This package has a dependency on a virtual that cannot be provided"""
+
     homepage = "http://www.example.com"
     url = "http://www.example.com/v1.0.tgz"
 
-    version('1.0', sha256='foobarbaz')
+    version("1.0", sha256="foobarbaz")
 
-    variant('foo', default=True, description='')
+    variant("foo", default=True, description="")
 
-    provides('unsatvdep', when='+foo')
-    conflicts('+foo')
+    provides("unsatvdep", when="+foo")
+    conflicts("+foo")

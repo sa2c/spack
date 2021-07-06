@@ -4,7 +4,12 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 class Mvdefaults(Package):
 
-    version('1.0', 'abcdef')
+    version("1.0", "abcdef")
 
-    variant('foo', values=('a', 'b', 'c'), default=('a', 'b', 'c'),
-            multi=True, description='')
+    variant(
+        "foo",
+        values=("a", "b", "c"),
+        default=("a", "b", "c"),
+        multi=True,
+        description="",
+    )

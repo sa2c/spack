@@ -10,19 +10,21 @@ class Libabigail(AutotoolsPackage):
     """The ABI Generic Analysis and Instrumentation Library"""
 
     homepage = "https://sourceware.org/libabigail"
-    url      = "https://mirrors.kernel.org/sourceware/libabigail/libabigail-1.8.tar.gz"
+    url = "https://mirrors.kernel.org/sourceware/libabigail/libabigail-1.8.tar.gz"
 
-    version('1.8', sha256='1cbf260b894ccafc61b2673ba30c020c3f67dbba9dfa88dca3935dff661d665c')
+    version(
+        "1.8", sha256="1cbf260b894ccafc61b2673ba30c020c3f67dbba9dfa88dca3935dff661d665c"
+    )
 
-    variant('docs', default=False, description='build documentation')
+    variant("docs", default=False, description="build documentation")
 
-    depends_on('elfutils', type=('build', 'link'))
-    depends_on('libdwarf')
-    depends_on('libxml2')
+    depends_on("elfutils", type=("build", "link"))
+    depends_on("libdwarf")
+    depends_on("libxml2")
 
     # Libabigail won't generate it's bin without Python
-    depends_on('python@3.8:')
+    depends_on("python@3.8:")
 
     # Documentation dependencies
-    depends_on('doxygen', type="build", when="+docs")
-    depends_on('py-sphinx', type='build', when="+docs")
+    depends_on("doxygen", type="build", when="+docs")
+    depends_on("py-sphinx", type="build", when="+docs")

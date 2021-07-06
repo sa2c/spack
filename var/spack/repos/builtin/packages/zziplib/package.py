@@ -13,17 +13,20 @@ class Zziplib(AutotoolsPackage):
     filesystem of the operating system environment."""
 
     homepage = "https://github.com/gdraheim/zziplib"
-    url      = "https://github.com/gdraheim/zziplib/archive/v0.13.69.tar.gz"
+    url = "https://github.com/gdraheim/zziplib/archive/v0.13.69.tar.gz"
 
-    version('0.13.69', sha256='846246d7cdeee405d8d21e2922c6e97f55f24ecbe3b6dcf5778073a88f120544')
+    version(
+        "0.13.69",
+        sha256="846246d7cdeee405d8d21e2922c6e97f55f24ecbe3b6dcf5778073a88f120544",
+    )
 
-    patch('python2to3.patch')
+    patch("python2to3.patch")
 
-    build_directory = 'spack-build'
+    build_directory = "spack-build"
 
-    depends_on('python', type='build')
-    depends_on('zlib')
+    depends_on("python", type="build")
+    depends_on("zlib")
 
     def configure_args(self):
-        args = ['--with-zlib={0}'.format(self.spec['zlib'].prefix)]
+        args = ["--with-zlib={0}".format(self.spec["zlib"].prefix)]
         return args

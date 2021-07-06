@@ -13,14 +13,16 @@ class Scrot(AutotoolsPackage):
     dynamic saver modules."""
 
     homepage = "https://github.com/resurrecting-open-source-projects/scrot"
-    url      = "https://github.com/resurrecting-open-source-projects/scrot/archive/refs/tags/1.5.tar.gz"
+    url = "https://github.com/resurrecting-open-source-projects/scrot/archive/refs/tags/1.5.tar.gz"
 
-    version('1.5', sha256='87afba3998aac097f13231f3b0452c21188bf4b5cc6ac0747693a1da1a0ae40f')
+    version(
+        "1.5", sha256="87afba3998aac097f13231f3b0452c21188bf4b5cc6ac0747693a1da1a0ae40f"
+    )
 
-    depends_on('autoconf-archive', type='build')
-    depends_on('automake', type='build')
-    depends_on('giblib', when='@:1.5')  # @master already has this dependency removed
-    depends_on('imlib2')
-    depends_on('libtool')
-    depends_on('libxcomposite')
-    depends_on('libxfixes')
+    depends_on("autoconf-archive", type="build")
+    depends_on("automake", type="build")
+    depends_on("giblib", when="@:1.5")  # @master already has this dependency removed
+    depends_on("imlib2")
+    depends_on("libtool")
+    depends_on("libxcomposite")
+    depends_on("libxfixes")

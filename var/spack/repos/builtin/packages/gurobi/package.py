@@ -26,18 +26,18 @@ class Gurobi(Package):
     homepage = "http://www.gurobi.com/index"
     manual_download = True
 
-    version('7.5.2', '01f6dbb8d165838cca1664a1a14e4a85')
+    version("7.5.2", "01f6dbb8d165838cca1664a1a14e4a85")
 
     # Licensing
     license_required = True
-    license_vars     = ['GRB_LICENSE_FILE']
-    license_url      = 'http://www.gurobi.com/downloads/download-center'
+    license_vars = ["GRB_LICENSE_FILE"]
+    license_url = "http://www.gurobi.com/downloads/download-center"
 
     def url_for_version(self, version):
         return "file://{0}/gurobi{1}_linux64.tar.gz".format(os.getcwd(), version)
 
     def setup_run_environment(self, env):
-        env.set('GUROBI_HOME', self.prefix)
+        env.set("GUROBI_HOME", self.prefix)
 
     def install(self, spec, prefix):
-        install_tree('linux64', prefix)
+        install_tree("linux64", prefix)

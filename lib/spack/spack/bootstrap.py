@@ -37,13 +37,13 @@ def spec_for_current_python():
       https://www.python.org/dev/peps/pep-0513/
       https://stackoverflow.com/a/35801395/771663
     """
-    version_str = '.'.join(str(x) for x in sys.version_info[:2])
-    variant_str = ''
+    version_str = ".".join(str(x) for x in sys.version_info[:2])
+    variant_str = ""
     if sys.version_info[0] == 2 and sys.version_info[1] == 7:
-        unicode_size = sysconfig.get_config_var('Py_UNICODE_SIZE')
-        variant_str = '+ucs4' if unicode_size == 4 else '~ucs4'
+        unicode_size = sysconfig.get_config_var("Py_UNICODE_SIZE")
+        variant_str = "+ucs4" if unicode_size == 4 else "~ucs4"
 
-    spec_fmt = 'python@{0} {1}'
+    spec_fmt = "python@{0} {1}"
     return spec_fmt.format(version_str, variant_str)
 
 
@@ -57,13 +57,11 @@ def spack_python_interpreter():
     external_python = spec_for_current_python()
 
     entry = {
-        'buildable': False,
-        'externals': [
-            {'prefix': python_prefix, 'spec': str(external_python)}
-        ]
+        "buildable": False,
+        "externals": [{"prefix": python_prefix, "spec": str(external_python)}],
     }
 
-    with spack.config.override('packages:python::', entry):
+    with spack.config.override("packages:python::", entry):
         yield
 
 
@@ -86,15 +84,16 @@ def make_module_available(module, spec=None, install=False):
     # replaced by an external that already has a concrete version. This syntax
     # is not sufficient when concretizing without an external, as it will
     # concretize to python@X.Y instead of python@X.Y.Z
-    python_requirement = '^' + spec_for_current_python()
+    python_requirement = "^" + spec_for_current_python()
     spec.constrain(python_requirement)
     installed_specs = spack.store.db.query(spec, installed=True)
 
     for ispec in installed_specs:
         # TODO: make sure run-environment is appropriate
-        module_path = os.path.join(ispec.prefix,
-                                   ispec['python'].package.site_packages_dir)
-        module_path_64 = module_path.replace('/lib/', '/lib64/')
+        module_path = os.path.join(
+            ispec.prefix, ispec["python"].package.site_packages_dir
+        )
+        module_path_64 = module_path.replace("/lib/", "/lib64/")
         try:
             sys.path.append(module_path)
             sys.path.append(module_path_64)
@@ -119,9 +118,8 @@ def make_module_available(module, spec=None, install=False):
         spec.concretize()
     spec.package.do_install()
 
-    module_path = os.path.join(spec.prefix,
-                               spec['python'].package.site_packages_dir)
-    module_path_64 = module_path.replace('/lib/', '/lib64/')
+    module_path = os.path.join(spec.prefix, spec["python"].package.site_packages_dir)
+    module_path_64 = module_path.replace("/lib/", "/lib64/")
     try:
         sys.path.append(module_path)
         sys.path.append(module_path_64)
@@ -154,17 +152,16 @@ def get_executable(exe, spec=None, install=False):
     installed_specs = spack.store.db.query(spec, installed=True)
     for ispec in installed_specs:
         # filter out directories of the same name as the executable
-        exe_path = [exe_p for exe_p in fs.find(ispec.prefix, exe)
-                    if fs.is_exe(exe_p)]
+        exe_path = [exe_p for exe_p in fs.find(ispec.prefix, exe) if fs.is_exe(exe_p)]
         if exe_path:
             ret = spack.util.executable.Executable(exe_path[0])
             envmod = EnvironmentModifications()
-            for dep in ispec.traverse(root=True, order='post'):
+            for dep in ispec.traverse(root=True, order="post"):
                 envmod.extend(uenv.environment_modifications_for_spec(dep))
             ret.add_default_envmod(envmod)
             return ret
         else:
-            tty.warn('Exe %s not found in prefix %s' % (exe, ispec.prefix))
+            tty.warn("Exe %s not found in prefix %s" % (exe, ispec.prefix))
 
     def _raise_error(executable, exe_spec):
         error_msg = 'cannot find the executable "{0}"'.format(executable)
@@ -183,12 +180,11 @@ def get_executable(exe, spec=None, install=False):
 
     spec.package.do_install()
     # filter out directories of the same name as the executable
-    exe_path = [exe_p for exe_p in fs.find(spec.prefix, exe)
-                if fs.is_exe(exe_p)]
+    exe_path = [exe_p for exe_p in fs.find(spec.prefix, exe) if fs.is_exe(exe_p)]
     if exe_path:
         ret = spack.util.executable.Executable(exe_path[0])
         envmod = EnvironmentModifications()
-        for dep in spec.traverse(root=True, order='post'):
+        for dep in spec.traverse(root=True, order="post"):
             envmod.extend(uenv.environment_modifications_for_spec(dep))
         ret.add_default_envmod(envmod)
         return ret
@@ -197,18 +193,18 @@ def get_executable(exe, spec=None, install=False):
 
 
 def _bootstrap_config_scopes():
-    tty.debug('[BOOTSTRAP CONFIG SCOPE] name=_builtin')
+    tty.debug("[BOOTSTRAP CONFIG SCOPE] name=_builtin")
     config_scopes = [
-        spack.config.InternalConfigScope('_builtin', spack.config.config_defaults)
+        spack.config.InternalConfigScope("_builtin", spack.config.config_defaults)
     ]
     for name, path in spack.config.configuration_paths:
         platform = spack.architecture.platform().name
         platform_scope = spack.config.ConfigScope(
-            '/'.join([name, platform]), os.path.join(path, platform)
+            "/".join([name, platform]), os.path.join(path, platform)
         )
         generic_scope = spack.config.ConfigScope(name, path)
         config_scopes.extend([generic_scope, platform_scope])
-        msg = '[BOOTSTRAP CONFIG SCOPE] name={0}, path={1}'
+        msg = "[BOOTSTRAP CONFIG SCOPE] name={0}, path={1}"
         tty.debug(msg.format(generic_scope.name, generic_scope.path))
         tty.debug(msg.format(platform_scope.name, platform_scope.path))
     return config_scopes
@@ -229,23 +225,23 @@ def ensure_bootstrap_configuration():
 
 def clingo_root_spec():
     # Construct the root spec that will be used to bootstrap clingo
-    spec_str = 'clingo-bootstrap@spack+python'
+    spec_str = "clingo-bootstrap@spack+python"
 
     # Add a proper compiler hint to the root spec. We use GCC for
     # everything but MacOS.
-    if str(spack.architecture.platform()) == 'darwin':
-        spec_str += ' %apple-clang'
+    if str(spack.architecture.platform()) == "darwin":
+        spec_str += " %apple-clang"
     else:
-        spec_str += ' %gcc'
+        spec_str += " %gcc"
 
     # Add hint to use frontend operating system on Cray
-    if str(spack.architecture.platform()) == 'cray':
-        spec_str += ' os=fe'
+    if str(spack.architecture.platform()) == "cray":
+        spec_str += " os=fe"
 
     # Add the generic target
     generic_target = archspec.cpu.host().family
-    spec_str += ' target={0}'.format(str(generic_target))
+    spec_str += " target={0}".format(str(generic_target))
 
-    tty.debug('[BOOTSTRAP ROOT SPEC] clingo: {0}'.format(spec_str))
+    tty.debug("[BOOTSTRAP ROOT SPEC] clingo: {0}".format(spec_str))
 
     return spack.spec.Spec(spec_str)

@@ -18,8 +18,11 @@ class PyImageioFfmpeg(PythonPackage):
     homepage = "https://github.com/imageio/imageio-ffmpeg"
     pypi = "imageio-ffmpeg/imageio-ffmpeg-0.4.3.tar.gz"
 
-    version('0.4.3', sha256='f826260a3207b872f1a4ba87ec0c8e02c00afba4fd03348a59049bdd8215841e')
+    version(
+        "0.4.3",
+        sha256="f826260a3207b872f1a4ba87ec0c8e02c00afba4fd03348a59049bdd8215841e",
+    )
 
-    depends_on('python@3.4:', type=('build', 'run'))
-    depends_on('py-setuptools', type='build')
-    depends_on('ffmpeg', type='run')
+    depends_on("python@3.4:", type=("build", "run"))
+    depends_on("py-setuptools", type="build")
+    depends_on("ffmpeg", type="run")

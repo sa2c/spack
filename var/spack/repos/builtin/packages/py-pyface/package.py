@@ -14,20 +14,28 @@ class PyPyface(PythonPackage):
     homepage = "https://docs.enthought.com/pyface"
     pypi = "pyface/pyface-6.1.2.tar.gz"
 
-    version('6.1.2', sha256='7c2ac3d5cbec85e8504b3b0b63e9307be12c6d710b46bae372ce6562d41f4fbc')
+    version(
+        "6.1.2",
+        sha256="7c2ac3d5cbec85e8504b3b0b63e9307be12c6d710b46bae372ce6562d41f4fbc",
+    )
 
-    variant('backend', default='pyqt5', description='Default backend',
-            values=('wx', 'pyqt', 'pyqt5', 'pyside'), multi=False)
+    variant(
+        "backend",
+        default="pyqt5",
+        description="Default backend",
+        values=("wx", "pyqt", "pyqt5", "pyside"),
+        multi=False,
+    )
 
-    depends_on('py-setuptools', type='build')
-    depends_on('py-traits', type=('build', 'run'))
+    depends_on("py-setuptools", type="build")
+    depends_on("py-traits", type=("build", "run"))
 
     # Backends
-    depends_on('py-wxpython@2.8.10:', when='backend=wx', type=('build', 'run'))
-    depends_on('py-numpy', when='backend=wx', type=('build', 'run'))
-    depends_on('py-pyqt4@4.10:', when='backend=pyqt', type=('build', 'run'))
-    depends_on('py-pygments', when='backend=pyqt', type=('build', 'run'))
-    depends_on('py-pyqt5@5:', when='backend=pyqt5', type=('build', 'run'))
-    depends_on('py-pygments', when='backend=pyqt5', type=('build', 'run'))
-    depends_on('py-pyside@1.2:', when='backend=pyside', type=('build', 'run'))
-    depends_on('py-pygments', when='backend=pyside', type=('build', 'run'))
+    depends_on("py-wxpython@2.8.10:", when="backend=wx", type=("build", "run"))
+    depends_on("py-numpy", when="backend=wx", type=("build", "run"))
+    depends_on("py-pyqt4@4.10:", when="backend=pyqt", type=("build", "run"))
+    depends_on("py-pygments", when="backend=pyqt", type=("build", "run"))
+    depends_on("py-pyqt5@5:", when="backend=pyqt5", type=("build", "run"))
+    depends_on("py-pygments", when="backend=pyqt5", type=("build", "run"))
+    depends_on("py-pyside@1.2:", when="backend=pyside", type=("build", "run"))
+    depends_on("py-pygments", when="backend=pyside", type=("build", "run"))

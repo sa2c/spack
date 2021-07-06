@@ -12,6 +12,9 @@ class PyNetifaces(PythonPackage):
     homepage = "https://bitbucket.org/al45tair/netifaces"
     pypi = "netifaces/netifaces-0.10.5.tar.gz"
 
-    version('0.10.5', sha256='59d8ad52dd3116fcb6635e175751b250dc783fb011adba539558bd764e5d628b')
+    version(
+        "0.10.5",
+        sha256="59d8ad52dd3116fcb6635e175751b250dc783fb011adba539558bd764e5d628b",
+    )
 
-    depends_on('py-setuptools', type='build')
+    depends_on("py-setuptools", type="build")

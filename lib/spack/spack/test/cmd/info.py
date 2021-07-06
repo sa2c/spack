@@ -10,10 +10,10 @@ import pytest
 import spack.cmd.info
 from spack.main import SpackCommand
 
-info = SpackCommand('info')
+info = SpackCommand("info")
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def parser():
     """Returns the parser for the module command"""
     prs = argparse.ArgumentParser()
@@ -29,58 +29,52 @@ def info_lines():
 
 @pytest.fixture()
 def mock_print(monkeypatch, info_lines):
-
     def _print(*args):
         info_lines.extend(args)
 
-    monkeypatch.setattr(spack.cmd.info.color, 'cprint', _print, raising=False)
+    monkeypatch.setattr(spack.cmd.info.color, "cprint", _print, raising=False)
 
 
-@pytest.mark.parametrize('pkg', [
-    'openmpi',
-    'trilinos',
-    'boost',
-    'python',
-    'dealii',
-    'xsdk'  # a BundlePackage
-])
+@pytest.mark.parametrize(
+    "pkg",
+    ["openmpi", "trilinos", "boost", "python", "dealii", "xsdk"],  # a BundlePackage
+)
 def test_it_just_runs(pkg):
     info(pkg)
 
 
-@pytest.mark.parametrize('pkg_query,expected', [
-    ('zlib', 'False'),
-    ('gcc', 'True (version, variants)'),
-])
-@pytest.mark.usefixtures('mock_print')
+@pytest.mark.parametrize(
+    "pkg_query,expected",
+    [
+        ("zlib", "False"),
+        ("gcc", "True (version, variants)"),
+    ],
+)
+@pytest.mark.usefixtures("mock_print")
 def test_is_externally_detectable(pkg_query, expected, parser, info_lines):
     args = parser.parse_args([pkg_query])
     spack.cmd.info.info(parser, args)
 
     line_iter = info_lines.__iter__()
     for line in line_iter:
-        if 'Externally Detectable' in line:
+        if "Externally Detectable" in line:
             is_externally_detectable = next(line_iter).strip()
             assert is_externally_detectable == expected
 
 
-@pytest.mark.parametrize('pkg_query', [
-    'hdf5',
-    'cloverleaf3d',
-    'trilinos'
-])
-@pytest.mark.usefixtures('mock_print')
+@pytest.mark.parametrize("pkg_query", ["hdf5", "cloverleaf3d", "trilinos"])
+@pytest.mark.usefixtures("mock_print")
 def test_info_fields(pkg_query, parser, info_lines):
 
     expected_fields = (
-        'Description:',
-        'Homepage:',
-        'Externally Detectable:',
-        'Safe versions:',
-        'Variants:',
-        'Installation Phases:',
-        'Virtual Packages:',
-        'Tags:'
+        "Description:",
+        "Homepage:",
+        "Externally Detectable:",
+        "Safe versions:",
+        "Variants:",
+        "Installation Phases:",
+        "Virtual Packages:",
+        "Tags:",
     )
 
     args = parser.parse_args([pkg_query])

@@ -29,28 +29,29 @@ level = "short"
 
 
 def setup_parser(subparser):
-    sp = subparser.add_subparsers(
-        metavar='SUBCOMMAND', dest='external_command')
+    sp = subparser.add_subparsers(metavar="SUBCOMMAND", dest="external_command")
 
     scopes = spack.config.scopes()
     scopes_metavar = spack.config.scopes_metavar
 
-    find_parser = sp.add_parser(
-        'find', help='add external packages to packages.yaml'
+    find_parser = sp.add_parser("find", help="add external packages to packages.yaml")
+    find_parser.add_argument(
+        "--not-buildable",
+        action="store_true",
+        default=False,
+        help="packages with detected externals won't be built with Spack",
     )
     find_parser.add_argument(
-        '--not-buildable', action='store_true', default=False,
-        help="packages with detected externals won't be built with Spack")
-    find_parser.add_argument(
-        '--scope', choices=scopes, metavar=scopes_metavar,
-        default=spack.config.default_modify_scope('packages'),
-        help="configuration scope to modify")
-    spack.cmd.common.arguments.add_common_arguments(find_parser, ['tags'])
-    find_parser.add_argument('packages', nargs=argparse.REMAINDER)
+        "--scope",
+        choices=scopes,
+        metavar=scopes_metavar,
+        default=spack.config.default_modify_scope("packages"),
+        help="configuration scope to modify",
+    )
+    spack.cmd.common.arguments.add_common_arguments(find_parser, ["tags"])
+    find_parser.add_argument("packages", nargs=argparse.REMAINDER)
 
-    sp.add_parser(
-        'list', help='list detectable packages, by repository and name'
-    )
+    sp.add_parser("list", help="list detectable packages, by repository and name")
 
 
 def is_executable(path):
@@ -67,9 +68,8 @@ def _get_system_executables():
     There may be multiple paths with the same basename. In this case it is
     assumed there are two different instances of the executable.
     """
-    path_hints = spack.util.environment.get_path('PATH')
-    search_paths = llnl.util.filesystem.search_paths_for_executables(
-        *path_hints)
+    path_hints = spack.util.environment.get_path("PATH")
+    search_paths = llnl.util.filesystem.search_paths_for_executables(*path_hints)
 
     path_to_exe = {}
     # Reverse order of search directories so that an exe in the first PATH
@@ -82,9 +82,7 @@ def _get_system_executables():
     return path_to_exe
 
 
-ExternalPackageEntry = namedtuple(
-    'ExternalPackageEntry',
-    ['spec', 'base_dir'])
+ExternalPackageEntry = namedtuple("ExternalPackageEntry", ["spec", "base_dir"])
 
 
 def _generate_pkg_config(external_pkg_entries):
@@ -106,25 +104,22 @@ def _generate_pkg_config(external_pkg_entries):
     """
 
     pkg_dict = syaml.syaml_dict()
-    pkg_dict['externals'] = []
+    pkg_dict["externals"] = []
     for e in external_pkg_entries:
         if not _spec_is_valid(e.spec):
             continue
 
-        external_items = [('spec', str(e.spec)), ('prefix', e.base_dir)]
+        external_items = [("spec", str(e.spec)), ("prefix", e.base_dir)]
         if e.spec.external_modules:
-            external_items.append(('modules', e.spec.external_modules))
+            external_items.append(("modules", e.spec.external_modules))
 
         if e.spec.extra_attributes:
             external_items.append(
-                ('extra_attributes',
-                 syaml.syaml_dict(e.spec.extra_attributes.items()))
+                ("extra_attributes", syaml.syaml_dict(e.spec.extra_attributes.items()))
             )
 
         # external_items.extend(e.spec.extra_attributes.items())
-        pkg_dict['externals'].append(
-            syaml.syaml_dict(external_items)
-        )
+        pkg_dict["externals"].append(syaml.syaml_dict(external_items))
 
     return pkg_dict
 
@@ -136,16 +131,19 @@ def _spec_is_valid(spec):
         # It is assumed here that we can at least extract the package name from
         # the spec so we can look up the implementation of
         # determine_spec_details
-        tty.warn('Constructed spec for {0} does not have a string'
-                 ' representation'.format(spec.name))
+        tty.warn(
+            "Constructed spec for {0} does not have a string"
+            " representation".format(spec.name)
+        )
         return False
 
     try:
         spack.spec.Spec(str(spec))
     except spack.error.SpackError:
-        tty.warn('Constructed spec has a string representation but the string'
-                 ' representation does not evaluate to a valid spec: {0}'
-                 .format(str(spec)))
+        tty.warn(
+            "Constructed spec has a string representation but the string"
+            " representation does not evaluate to a valid spec: {0}".format(str(spec))
+        )
         return False
 
     return True
@@ -168,8 +166,8 @@ def external_find(args):
         # Since tags are cached it's much faster to construct what we need
         # to search directly, rather than filtering after the fact
         packages_to_check = [
-            spack.repo.get(pkg) for pkg in
-            spack.repo.path.packages_with_tags(*args.tags)
+            spack.repo.get(pkg)
+            for pkg in spack.repo.path.packages_with_tags(*args.tags)
         ]
 
     # If the list of packages is empty, search for every possible package
@@ -177,17 +175,16 @@ def external_find(args):
         packages_to_check = spack.repo.path.all_packages()
 
     pkg_to_entries = _get_external_packages(packages_to_check)
-    new_entries = _update_pkg_config(
-        args.scope, pkg_to_entries, args.not_buildable
-    )
+    new_entries = _update_pkg_config(args.scope, pkg_to_entries, args.not_buildable)
     if new_entries:
-        path = spack.config.config.get_config_filename(args.scope, 'packages')
-        msg = ('The following specs have been detected on this system '
-               'and added to {0}')
+        path = spack.config.config.get_config_filename(args.scope, "packages")
+        msg = (
+            "The following specs have been detected on this system " "and added to {0}"
+        )
         tty.msg(msg.format(path))
         spack.cmd.display_specs(new_entries)
     else:
-        tty.msg('No new external packages detected')
+        tty.msg("No new external packages detected")
 
 
 def _group_by_prefix(paths):
@@ -219,18 +216,18 @@ def _determine_base_dir(prefix):
     # with /bin/, strip off the 'bin' directory to get a Spack-compatible
     # prefix
     assert os.path.isdir(prefix)
-    if os.path.basename(prefix) == 'bin':
+    if os.path.basename(prefix) == "bin":
         return os.path.dirname(prefix)
 
 
 def _get_predefined_externals():
     # Pull from all scopes when looking for preexisting external package
     # entries
-    pkg_config = spack.config.get('packages')
+    pkg_config = spack.config.get("packages")
     already_defined_specs = set()
     for pkg_name, per_pkg_cfg in pkg_config.items():
-        for item in per_pkg_cfg.get('externals', []):
-            already_defined_specs.add(spack.spec.Spec(item['spec']))
+        for item in per_pkg_cfg.get("externals", []):
+            already_defined_specs.add(spack.spec.Spec(item["spec"]))
     return already_defined_specs
 
 
@@ -240,21 +237,21 @@ def _update_pkg_config(scope, pkg_to_entries, not_buildable):
     pkg_to_cfg, all_new_specs = {}, []
     for pkg_name, ext_pkg_entries in pkg_to_entries.items():
         new_entries = list(
-            e for e in ext_pkg_entries
-            if (e.spec not in predefined_external_specs))
+            e for e in ext_pkg_entries if (e.spec not in predefined_external_specs)
+        )
 
         pkg_config = _generate_pkg_config(new_entries)
-        all_new_specs.extend([
-            spack.spec.Spec(x['spec']) for x in pkg_config.get('externals', [])
-        ])
+        all_new_specs.extend(
+            [spack.spec.Spec(x["spec"]) for x in pkg_config.get("externals", [])]
+        )
         if not_buildable:
-            pkg_config['buildable'] = False
+            pkg_config["buildable"] = False
         pkg_to_cfg[pkg_name] = pkg_config
 
-    pkgs_cfg = spack.config.get('packages', scope=scope)
+    pkgs_cfg = spack.config.get("packages", scope=scope)
 
     pkgs_cfg = spack.config.merge_yaml(pkgs_cfg, pkg_to_cfg)
-    spack.config.set('packages', pkgs_cfg, scope=scope)
+    spack.config.set("packages", pkgs_cfg, scope=scope)
 
     return all_new_specs
 
@@ -265,7 +262,7 @@ def _get_external_packages(packages_to_check, system_path_to_exe=None):
 
     exe_pattern_to_pkgs = defaultdict(list)
     for pkg in packages_to_check:
-        if hasattr(pkg, 'executables'):
+        if hasattr(pkg, "executables"):
             for exe in pkg.executables:
                 exe_pattern_to_pkgs[exe].append(pkg)
 
@@ -281,10 +278,12 @@ def _get_external_packages(packages_to_check, system_path_to_exe=None):
     resolved_specs = {}  # spec -> exe found for the spec
 
     for pkg, exes in pkg_to_found_exes.items():
-        if not hasattr(pkg, 'determine_spec_details'):
-            tty.warn("{0} must define 'determine_spec_details' in order"
-                     " for Spack to detect externally-provided instances"
-                     " of the package.".format(pkg.name))
+        if not hasattr(pkg, "determine_spec_details"):
+            tty.warn(
+                "{0} must define 'determine_spec_details' in order"
+                " for Spack to detect externally-provided instances"
+                " of the package.".format(pkg.name)
+            )
             continue
 
         # TODO: iterate through this in a predetermined order (e.g. by package
@@ -299,33 +298,38 @@ def _get_external_packages(packages_to_check, system_path_to_exe=None):
             # naming scheme which differentiates them), the spec won't be
             # usable.
             specs = _convert_to_iterable(
-                pkg.determine_spec_details(prefix, exes_in_prefix))
+                pkg.determine_spec_details(prefix, exes_in_prefix)
+            )
 
             if not specs:
                 tty.debug(
-                    'The following executables in {0} were decidedly not '
-                    'part of the package {1}: {2}'
-                    .format(prefix, pkg.name, ', '.join(
-                        _convert_to_iterable(exes_in_prefix)))
+                    "The following executables in {0} were decidedly not "
+                    "part of the package {1}: {2}".format(
+                        prefix,
+                        pkg.name,
+                        ", ".join(_convert_to_iterable(exes_in_prefix)),
+                    )
                 )
 
             for spec in specs:
                 pkg_prefix = _determine_base_dir(prefix)
 
                 if not pkg_prefix:
-                    tty.debug("{0} does not end with a 'bin/' directory: it"
-                              " cannot be added as a Spack package"
-                              .format(prefix))
+                    tty.debug(
+                        "{0} does not end with a 'bin/' directory: it"
+                        " cannot be added as a Spack package".format(prefix)
+                    )
                     continue
 
                 if spec in resolved_specs:
-                    prior_prefix = ', '.join(
-                        _convert_to_iterable(resolved_specs[spec]))
+                    prior_prefix = ", ".join(_convert_to_iterable(resolved_specs[spec]))
 
                     tty.debug(
                         "Executables in {0} and {1} are both associated"
-                        " with the same spec {2}"
-                        .format(prefix, prior_prefix, str(spec)))
+                        " with the same spec {2}".format(
+                            prefix, prior_prefix, str(spec)
+                        )
+                    )
                     continue
                 else:
                     resolved_specs[spec] = prefix
@@ -333,8 +337,10 @@ def _get_external_packages(packages_to_check, system_path_to_exe=None):
                 try:
                     spec.validate_detection()
                 except Exception as e:
-                    msg = ('"{0}" has been detected on the system but will '
-                           'not be added to packages.yaml [reason={1}]')
+                    msg = (
+                        '"{0}" has been detected on the system but will '
+                        "not be added to packages.yaml [reason={1}]"
+                    )
                     tty.warn(msg.format(spec, str(e)))
                     continue
 
@@ -342,7 +348,8 @@ def _get_external_packages(packages_to_check, system_path_to_exe=None):
                     pkg_prefix = spec.external_path
 
                 pkg_to_entries[pkg.name].append(
-                    ExternalPackageEntry(spec=spec, base_dir=pkg_prefix))
+                    ExternalPackageEntry(spec=spec, base_dir=pkg_prefix)
+                )
 
     return pkg_to_entries
 
@@ -358,5 +365,5 @@ def external_list(args):
 
 
 def external(parser, args):
-    action = {'find': external_find, 'list': external_list}
+    action = {"find": external_find, "list": external_list}
     action[args.external_command](args)

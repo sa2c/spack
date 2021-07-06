@@ -3,6 +3,7 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
+
 class RequiresVirtual(Package):
     """Package that requires a virtual dependency and is registered
     as an external.
@@ -11,6 +12,6 @@ class RequiresVirtual(Package):
     homepage = "http://www.example.com"
     url = "http://www.example.com/a-1.0.tar.gz"
 
-    version('2.0', '2.0_a_hash')
+    version("2.0", "2.0_a_hash")
 
-    depends_on('stuff')
+    depends_on("stuff")

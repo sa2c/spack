@@ -3,6 +3,6 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 class Root(Package):
-    version('1.0', 'abcdef')
+    version("1.0", "abcdef")
 
-    depends_on('gmt')
+    depends_on("gmt")

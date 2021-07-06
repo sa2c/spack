@@ -13,10 +13,12 @@ import spack.util.url as url_util
 
 def create_s3_session(url):
     url = url_util.parse(url)
-    if url.scheme != 's3':
+    if url.scheme != "s3":
         raise ValueError(
-            'Can not create S3 session from URL with scheme: {SCHEME}'.format(
-                SCHEME=url.scheme))
+            "Can not create S3 session from URL with scheme: {SCHEME}".format(
+                SCHEME=url.scheme
+            )
+        )
 
     # NOTE(opadron): import boto and friends as late as possible.  We don't
     # want to require boto as a dependency unless the user actually wants to
@@ -26,14 +28,14 @@ def create_s3_session(url):
 
     session = Session()
 
-    s3_client_args = {"use_ssl": spack.config.get('config:verify_ssl')}
+    s3_client_args = {"use_ssl": spack.config.get("config:verify_ssl")}
 
-    endpoint_url = os.environ.get('S3_ENDPOINT_URL')
+    endpoint_url = os.environ.get("S3_ENDPOINT_URL")
     if endpoint_url:
         if urllib_parse.urlparse(endpoint_url, scheme=None).scheme is None:
-            endpoint_url = '://'.join(('https', endpoint_url))
+            endpoint_url = "://".join(("https", endpoint_url))
 
-        s3_client_args['endpoint_url'] = endpoint_url
+        s3_client_args["endpoint_url"] = endpoint_url
 
     # if no access credentials provided above, then access anonymously
     if not session.get_credentials():
@@ -42,6 +44,6 @@ def create_s3_session(url):
 
         s3_client_args["config"] = Config(signature_version=UNSIGNED)
 
-    client = session.client('s3', **s3_client_args)
+    client = session.client("s3", **s3_client_args)
     client.ClientError = ClientError
     return client

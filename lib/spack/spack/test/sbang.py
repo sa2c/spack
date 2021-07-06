@@ -24,101 +24,102 @@ from spack.util.executable import which
 too_long = sbang.shebang_limit + 1
 
 
-short_line        = "#!/this/is/short/bin/bash\n"
-long_line         = "#!/this/" + ('x' * too_long) + "/is/long\n"
+short_line = "#!/this/is/short/bin/bash\n"
+long_line = "#!/this/" + ("x" * too_long) + "/is/long\n"
 
-lua_line          = "#!/this/" + ('x' * too_long) + "/is/lua\n"
-lua_in_text       = ("line\n") * 100 + "lua\n" + ("line\n" * 100)
-lua_line_patched  = "--!/this/" + ('x' * too_long) + "/is/lua\n"
+lua_line = "#!/this/" + ("x" * too_long) + "/is/lua\n"
+lua_in_text = ("line\n") * 100 + "lua\n" + ("line\n" * 100)
+lua_line_patched = "--!/this/" + ("x" * too_long) + "/is/lua\n"
 
-node_line         = "#!/this/" + ('x' * too_long) + "/is/node\n"
-node_in_text      = ("line\n") * 100 + "lua\n" + ("line\n" * 100)
-node_line_patched = "//!/this/" + ('x' * too_long) + "/is/node\n"
+node_line = "#!/this/" + ("x" * too_long) + "/is/node\n"
+node_in_text = ("line\n") * 100 + "lua\n" + ("line\n" * 100)
+node_line_patched = "//!/this/" + ("x" * too_long) + "/is/node\n"
 
-php_line         = "#!/this/" + ('x' * too_long) + "/is/php\n"
-php_in_text      = ("line\n") * 100 + "php\n" + ("line\n" * 100)
-php_line_patched = "<?php #!/this/" + ('x' * too_long) + "/is/php\n"
+php_line = "#!/this/" + ("x" * too_long) + "/is/php\n"
+php_in_text = ("line\n") * 100 + "php\n" + ("line\n" * 100)
+php_line_patched = "<?php #!/this/" + ("x" * too_long) + "/is/php\n"
 php_line_patched2 = "?>\n"
 
-sbang_line = '#!/bin/sh %s/bin/sbang\n' % spack.store.store.unpadded_root
-last_line  = "last!\n"
+sbang_line = "#!/bin/sh %s/bin/sbang\n" % spack.store.store.unpadded_root
+last_line = "last!\n"
 
 
 @pytest.fixture  # type: ignore[no-redef]
 def sbang_line():
-    yield '#!/bin/sh %s/bin/sbang\n' % spack.store.layout.root
+    yield "#!/bin/sh %s/bin/sbang\n" % spack.store.layout.root
 
 
 class ScriptDirectory(object):
     """Directory full of test scripts to run sbang instrumentation on."""
+
     def __init__(self, sbang_line):
         self.tempdir = tempfile.mkdtemp()
 
-        self.directory = os.path.join(self.tempdir, 'dir')
+        self.directory = os.path.join(self.tempdir, "dir")
         fs.mkdirp(self.directory)
 
         # Script with short shebang
-        self.short_shebang = os.path.join(self.tempdir, 'short')
-        with open(self.short_shebang, 'w') as f:
+        self.short_shebang = os.path.join(self.tempdir, "short")
+        with open(self.short_shebang, "w") as f:
             f.write(short_line)
             f.write(last_line)
 
         # Script with long shebang
-        self.long_shebang = os.path.join(self.tempdir, 'long')
-        with open(self.long_shebang, 'w') as f:
+        self.long_shebang = os.path.join(self.tempdir, "long")
+        with open(self.long_shebang, "w") as f:
             f.write(long_line)
             f.write(last_line)
 
         # Lua script with long shebang
-        self.lua_shebang = os.path.join(self.tempdir, 'lua')
-        with open(self.lua_shebang, 'w') as f:
+        self.lua_shebang = os.path.join(self.tempdir, "lua")
+        with open(self.lua_shebang, "w") as f:
             f.write(lua_line)
             f.write(last_line)
 
         # Lua script with long shebang
-        self.lua_textbang = os.path.join(self.tempdir, 'lua_in_text')
-        with open(self.lua_textbang, 'w') as f:
+        self.lua_textbang = os.path.join(self.tempdir, "lua_in_text")
+        with open(self.lua_textbang, "w") as f:
             f.write(short_line)
             f.write(lua_in_text)
             f.write(last_line)
 
         # Node script with long shebang
-        self.node_shebang = os.path.join(self.tempdir, 'node')
-        with open(self.node_shebang, 'w') as f:
+        self.node_shebang = os.path.join(self.tempdir, "node")
+        with open(self.node_shebang, "w") as f:
             f.write(node_line)
             f.write(last_line)
 
         # Node script with long shebang
-        self.node_textbang = os.path.join(self.tempdir, 'node_in_text')
-        with open(self.node_textbang, 'w') as f:
+        self.node_textbang = os.path.join(self.tempdir, "node_in_text")
+        with open(self.node_textbang, "w") as f:
             f.write(short_line)
             f.write(node_in_text)
             f.write(last_line)
 
         # php script with long shebang
-        self.php_shebang = os.path.join(self.tempdir, 'php')
-        with open(self.php_shebang, 'w') as f:
+        self.php_shebang = os.path.join(self.tempdir, "php")
+        with open(self.php_shebang, "w") as f:
             f.write(php_line)
             f.write(last_line)
 
         # php script with long shebang
-        self.php_textbang = os.path.join(self.tempdir, 'php_in_text')
-        with open(self.php_textbang, 'w') as f:
+        self.php_textbang = os.path.join(self.tempdir, "php_in_text")
+        with open(self.php_textbang, "w") as f:
             f.write(short_line)
             f.write(php_in_text)
             f.write(last_line)
 
         # Script already using sbang.
-        self.has_sbang = os.path.join(self.tempdir, 'shebang')
-        with open(self.has_sbang, 'w') as f:
+        self.has_sbang = os.path.join(self.tempdir, "shebang")
+        with open(self.has_sbang, "w") as f:
             f.write(sbang_line)
             f.write(long_line)
             f.write(last_line)
 
         # Fake binary file.
-        self.binary = os.path.join(self.tempdir, 'binary')
-        tar = which('tar', required=True)
-        tar('czf', self.binary, self.has_sbang)
+        self.binary = os.path.join(self.tempdir, "binary")
+        tar = which("tar", required=True)
+        tar("czf", self.binary, self.has_sbang)
 
     def destroy(self):
         shutil.rmtree(self.tempdir, ignore_errors=True)
@@ -143,35 +144,37 @@ def test_shebang_handling(script_dir, sbang_line):
     sbang.filter_shebangs_in_directory(script_dir.tempdir)
 
     # Make sure this is untouched
-    with open(script_dir.short_shebang, 'r') as f:
+    with open(script_dir.short_shebang, "r") as f:
         assert f.readline() == short_line
         assert f.readline() == last_line
 
     # Make sure this got patched.
-    with open(script_dir.long_shebang, 'r') as f:
+    with open(script_dir.long_shebang, "r") as f:
         assert f.readline() == sbang_line
         assert f.readline() == long_line
         assert f.readline() == last_line
 
     # Make sure this got patched.
-    with open(script_dir.lua_shebang, 'r') as f:
+    with open(script_dir.lua_shebang, "r") as f:
         assert f.readline() == sbang_line
         assert f.readline() == lua_line_patched
         assert f.readline() == last_line
 
     # Make sure this got patched.
-    with open(script_dir.node_shebang, 'r') as f:
+    with open(script_dir.node_shebang, "r") as f:
         assert f.readline() == sbang_line
         assert f.readline() == node_line_patched
         assert f.readline() == last_line
 
-    assert filecmp.cmp(script_dir.lua_textbang,
-                       os.path.join(script_dir.tempdir, 'lua_in_text'))
-    assert filecmp.cmp(script_dir.node_textbang,
-                       os.path.join(script_dir.tempdir, 'node_in_text'))
+    assert filecmp.cmp(
+        script_dir.lua_textbang, os.path.join(script_dir.tempdir, "lua_in_text")
+    )
+    assert filecmp.cmp(
+        script_dir.node_textbang, os.path.join(script_dir.tempdir, "node_in_text")
+    )
 
     # Make sure this is untouched
-    with open(script_dir.has_sbang, 'r') as f:
+    with open(script_dir.has_sbang, "r") as f:
         assert f.readline() == sbang_line
         assert f.readline() == long_line
         assert f.readline() == last_line

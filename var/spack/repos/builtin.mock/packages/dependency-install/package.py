@@ -10,10 +10,10 @@ class DependencyInstall(Package):
     """Dependency which has a working install method"""
 
     homepage = "http://www.example.com"
-    url      = "http://www.example.com/a-1.0.tar.gz"
+    url = "http://www.example.com/a-1.0.tar.gz"
 
-    version('1.0', 'hash1.0')
-    version('2.0', 'hash2.0')
+    version("1.0", "hash1.0")
+    version("2.0", "hash2.0")
 
     def install(self, spec, prefix):
-        touch(join_path(prefix, 'an_installation_file'))
+        touch(join_path(prefix, "an_installation_file"))

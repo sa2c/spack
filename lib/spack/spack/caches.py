@@ -23,9 +23,9 @@ def misc_cache_location():
     Currently the ``misc_cache`` stores indexes for virtual dependency
     providers and for which packages provide which tags.
     """
-    path = spack.config.get('config:misc_cache')
+    path = spack.config.get("config:misc_cache")
     if not path:
-        path = os.path.join(spack.paths.user_config_path, 'cache')
+        path = os.path.join(spack.paths.user_config_path, "cache")
     path = spack.util.path.canonicalize_path(path)
     return path
 
@@ -45,7 +45,7 @@ def fetch_cache_location():
     This prevents Spack from repeatedly fetch the same files when
     building the same package different ways or multiple times.
     """
-    path = spack.config.get('config:source_cache')
+    path = spack.config.get("config:source_cache")
     if not path:
         path = os.path.join(spack.paths.var_path, "cache")
     path = spack.util.path.canonicalize_path(path)
@@ -78,8 +78,8 @@ class MirrorCache(object):
         cosmetic_path = os.path.join(self.root, mirror_ref.cosmetic_path)
         storage_path = os.path.join(self.root, mirror_ref.storage_path)
         relative_dst = os.path.relpath(
-            storage_path,
-            start=os.path.dirname(cosmetic_path))
+            storage_path, start=os.path.dirname(cosmetic_path)
+        )
 
         if not os.path.exists(cosmetic_path):
             if os.path.lexists(cosmetic_path):

@@ -29,27 +29,31 @@ class Amdlibflame(LibflameBase):
     high performing LAPACK functionalities on AMD platform.
     """
 
-    _name = 'amdlibflame'
+    _name = "amdlibflame"
     homepage = "http://developer.amd.com/amd-cpu-libraries/blas-library/#libflame"
     url = "https://github.com/amd/libflame/archive/3.0.tar.gz"
     git = "https://github.com/amd/libflame.git"
 
-    maintainers = ['amd-toolchain-support']
+    maintainers = ["amd-toolchain-support"]
 
-    version('3.0', sha256='d94e08b688539748571e6d4c1ec1ce42732eac18bd75de989234983c33f01ced')
-    version('2.2', sha256='12b9c1f92d2c2fa637305aaa15cf706652406f210eaa5cbc17aaea9fcfa576dc')
+    version(
+        "3.0", sha256="d94e08b688539748571e6d4c1ec1ce42732eac18bd75de989234983c33f01ced"
+    )
+    version(
+        "2.2", sha256="12b9c1f92d2c2fa637305aaa15cf706652406f210eaa5cbc17aaea9fcfa576dc"
+    )
 
-    patch('aocc-2.2.0.patch', when="@:2.999", level=1)
-    patch('cray-compiler-wrapper.patch')
+    patch("aocc-2.2.0.patch", when="@:2.999", level=1)
+    patch("cray-compiler-wrapper.patch")
 
-    provides('flame@5.2', when='@2:')
+    provides("flame@5.2", when="@2:")
 
     @property
     def lapack_libs(self):
         """find lapack_libs function"""
-        shared = True if '+shared' in self.spec else False
+        shared = True if "+shared" in self.spec else False
         return find_libraries(
-            'libflame', root=self.prefix, shared=shared, recursive=True
+            "libflame", root=self.prefix, shared=shared, recursive=True
         )
 
     def configure_args(self):

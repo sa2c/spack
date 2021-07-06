@@ -9,20 +9,23 @@ import spack.cmd
 import spack.cmd.common.arguments as arguments
 import spack.environment as ev
 
-description = 'remove specs from an environment'
+description = "remove specs from an environment"
 section = "environments"
 level = "long"
 
 
 def setup_parser(subparser):
     subparser.add_argument(
-        '-a', '--all', action='store_true',
-        help="remove all specs from (clear) the environment")
-    arguments.add_common_arguments(subparser, ['specs'])
+        "-a",
+        "--all",
+        action="store_true",
+        help="remove all specs from (clear) the environment",
+    )
+    arguments.add_common_arguments(subparser, ["specs"])
 
 
 def undevelop(parser, args):
-    env = ev.get_env(args, 'undevelop', required=True)
+    env = ev.get_env(args, "undevelop", required=True)
 
     if args.all:
         specs = env.dev_specs.keys()
@@ -32,8 +35,9 @@ def undevelop(parser, args):
     with env.write_transaction():
         changed = False
         for spec in specs:
-            tty.msg('Removing %s from environment %s development specs'
-                    % (spec, env.name))
+            tty.msg(
+                "Removing %s from environment %s development specs" % (spec, env.name)
+            )
             changed |= env.undevelop(spec)
         if changed:
             env.write()

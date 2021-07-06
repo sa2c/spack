@@ -18,27 +18,28 @@ class RubyPackage(PackageBase):
     #. :py:meth:`~.RubyPackage.build`
     #. :py:meth:`~.RubyPackage.install`
     """
+
     #: Phases of a Ruby package
-    phases = ['build', 'install']
+    phases = ["build", "install"]
 
     #: This attribute is used in UI queries that need to know the build
     #: system base class
-    build_system_class = 'RubyPackage'
+    build_system_class = "RubyPackage"
 
-    extends('ruby')
+    extends("ruby")
 
     def build(self, spec, prefix):
         """Build a Ruby gem."""
 
         # ruby-rake provides both rake.gemspec and Rakefile, but only
         # rake.gemspec can be built without an existing rake installation
-        gemspecs = glob.glob('*.gemspec')
-        rakefiles = glob.glob('Rakefile')
+        gemspecs = glob.glob("*.gemspec")
+        rakefiles = glob.glob("Rakefile")
         if gemspecs:
-            inspect.getmodule(self).gem('build', '--norc', gemspecs[0])
+            inspect.getmodule(self).gem("build", "--norc", gemspecs[0])
         elif rakefiles:
             jobs = inspect.getmodule(self).make_jobs
-            inspect.getmodule(self).rake('package', '-j{0}'.format(jobs))
+            inspect.getmodule(self).rake("package", "-j{0}".format(jobs))
         else:
             # Some Ruby packages only ship `*.gem` files, so nothing to build
             pass
@@ -48,10 +49,11 @@ class RubyPackage(PackageBase):
 
         The ruby package sets ``GEM_HOME`` to tell gem where to install to."""
 
-        gems = glob.glob('*.gem')
+        gems = glob.glob("*.gem")
         if gems:
             inspect.getmodule(self).gem(
-                'install', '--norc', '--ignore-dependencies', gems[0])
+                "install", "--norc", "--ignore-dependencies", gems[0]
+            )
 
     # Check that self.prefix is there after installation
-    run_after('install')(PackageBase.sanity_check_prefix)
+    run_after("install")(PackageBase.sanity_check_prefix)

@@ -13,16 +13,16 @@ class StarCcmPlus(Package):
     """STAR-CCM+ (Computational Continuum Mechanics) CFD solver."""
 
     homepage = "http://mdx.plm.automation.siemens.com/star-ccm-plus"
-    url      = "file://{0}/STAR-CCM+11.06.010_02_linux-x86_64.tar.gz".format(os.getcwd())
+    url = "file://{0}/STAR-CCM+11.06.010_02_linux-x86_64.tar.gz".format(os.getcwd())
     manual_download = True
 
-    version('11.06.010_02', 'd349c6ac8293d8e6e7a53533d695588f')
+    version("11.06.010_02", "d349c6ac8293d8e6e7a53533d695588f")
 
-    variant('doc', default=False, description='Install the documentation')
+    variant("doc", default=False, description="Install the documentation")
 
     # Licensing
     license_required = True
-    license_vars = ['CDLMD_LICENSE_FILE', 'LM_LICENSE_FILE']
+    license_vars = ["CDLMD_LICENSE_FILE", "LM_LICENSE_FILE"]
 
     def install(self, spec, prefix):
         # There is a known issue with the LaunchAnywhere application.
@@ -44,15 +44,16 @@ class StarCcmPlus(Package):
         #     at com.zerog.lax.LAX.main(Unknown Source)
         #
         # https://www.maplesoft.com/support/faqs/detail.aspx?sid=35272
-        env['PS1'] = '>'
-        env['PROMPT_COMMAND'] = ''
+        env["PS1"] = ">"
+        env["PROMPT_COMMAND"] = ""
 
-        installer = Executable(glob.glob('*.bin')[0])
+        installer = Executable(glob.glob("*.bin")[0])
 
         installer(
-            '-i', 'silent',
-            '-DINSTALLDIR={0}'.format(prefix),
-            '-DINSTALLFLEX=false',
-            '-DADDSYSTEMPATH=false',
-            '-DNODOC={0}'.format('false' if '+docs' in spec else 'true')
+            "-i",
+            "silent",
+            "-DINSTALLDIR={0}".format(prefix),
+            "-DINSTALLFLEX=false",
+            "-DADDSYSTEMPATH=false",
+            "-DNODOC={0}".format("false" if "+docs" in spec else "true"),
         )

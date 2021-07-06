@@ -20,15 +20,16 @@ import spack.paths
 import spack.util.spack_yaml as syaml
 
 __all__ = [
-    'substitute_config_variables',
-    'substitute_path_variables',
-    'canonicalize_path']
+    "substitute_config_variables",
+    "substitute_path_variables",
+    "canonicalize_path",
+]
 
 # Substitutions to perform
 replacements = {
-    'spack': spack.paths.prefix,
-    'user': getpass.getuser(),
-    'tempdir': tempfile.gettempdir(),
+    "spack": spack.paths.prefix,
+    "user": getpass.getuser(),
+    "tempdir": tempfile.gettempdir(),
 }
 
 # This is intended to be longer than the part of the install path
@@ -44,7 +45,7 @@ replacements = {
 #  ---------------------
 #   total        ->  300
 SPACK_MAX_INSTALL_PATH_LENGTH = 300
-SPACK_PATH_PADDING_CHARS = 'spack_path_placeholder'
+SPACK_PATH_PADDING_CHARS = "spack_path_placeholder"
 
 
 @memoized
@@ -52,14 +53,19 @@ def get_system_path_max():
     # Choose a conservative default
     sys_max_path_length = 256
     try:
-        path_max_proc  = subprocess.Popen(['getconf', 'PATH_MAX', '/'],
-                                          stdout=subprocess.PIPE,
-                                          stderr=subprocess.STDOUT)
+        path_max_proc = subprocess.Popen(
+            ["getconf", "PATH_MAX", "/"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+        )
         proc_output = str(path_max_proc.communicate()[0].decode())
         sys_max_path_length = int(proc_output)
     except (ValueError, subprocess.CalledProcessError, OSError):
-        tty.msg('Unable to find system max path length, using: {0}'.format(
-            sys_max_path_length))
+        tty.msg(
+            "Unable to find system max path length, using: {0}".format(
+                sys_max_path_length
+            )
+        )
 
     return sys_max_path_length
 
@@ -80,20 +86,21 @@ def substitute_config_variables(path):
     environment yaml files.
     """
     import spack.environment as ev  # break circular
-    env = ev.get_env({}, '')
+
+    env = ev.get_env({}, "")
     if env:
-        replacements.update({'env': env.path})
+        replacements.update({"env": env.path})
     else:
         # If a previous invocation added env, remove it
-        replacements.pop('env', None)
+        replacements.pop("env", None)
 
     # Look up replacements
     def repl(match):
-        m = match.group(0).strip('${}')
+        m = match.group(0).strip("${}")
         return replacements.get(m.lower(), match.group(0))
 
     # Replace $var or ${var}.
-    return re.sub(r'(\$\w+\b|\$\{\w+\})', repl, path)
+    return re.sub(r"(\$\w+\b|\$\{\w+\})", repl, path)
 
 
 def substitute_path_variables(path):

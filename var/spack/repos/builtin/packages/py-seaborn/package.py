@@ -17,12 +17,18 @@ class PySeaborn(PythonPackage):
     homepage = "http://seaborn.pydata.org/"
     pypi = "seaborn/seaborn-0.7.1.tar.gz"
 
-    version('0.9.0', sha256='76c83f794ca320fb6b23a7c6192d5e185a5fcf4758966a0c0a54baee46d41e2f')
-    version('0.7.1', sha256='fa274344b1ee72f723bab751c40a5c671801d47a29ee9b5e69fcf63a18ce5c5d')
+    version(
+        "0.9.0",
+        sha256="76c83f794ca320fb6b23a7c6192d5e185a5fcf4758966a0c0a54baee46d41e2f",
+    )
+    version(
+        "0.7.1",
+        sha256="fa274344b1ee72f723bab751c40a5c671801d47a29ee9b5e69fcf63a18ce5c5d",
+    )
 
-    depends_on('py-setuptools', type='build')
+    depends_on("py-setuptools", type="build")
 
-    depends_on('py-numpy',      type=('build', 'run'))
-    depends_on('py-scipy',      type=('build', 'run'))
-    depends_on('py-matplotlib', type=('build', 'run'))
-    depends_on('py-pandas',     type=('build', 'run'))
+    depends_on("py-numpy", type=("build", "run"))
+    depends_on("py-scipy", type=("build", "run"))
+    depends_on("py-matplotlib", type=("build", "run"))
+    depends_on("py-pandas", type=("build", "run"))

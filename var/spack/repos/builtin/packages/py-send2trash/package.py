@@ -10,8 +10,11 @@ class PySend2trash(PythonPackage):
     """Python library to send files to Trash/Recycle on all platforms."""
 
     homepage = "https://github.com/hsoft/send2trash"
-    url      = "https://github.com/hsoft/send2trash/archive/1.5.0.tar.gz"
+    url = "https://github.com/hsoft/send2trash/archive/1.5.0.tar.gz"
 
-    version('1.5.0', sha256='7cebc0ffc8b6d6e553bce9c6bb915614610ba2dec17c2f0643b1b97251da2a41')
+    version(
+        "1.5.0",
+        sha256="7cebc0ffc8b6d6e553bce9c6bb915614610ba2dec17c2f0643b1b97251da2a41",
+    )
 
-    depends_on('py-setuptools', type='build')
+    depends_on("py-setuptools", type="build")

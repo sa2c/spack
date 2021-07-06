@@ -11,12 +11,12 @@ class FetchOptions(Package):
 
     homepage = "http://www.fetch-options-example.com"
 
-    url = 'https://example.com/some/tarball-1.0.tar.gz'
+    url = "https://example.com/some/tarball-1.0.tar.gz"
 
-    fetch_options = {'timeout': 42, 'cookie': 'foobar'}
-    timeout = {'timeout': 65}
-    cookie = {'cookie': 'baz'}
+    fetch_options = {"timeout": 42, "cookie": "foobar"}
+    timeout = {"timeout": 65}
+    cookie = {"cookie": "baz"}
 
-    version('1.2', 'abc12', fetch_options=cookie)
-    version('1.1', 'abc11', fetch_options=timeout)
-    version('1.0', 'abc10')
+    version("1.2", "abc12", fetch_options=cookie)
+    version("1.1", "abc11", fetch_options=timeout)
+    version("1.0", "abc10")

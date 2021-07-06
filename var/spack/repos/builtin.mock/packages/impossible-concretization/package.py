@@ -10,6 +10,6 @@ class ImpossibleConcretization(Package):
     homepage = "http://www.example.com"
     url = "http://www.example.com/example-1.0.tar.gz"
 
-    version(1.0, 'foobarbaz')
+    version(1.0, "foobarbaz")
 
-    conflicts('target=x86_64:')
+    conflicts("target=x86_64:")

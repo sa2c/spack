@@ -17,12 +17,15 @@ level = "long"
 
 def setup_parser(subparser):
     subparser.add_argument(
-        '-f', '--force', action='store_true',
-        help="activate without first activating dependencies")
+        "-f",
+        "--force",
+        action="store_true",
+        help="activate without first activating dependencies",
+    )
     subparser.add_argument(
-        '-v', '--view', metavar='VIEW', type=str,
-        help="the view to operate on")
-    arguments.add_common_arguments(subparser, ['installed_spec'])
+        "-v", "--view", metavar="VIEW", type=str, help="the view to operate on"
+    )
+    arguments.add_common_arguments(subparser, ["installed_spec"])
 
 
 def activate(parser, args):
@@ -30,7 +33,7 @@ def activate(parser, args):
     if len(specs) != 1:
         tty.die("activate requires one spec.  %d given." % len(specs))
 
-    env = ev.get_env(args, 'activate')
+    env = ev.get_env(args, "activate")
     spec = spack.cmd.disambiguate_spec(specs[0], env)
     if not spec.package.is_extension:
         tty.die("%s is not an extension." % spec.name)

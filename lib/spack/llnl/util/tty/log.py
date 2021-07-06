@@ -27,21 +27,22 @@ import llnl.util.tty as tty
 termios = None  # type: Optional[ModuleType]
 try:
     import termios as term_mod
+
     termios = term_mod
 except ImportError:
     pass
 
 
 # Use this to strip escape sequences
-_escape = re.compile(r'\x1b[^m]*m|\x1b\[?1034h')
+_escape = re.compile(r"\x1b[^m]*m|\x1b\[?1034h")
 
 # control characters for enabling/disabling echo
 #
 # We use control characters to ensure that echo enable/disable are inline
 # with the other output.  We always follow these with a newline to ensure
 # one per line the following newline is ignored in output.
-xon, xoff = '\x11\n', '\x13\n'
-control = re.compile('(\x11\n|\x13\n)')
+xon, xoff = "\x11\n", "\x13\n"
+control = re.compile("(\x11\n|\x13\n)")
 
 
 @contextmanager
@@ -55,17 +56,13 @@ def ignore_signal(signum):
 
 
 def _is_background_tty(stream):
-    """True if the stream is a tty and calling process is in the background.
-    """
-    return (
-        stream.isatty() and
-        os.getpgrp() != os.tcgetpgrp(stream.fileno())
-    )
+    """True if the stream is a tty and calling process is in the background."""
+    return stream.isatty() and os.getpgrp() != os.tcgetpgrp(stream.fileno())
 
 
 def _strip(line):
     """Strip color and control characters from a line."""
-    return _escape.sub('', line)
+    return _escape.sub("", line)
 
 
 class keyboard_input(object):
@@ -143,6 +140,7 @@ class keyboard_input(object):
       a TTY, ``keyboard_input`` has no effect.
 
     """
+
     def __init__(self, stream):
         """Create a context manager that will enable keyboard input on stream.
 
@@ -200,7 +198,7 @@ class keyboard_input(object):
         bg = self._is_background()
 
         # restore sanity if flags are amiss -- see diagram in class docs
-        if not bg and any(flags):    # fg, but input not enabled
+        if not bg and any(flags):  # fg, but input not enabled
             self._enable_keyboard_input()
         elif bg and not all(flags):  # bg, but input enabled
             self._restore_default_terminal_settings()
@@ -225,7 +223,8 @@ class keyboard_input(object):
             # Install a signal handler to disable/enable keyboard input
             # when the process moves between foreground and background.
             self.old_handlers[signal.SIGTSTP] = signal.signal(
-                signal.SIGTSTP, self._tstp_handler)
+                signal.SIGTSTP, self._tstp_handler
+            )
 
             # add an atexit handler to ensure the terminal is restored
             atexit.register(self._restore_default_terminal_settings)
@@ -254,6 +253,7 @@ class Unbuffered(object):
 
     This is implemented by forcing a flush after each write.
     """
+
     def __init__(self, stream):
         self.stream = stream
 
@@ -298,6 +298,7 @@ class FileWrapper(object):
     yet), or neither. When unwrapped, it returns an open file (or file-like)
     object.
     """
+
     def __init__(self, file_like):
         # This records whether the file-like object returned by "unwrap" is
         # purely in-memory. In that case a subprocess will need to explicitly
@@ -321,9 +322,9 @@ class FileWrapper(object):
         if self.open:
             if self.file_like:
                 if sys.version_info < (3,):
-                    self.file = open(self.file_like, 'w')
+                    self.file = open(self.file_like, "w")
                 else:
-                    self.file = open(self.file_like, 'w', encoding='utf-8')
+                    self.file = open(self.file_like, "w", encoding="utf-8")
             else:
                 self.file = StringIO()
             return self.file
@@ -339,8 +340,9 @@ class FileWrapper(object):
 
 class MultiProcessFd(object):
     """Return an object which stores a file descriptor and can be passed as an
-       argument to a function run with ``multiprocessing.Process``, such that
-       the file descriptor is available in the subprocess."""
+    argument to a function run with ``multiprocessing.Process``, such that
+    the file descriptor is available in the subprocess."""
+
     def __init__(self, fd):
         self._connection = None
         self._fd = None
@@ -435,8 +437,7 @@ class log_output(object):
     work within test frameworks like nose and pytest.
     """
 
-    def __init__(self, file_like=None, echo=False, debug=0, buffer=False,
-                 env=None):
+    def __init__(self, file_like=None, echo=False, debug=0, buffer=False, env=None):
         """Create a new output log context manager.
 
         Args:
@@ -503,7 +504,8 @@ class log_output(object):
 
         if self.file_like is None:
             raise RuntimeError(
-                "file argument must be set by either __init__ or __call__")
+                "file argument must be set by either __init__ or __call__"
+            )
 
         # set up a stream for the daemon to write to
         self.log_file = FileWrapper(self.file_like)
@@ -531,9 +533,7 @@ class log_output(object):
         try:
             # need to pass this b/c multiprocessing closes stdin in child.
             try:
-                input_multiprocess_fd = MultiProcessFd(
-                    os.dup(sys.stdin.fileno())
-                )
+                input_multiprocess_fd = MultiProcessFd(os.dup(sys.stdin.fileno()))
             except BaseException:
                 # just don't forward input if this fails
                 input_multiprocess_fd = None
@@ -542,9 +542,13 @@ class log_output(object):
                 self.process = multiprocessing.Process(
                     target=_writer_daemon,
                     args=(
-                        input_multiprocess_fd, read_multiprocess_fd, write_fd,
-                        self.echo, self.log_file, child_pipe
-                    )
+                        input_multiprocess_fd,
+                        read_multiprocess_fd,
+                        write_fd,
+                        self.echo,
+                        self.log_file,
+                        child_pipe,
+                    ),
                 )
                 self.process.daemon = True  # must set before start()
                 self.process.start()
@@ -585,7 +589,7 @@ class log_output(object):
             self._saved_stderr = sys.stderr
 
             # create a file object for the pipe; redirect to it.
-            pipe_fd_out = os.fdopen(write_fd, 'w')
+            pipe_fd_out = os.fdopen(write_fd, "w")
             sys.stdout = pipe_fd_out
             sys.stderr = pipe_fd_out
 
@@ -650,8 +654,7 @@ class log_output(object):
     def force_echo(self):
         """Context manager to force local echo, even if echo is off."""
         if not self._active:
-            raise RuntimeError(
-                "Can't call force_echo() outside log_output region!")
+            raise RuntimeError("Can't call force_echo() outside log_output region!")
 
         # This uses the xon/xoff to highlight regions to be echoed in the
         # output. We us these control characters rather than, say, a
@@ -666,8 +669,14 @@ class log_output(object):
             sys.stdout.flush()
 
 
-def _writer_daemon(stdin_multiprocess_fd, read_multiprocess_fd, write_fd, echo,
-                   log_file_wrapper, control_pipe):
+def _writer_daemon(
+    stdin_multiprocess_fd,
+    read_multiprocess_fd,
+    write_fd,
+    echo,
+    log_file_wrapper,
+    control_pipe,
+):
     """Daemon used by ``log_output`` to write to a log file and to ``stdout``.
 
     The daemon receives output from the parent process and writes it both
@@ -719,16 +728,16 @@ def _writer_daemon(stdin_multiprocess_fd, read_multiprocess_fd, write_fd, echo,
     # write_fd to terminate the reading loop, so we close the file descriptor
     # here. Forking is the process spawning method everywhere except Mac OS
     # for Python >= 3.8 and on Windows
-    if sys.version_info < (3, 8) or sys.platform != 'darwin':
+    if sys.version_info < (3, 8) or sys.platform != "darwin":
         os.close(write_fd)
 
     # Use line buffering (3rd param = 1) since Python 3 has a bug
     # that prevents unbuffered text I/O.
     if sys.version_info < (3,):
-        in_pipe = os.fdopen(read_multiprocess_fd.fd, 'r', 1)
+        in_pipe = os.fdopen(read_multiprocess_fd.fd, "r", 1)
     else:
         # Python 3.x before 3.7 does not open with UTF-8 encoding by default
-        in_pipe = os.fdopen(read_multiprocess_fd.fd, 'r', 1, encoding='utf-8')
+        in_pipe = os.fdopen(read_multiprocess_fd.fd, "r", 1, encoding="utf-8")
 
     if stdin_multiprocess_fd:
         stdin = os.fdopen(stdin_multiprocess_fd.fd)
@@ -737,7 +746,7 @@ def _writer_daemon(stdin_multiprocess_fd, read_multiprocess_fd, write_fd, echo,
 
     # list of streams to select from
     istreams = [in_pipe, stdin] if stdin else [in_pipe]
-    force_echo = False      # parent can force echo for certain output
+    force_echo = False  # parent can force echo for certain output
 
     log_file = log_file_wrapper.unwrap()
 
@@ -760,7 +769,7 @@ def _writer_daemon(stdin_multiprocess_fd, read_multiprocess_fd, write_fd, echo,
                     # check and the read, so we ignore SIGTTIN here.
                     with ignore_signal(signal.SIGTTIN):
                         try:
-                            if stdin.read(1) == 'v':
+                            if stdin.read(1) == "v":
                                 echo = not echo
                         except IOError as e:
                             # If SIGTTIN is ignored, the system gives EIO
@@ -780,7 +789,7 @@ def _writer_daemon(stdin_multiprocess_fd, read_multiprocess_fd, write_fd, echo,
                             line_count += 1
 
                             # find control characters and strip them.
-                            clean_line, num_controls = control.subn('', line)
+                            clean_line, num_controls = control.subn("", line)
 
                             # Echo to stdout if requested or forced.
                             if echo or force_echo:
@@ -841,6 +850,7 @@ def _retry(function):
     relevant for this file.
 
     """
+
     def wrapped(*args, **kwargs):
         while True:
             try:
@@ -853,6 +863,7 @@ def _retry(function):
                 if e.args[0] == errno.EINTR:
                     continue
                 raise
+
     return wrapped
 
 

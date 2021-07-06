@@ -16,11 +16,14 @@ class PyFenicsDolfinx(PythonPackage):
     maintainers = ["js947", "chrisrichardson"]
 
     version("main", branch="main")
-    version("0.1.0", sha256="0269379769b5b6d4d1864ded64402ecaea08054c2a5793c8685ea15a59af5e33")
+    version(
+        "0.1.0",
+        sha256="0269379769b5b6d4d1864ded64402ecaea08054c2a5793c8685ea15a59af5e33",
+    )
 
     depends_on("cmake@3.9:", type="build")
     depends_on("pkgconfig", type=("build", "run"))
-    depends_on('python@3.5:', type=('build', 'run'))
+    depends_on("python@3.5:", type=("build", "run"))
     depends_on("py-setuptools", type="build")
     depends_on("fenics-dolfinx", when="@main")
     depends_on("fenics-dolfinx@0.1.0", when="@0.1.0")
@@ -40,6 +43,6 @@ class PyFenicsDolfinx(PythonPackage):
     depends_on("py-cffi", type=("run"))
     depends_on("py-numpy", type=("run"))
 
-    phases = ['build_ext', 'build', 'install']
+    phases = ["build_ext", "build", "install"]
 
-    build_directory = 'python'
+    build_directory = "python"

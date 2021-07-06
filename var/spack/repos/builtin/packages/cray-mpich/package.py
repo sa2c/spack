@@ -14,28 +14,28 @@ class CrayMpich(Package):
     the Message Passing Interface (MPI) standard."""
 
     homepage = "https://docs.nersc.gov/development/compilers/wrappers/"
-    has_code = False    # Skip attempts to fetch source that is not available
+    has_code = False  # Skip attempts to fetch source that is not available
 
-    maintainers = ['haampie']
+    maintainers = ["haampie"]
 
-    version('8.1.0')
-    version('8.0.16')
-    version('8.0.14')
-    version('8.0.11')
-    version('8.0.9')
-    version('7.7.16')
-    version('7.7.15')
-    version('7.7.14')
-    version('7.7.13')
+    version("8.1.0")
+    version("8.0.16")
+    version("8.0.14")
+    version("8.0.11")
+    version("8.0.9")
+    version("7.7.16")
+    version("7.7.15")
+    version("7.7.14")
+    version("7.7.13")
 
-    provides('mpi@3')
+    provides("mpi@3")
 
     canonical_names = {
-        'gcc': 'GNU',
-        'cce': 'CRAY',
-        'intel': 'INTEL',
-        'clang': 'ALLINEA',
-        'aocc': 'AOCC'
+        "gcc": "GNU",
+        "cce": "CRAY",
+        "intel": "INTEL",
+        "clang": "ALLINEA",
+        "aocc": "AOCC",
     }
 
     @property
@@ -58,19 +58,19 @@ class CrayMpich(Package):
                 return os.path.dirname(os.path.normpath(libdir))
 
     def setup_run_environment(self, env):
-        env.set('MPICC', spack_cc)
-        env.set('MPICXX', spack_cxx)
-        env.set('MPIF77', spack_fc)
-        env.set('MPIF90', spack_fc)
+        env.set("MPICC", spack_cc)
+        env.set("MPICXX", spack_cxx)
+        env.set("MPIF77", spack_fc)
+        env.set("MPIF90", spack_fc)
 
     def setup_dependent_build_environment(self, env, dependent_spec):
         self.setup_run_environment(env)
 
-        env.set('MPICH_CC', spack_cc)
-        env.set('MPICH_CXX', spack_cxx)
-        env.set('MPICH_F77', spack_f77)
-        env.set('MPICH_F90', spack_fc)
-        env.set('MPICH_FC', spack_fc)
+        env.set("MPICH_CC", spack_cc)
+        env.set("MPICH_CXX", spack_cxx)
+        env.set("MPICH_F77", spack_f77)
+        env.set("MPICH_F90", spack_fc)
+        env.set("MPICH_FC", spack_fc)
 
     def setup_dependent_package(self, module, dependent_spec):
         spec = self.spec
@@ -81,12 +81,15 @@ class CrayMpich(Package):
 
     def install(self, spec, prefix):
         raise InstallError(
-            self.spec.format('{name} is not installable, you need to specify '
-                             'it as an external package in packages.yaml'))
+            self.spec.format(
+                "{name} is not installable, you need to specify "
+                "it as an external package in packages.yaml"
+            )
+        )
 
     @property
     def headers(self):
-        hdrs = find_headers('mpi', self.prefix.include, recursive=True)
+        hdrs = find_headers("mpi", self.prefix.include, recursive=True)
         hdrs.directories = os.path.dirname(hdrs[0])
         return hdrs
 
@@ -94,17 +97,16 @@ class CrayMpich(Package):
     def libs(self):
         query_parameters = self.spec.last_query.extra_parameters
 
-        libraries = ['libmpich']
+        libraries = ["libmpich"]
 
-        if 'cxx' in query_parameters:
-            libraries.extend(['libmpicxx', 'libmpichcxx'])
+        if "cxx" in query_parameters:
+            libraries.extend(["libmpicxx", "libmpichcxx"])
 
-        if 'f77' in query_parameters:
-            libraries.extend(['libmpifort', 'libmpichfort',
-                              'libfmpi', 'libfmpich'])
+        if "f77" in query_parameters:
+            libraries.extend(["libmpifort", "libmpichfort", "libfmpi", "libfmpich"])
 
-        if 'f90' in query_parameters:
-            libraries.extend(['libmpif90', 'libmpichf90'])
+        if "f90" in query_parameters:
+            libraries.extend(["libmpif90", "libmpichf90"])
 
         libs = find_libraries(libraries, root=self.prefix.lib, recursive=True)
         libs += find_libraries(libraries, root=self.prefix.lib64, recursive=True)

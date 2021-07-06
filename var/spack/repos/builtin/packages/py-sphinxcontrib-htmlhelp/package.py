@@ -18,7 +18,10 @@ class PySphinxcontribHtmlhelp(PythonPackage):
     # import any modules.
     import_modules = []
 
-    version('1.0.2', sha256='4670f99f8951bd78cd4ad2ab962f798f5618b17675c35c5ac3b2132a14ea8422')
+    version(
+        "1.0.2",
+        sha256="4670f99f8951bd78cd4ad2ab962f798f5618b17675c35c5ac3b2132a14ea8422",
+    )
 
-    depends_on('python@3.5:', type=('build', 'run'))
-    depends_on('py-setuptools', type='build')
+    depends_on("python@3.5:", type=("build", "run"))
+    depends_on("py-setuptools", type="build")

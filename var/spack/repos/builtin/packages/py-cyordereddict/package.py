@@ -12,4 +12,7 @@ class PyCyordereddict(PythonPackage):
 
     homepage = "https://github.com/shoyer/cyordereddict"
     pypi = "cyordereddict/cyordereddict-1.0.0.tar.gz"
-    version('1.0.0', sha256='d9b2c31796999770801a9a49403b8cb49510ecb64e5d1e9d4763ed44f2d5a76e')
+    version(
+        "1.0.0",
+        sha256="d9b2c31796999770801a9a49403b8cb49510ecb64e5d1e9d4763ed44f2d5a76e",
+    )

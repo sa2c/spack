@@ -14,18 +14,21 @@ class PySfepy(PythonPackage):
     """
 
     homepage = "http://sfepy.org"
-    url      = "https://github.com/sfepy/sfepy/archive/release_2017.3.tar.gz"
+    url = "https://github.com/sfepy/sfepy/archive/release_2017.3.tar.gz"
 
-    version('2017.3', sha256='d13642b7abed63b83b7eaef4dfce6e84a5afc5798bc7ffa1c413e3e44b5e5996')
+    version(
+        "2017.3",
+        sha256="d13642b7abed63b83b7eaef4dfce6e84a5afc5798bc7ffa1c413e3e44b5e5996",
+    )
 
-    variant('petsc', default=False, description='Enable PETSc support')
+    variant("petsc", default=False, description="Enable PETSc support")
 
-    depends_on('py-numpy', type=('build', 'run'))
-    depends_on('py-setuptools', type='build')
-    depends_on('py-six', type='run')
-    depends_on('py-scipy', type='run')
-    depends_on('py-matplotlib', type='run')
-    depends_on('py-sympy', type='run')
-    depends_on('hdf5+hl', type='run')
-    depends_on('py-tables', type='run')
-    depends_on('py-petsc4py', type='run', when='+petsc')
+    depends_on("py-numpy", type=("build", "run"))
+    depends_on("py-setuptools", type="build")
+    depends_on("py-six", type="run")
+    depends_on("py-scipy", type="run")
+    depends_on("py-matplotlib", type="run")
+    depends_on("py-sympy", type="run")
+    depends_on("hdf5+hl", type="run")
+    depends_on("py-tables", type="run")
+    depends_on("py-petsc4py", type="run", when="+petsc")

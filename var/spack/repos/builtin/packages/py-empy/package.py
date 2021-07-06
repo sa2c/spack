@@ -13,4 +13,7 @@ class PyEmpy(PythonPackage):
     homepage = "http://www.alcyone.com/software/empy"
     pypi = "empy/empy-3.3.4.tar.gz"
 
-    version('3.3.4', sha256='73ac49785b601479df4ea18a7c79bc1304a8a7c34c02b9472cf1206ae88f01b3')
+    version(
+        "3.3.4",
+        sha256="73ac49785b601479df4ea18a7c79bc1304a8a7c34c02b9472cf1206ae88f01b3",
+    )

@@ -11,12 +11,9 @@ from six import iteritems, string_types
 
 import spack.error
 
-__all__ = ['load', 'dump', 'SpackJSONError']
+__all__ = ["load", "dump", "SpackJSONError"]
 
-_json_dump_args = {
-    'indent': True,
-    'separators': (',', ': ')
-}
+_json_dump_args = {"indent": True, "separators": (",", ": ")}
 
 
 def load(stream):
@@ -45,7 +42,7 @@ def _strify(data, ignore_dicts=False):
 
     # if this is a unicode string in python 2, return its string representation
     if isinstance(data, string_types):
-        return data.encode('utf-8')
+        return data.encode("utf-8")
 
     # if this is a list of values, return list of byteified values
     if isinstance(data, list):
@@ -54,9 +51,10 @@ def _strify(data, ignore_dicts=False):
     # if this is a dictionary, return dictionary of byteified keys and values
     # but only if we haven't already byteified it
     if isinstance(data, dict) and not ignore_dicts:
-        return dict((_strify(key, ignore_dicts=True),
-                     _strify(value, ignore_dicts=True)) for key, value in
-                    iteritems(data))
+        return dict(
+            (_strify(key, ignore_dicts=True), _strify(value, ignore_dicts=True))
+            for key, value in iteritems(data)
+        )
 
     # if it's anything else, return it in its original form
     return data

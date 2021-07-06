@@ -4,9 +4,10 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 class TriggerExternalNonDefaultVariant(Package):
     """This ackage depends on an external with a non-default variant"""
+
     homepage = "http://www.example.com"
     url = "http://www.someurl.tar.gz"
 
-    version('1.0', 'foobarbaz')
+    version("1.0", "foobarbaz")
 
-    depends_on('external-non-default-variant')
+    depends_on("external-non-default-variant")

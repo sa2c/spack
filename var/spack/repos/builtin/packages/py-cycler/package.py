@@ -10,9 +10,12 @@ class PyCycler(PythonPackage):
     """Composable style cycles."""
 
     homepage = "http://matplotlib.org/cycler/"
-    url      = "https://github.com/matplotlib/cycler/archive/v0.10.0.tar.gz"
+    url = "https://github.com/matplotlib/cycler/archive/v0.10.0.tar.gz"
 
-    version('0.10.0', sha256='b6d217635e03024196225367b1a438996dbbf0271bec488f00584f0e7dc15cfa')
+    version(
+        "0.10.0",
+        sha256="b6d217635e03024196225367b1a438996dbbf0271bec488f00584f0e7dc15cfa",
+    )
 
-    depends_on('py-setuptools', type='build')
-    depends_on('py-six',        type=('build', 'run'))
+    depends_on("py-setuptools", type="build")
+    depends_on("py-six", type=("build", "run"))

@@ -11,10 +11,10 @@ from spack.operating_systems.linux_distro import LinuxDistro
 
 
 class Linux(Platform):
-    priority    = 90
+    priority = 90
 
     def __init__(self):
-        super(Linux, self).__init__('linux')
+        super(Linux, self).__init__("linux")
 
         for name in archspec.cpu.TARGETS:
             self.add_target(name, Target(name))
@@ -32,4 +32,4 @@ class Linux(Platform):
 
     @classmethod
     def detect(cls):
-        return 'linux' in platform.system().lower()
+        return "linux" in platform.system().lower()

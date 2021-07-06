@@ -11,20 +11,23 @@ class Libctl(AutotoolsPackage):
     control files for scientific simulations."""
 
     homepage = "http://ab-initio.mit.edu/wiki/index.php/Libctl"
-    url      = "http://ab-initio.mit.edu/libctl/libctl-3.2.2.tar.gz"
+    url = "http://ab-initio.mit.edu/libctl/libctl-3.2.2.tar.gz"
     list_url = "http://ab-initio.mit.edu/libctl/old"
 
-    version('3.2.2', sha256='8abd8b58bc60e84e16d25b56f71020e0cb24d75b28bc5db86d50028197c7efbc')
+    version(
+        "3.2.2",
+        sha256="8abd8b58bc60e84e16d25b56f71020e0cb24d75b28bc5db86d50028197c7efbc",
+    )
 
-    depends_on('guile')
+    depends_on("guile")
 
     def configure_args(self):
         spec = self.spec
 
         return [
-            '--enable-shared',
-            'GUILE={0}'.format(join_path(
-                spec['guile'].prefix.bin, 'guile')),
-            'GUILE_CONFIG={0}'.format(join_path(
-                spec['guile'].prefix.bin, 'guile-config')),
+            "--enable-shared",
+            "GUILE={0}".format(join_path(spec["guile"].prefix.bin, "guile")),
+            "GUILE_CONFIG={0}".format(
+                join_path(spec["guile"].prefix.bin, "guile-config")
+            ),
         ]

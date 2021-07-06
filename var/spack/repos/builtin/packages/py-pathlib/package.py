@@ -16,4 +16,7 @@ class PyPathlib(PythonPackage):
     homepage = "https://pathlib.readthedocs.org/"
     pypi = "pathlib/pathlib-1.0.1.tar.gz"
 
-    version('1.0.1', sha256='6940718dfc3eff4258203ad5021090933e5c04707d5ca8cc9e73c94a7894ea9f')
+    version(
+        "1.0.1",
+        sha256="6940718dfc3eff4258203ad5021090933e5c04707d5ca8cc9e73c94a7894ea9f",
+    )

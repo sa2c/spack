@@ -12,14 +12,16 @@ class Lordec(MakefilePackage):
     intended for PacBio reads."""
 
     homepage = "http://www.atgc-montpellier.fr/lordec/"
-    url      = "https://gite.lirmm.fr/lordec/lordec-releases/uploads/e3116a5f251e46e47f7a3b7ddb2bd7f6/lordec-src_0.8.tar.gz"
+    url = "https://gite.lirmm.fr/lordec/lordec-releases/uploads/e3116a5f251e46e47f7a3b7ddb2bd7f6/lordec-src_0.8.tar.gz"
 
-    version('0.8', sha256='3894a7c57649a3545b598f92a48d55eda66d729ab51606b00470c50611b12823')
+    version(
+        "0.8", sha256="3894a7c57649a3545b598f92a48d55eda66d729ab51606b00470c50611b12823"
+    )
 
-    depends_on('boost')
-    depends_on('cmake@3.1.0:', type='build')
+    depends_on("boost")
+    depends_on("cmake@3.1.0:", type="build")
 
-    build_targets = ['clean', 'all']
+    build_targets = ["clean", "all"]
 
     def install(self, spec, prefix):
-        install_tree('.', prefix.bin)
+        install_tree(".", prefix.bin)

@@ -10,10 +10,13 @@ class PyBeniget(PythonPackage):
     """Extract semantic information about static Python code."""
 
     homepage = "https://github.com/serge-sans-paille/beniget/"
-    pypi     = "beniget/beniget-0.3.0.tar.gz"
+    pypi = "beniget/beniget-0.3.0.tar.gz"
 
-    version('0.3.0', sha256='062c893be9cdf87c3144fb15041cce4d81c67107c1591952cd45fdce789a0ff1')
+    version(
+        "0.3.0",
+        sha256="062c893be9cdf87c3144fb15041cce4d81c67107c1591952cd45fdce789a0ff1",
+    )
 
-    depends_on('python@2.7:2.8,3.4:', type=('build', 'run'))
-    depends_on('py-setuptools', type='build')
-    depends_on('py-gast@0.4.0:0.4.999', type=('build', 'run'))
+    depends_on("python@2.7:2.8,3.4:", type=("build", "run"))
+    depends_on("py-setuptools", type="build")
+    depends_on("py-gast@0.4.0:0.4.999", type=("build", "run"))

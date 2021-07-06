@@ -13,8 +13,11 @@ class PySniffio(PythonPackage):
     homepage = "https://github.com/python-trio/sniffio"
     pypi = "sniffio/sniffio-1.1.0.tar.gz"
 
-    version('1.1.0', sha256='8e3810100f69fe0edd463d02ad407112542a11ffdc29f67db2bf3771afb87a21')
+    version(
+        "1.1.0",
+        sha256="8e3810100f69fe0edd463d02ad407112542a11ffdc29f67db2bf3771afb87a21",
+    )
 
-    depends_on('py-setuptools', type='build')
-    depends_on('py-wheel', type='build')
-    depends_on('py-certifi')
+    depends_on("py-setuptools", type="build")
+    depends_on("py-wheel", type="build")
+    depends_on("py-certifi")

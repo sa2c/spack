@@ -15,8 +15,10 @@ class PyYolk3k(PythonPackage):
     homepage = "https://github.com/myint/yolk"
     pypi = "yolk3k/yolk3k-0.9.tar.gz"
 
-    version('0.9', sha256='cf8731dd0a9f7ef50b5dc253fe0174383e3fed295a653672aa918c059eef86ae')
+    version(
+        "0.9", sha256="cf8731dd0a9f7ef50b5dc253fe0174383e3fed295a653672aa918c059eef86ae"
+    )
 
-    depends_on('py-pygments')
-    depends_on('py-jinja2')
-    depends_on('py-docutils')
+    depends_on("py-pygments")
+    depends_on("py-jinja2")
+    depends_on("py-docutils")

@@ -10,13 +10,13 @@ class Hohqmesh(CMakePackage):
     """High Order mesh generator for Hexahedral and Quadrilateral meshes."""
 
     homepage = "https://github.com/trixi-framework/HOHQMesh"
-    url      = "https://github.com/trixi-framework/HOHQMesh"
-    git      = "https://github.com/trixi-framework/HOHQMesh.git"
+    url = "https://github.com/trixi-framework/HOHQMesh"
+    git = "https://github.com/trixi-framework/HOHQMesh.git"
 
-    maintainers = ['schoonovernumerics']
+    maintainers = ["schoonovernumerics"]
 
-    version('main', branch='main')
+    version("main", branch="main")
 
-    depends_on('ftobjectlibrary')
+    depends_on("ftobjectlibrary")
 
     parallel = False

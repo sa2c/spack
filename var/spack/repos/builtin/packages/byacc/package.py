@@ -14,13 +14,13 @@ class Byacc(AutotoolsPackage):
     features of AT&T Yacc will probably be rejected."""
 
     homepage = "https://github.com/grandseiken/byacc"
-    git      = "https://github.com/grandseiken/byacc.git"
+    git = "https://github.com/grandseiken/byacc.git"
 
-    version('master', branch='master')
+    version("master", branch="master")
 
-    provides('yacc')
+    provides("yacc")
 
-    depends_on('m4',       type='build')
-    depends_on('autoconf', type='build')
-    depends_on('automake', type='build')
-    depends_on('libtool',  type='build')
+    depends_on("m4", type="build")
+    depends_on("autoconf", type="build")
+    depends_on("automake", type="build")
+    depends_on("libtool", type="build")

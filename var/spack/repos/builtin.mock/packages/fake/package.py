@@ -8,6 +8,6 @@ from spack import *
 
 class Fake(Package):
     homepage = "http://www.fake-spack-example.org"
-    url      = "http://www.fake-spack-example.org/downloads/fake-1.0.tar.gz"
+    url = "http://www.fake-spack-example.org/downloads/fake-1.0.tar.gz"
 
-    version('1.0', 'foobarbaz')
+    version("1.0", "foobarbaz")

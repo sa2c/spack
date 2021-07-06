@@ -11,14 +11,14 @@ class PerlExtension(PerlPackage):
     """A package which extends perl"""
 
     homepage = "http://www.example.com"
-    url      = "http://www.example.com/extension1-1.0.tar.gz"
+    url = "http://www.example.com/extension1-1.0.tar.gz"
 
-    version('1.0', 'hash-extension-1.0')
-    version('2.0', 'hash-extension-2.0')
+    version("1.0", "hash-extension-1.0")
+    version("2.0", "hash-extension-2.0")
 
     extends("perl")
 
     def install(self, spec, prefix):
         mkdirp(prefix.bin)
-        with open(os.path.join(prefix.bin, 'perl-extension'), 'w+') as fout:
+        with open(os.path.join(prefix.bin, "perl-extension"), "w+") as fout:
             fout.write(str(spec.version))

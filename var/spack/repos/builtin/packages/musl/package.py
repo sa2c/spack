@@ -24,32 +24,46 @@ class Musl(Package):
     standards-conformance and safety."""
 
     homepage = "https://www.musl-libc.org"
-    url      = "https://www.musl-libc.org/releases/musl-1.1.23.tar.gz"
+    url = "https://www.musl-libc.org/releases/musl-1.1.23.tar.gz"
 
-    version('1.1.23', sha256='8a0feb41cef26c97dde382c014e68b9bb335c094bbc1356f6edaaf6b79bd14aa')
-    version('1.1.22', sha256='8b0941a48d2f980fd7036cfbd24aa1d414f03d9a0652ecbd5ec5c7ff1bee29e3')
-    version('1.1.21', sha256='c742b66f6f49c9e5f52f64d8b79fecb5a0f6e0203fca176c70ca20f6be285f44')
-    version('1.1.20', sha256='44be8771d0e6c6b5f82dd15662eb2957c9a3173a19a8b49966ac0542bbd40d61')
+    version(
+        "1.1.23",
+        sha256="8a0feb41cef26c97dde382c014e68b9bb335c094bbc1356f6edaaf6b79bd14aa",
+    )
+    version(
+        "1.1.22",
+        sha256="8b0941a48d2f980fd7036cfbd24aa1d414f03d9a0652ecbd5ec5c7ff1bee29e3",
+    )
+    version(
+        "1.1.21",
+        sha256="c742b66f6f49c9e5f52f64d8b79fecb5a0f6e0203fca176c70ca20f6be285f44",
+    )
+    version(
+        "1.1.20",
+        sha256="44be8771d0e6c6b5f82dd15662eb2957c9a3173a19a8b49966ac0542bbd40d61",
+    )
 
-    phases = ['configure', 'build', 'install']
+    phases = ["configure", "build", "install"]
 
     def patch(self):
-        config = FileFilter('configure')
-        if self.compiler.name == 'gcc':
-            config.filter("WRAPCC_GCC = .*'", "WRAPCC_GCC = {0}'".
-                          format(self.compiler.cc))
-        elif self.compiler.name in ('clang', 'apple-clang'):
-            config.filter("WRAPCC_CLANG = .*'", "WRAPCC_CLANG = {0}'".
-                          format(self.compiler.cc))
+        config = FileFilter("configure")
+        if self.compiler.name == "gcc":
+            config.filter(
+                "WRAPCC_GCC = .*'", "WRAPCC_GCC = {0}'".format(self.compiler.cc)
+            )
+        elif self.compiler.name in ("clang", "apple-clang"):
+            config.filter(
+                "WRAPCC_CLANG = .*'", "WRAPCC_CLANG = {0}'".format(self.compiler.cc)
+            )
 
     def configure_args(self):
-        args = ['--prefix={0}'.format(self.prefix)]
-        if self.compiler.name == 'gcc':
-            args.append('--enable-wrapper=gcc')
-        elif self.compiler.name in ('clang', 'apple-clang'):
-            args.append('--enable-wrapper=clang')
+        args = ["--prefix={0}".format(self.prefix)]
+        if self.compiler.name == "gcc":
+            args.append("--enable-wrapper=gcc")
+        elif self.compiler.name in ("clang", "apple-clang"):
+            args.append("--enable-wrapper=clang")
         else:
-            args.append('--enable-wrapper=no')
+            args.append("--enable-wrapper=no")
         return args
 
     def configure(self, spec, prefix):
@@ -59,4 +73,4 @@ class Musl(Package):
         make()
 
     def install(self, spec, prefix):
-        make('install')
+        make("install")

@@ -11,30 +11,30 @@ class EcpDataVisSdk(BundlePackage):
 
     homepage = "https://github.com/chuckatkins/ecp-data-viz-sdk"
 
-    tags = ['ecp']
-    maintainers = ['chuckatkins']
+    tags = ["ecp"]
+    maintainers = ["chuckatkins"]
 
-    version('1.0')
+    version("1.0")
 
     ############################################################
     # Variants
     ############################################################
 
     # I/O
-    variant('adios2', default=True, description="Enable ADIOS2")
-    variant('darshan', default=True, description="Enable Darshan")
-    variant('faodel', default=False, description="Enable FAODEL")
-    variant('hdf5', default=True, description="Enable HDF5")
-    variant('pnetcdf', default=True, description="Enable PNetCDF")
-    variant('unifyfs', default=True, description="Enable UnifyFS")
-    variant('veloc', default=True, description="Enable VeloC")
+    variant("adios2", default=True, description="Enable ADIOS2")
+    variant("darshan", default=True, description="Enable Darshan")
+    variant("faodel", default=False, description="Enable FAODEL")
+    variant("hdf5", default=True, description="Enable HDF5")
+    variant("pnetcdf", default=True, description="Enable PNetCDF")
+    variant("unifyfs", default=True, description="Enable UnifyFS")
+    variant("veloc", default=True, description="Enable VeloC")
 
     # Vis
-    variant('ascent', default=False, description="Enable Ascent")
-    variant('paraview', default=False, description="Enable ParaView")
-    variant('sz', default=True, description="Enable SZ")
-    variant('vtkm', default=False, description="Enable VTK-m")
-    variant('zfp', default=True, description="Enable ZFP")
+    variant("ascent", default=False, description="Enable Ascent")
+    variant("paraview", default=False, description="Enable ParaView")
+    variant("sz", default=True, description="Enable SZ")
+    variant("vtkm", default=False, description="Enable VTK-m")
+    variant("zfp", default=True, description="Enable ZFP")
 
     # Outstanding concretization issues
     # variant('cinema', default=True, description="Enable Cinema")
@@ -68,50 +68,57 @@ class EcpDataVisSdk(BundlePackage):
             variants = dict([(v, v) for v in variants])
         n = len(variants)
         for i in range(0, pow(2, n)):
-            state = ['+' if d == '1' else '~' for d in format(i, '0' + str(n) + 'b')]
-            [pkg_vars, dep_vars] = [''.join(v) for v in zip(
-                *[(s + pv, s + dv) for s, (pv, dv) in zip(state, variants.items())])]
-            dependency = ' '.join((dep_spec, dep_vars))
-            predicate = ' '.join((pkg_spec, pkg_vars))
+            state = ["+" if d == "1" else "~" for d in format(i, "0" + str(n) + "b")]
+            [pkg_vars, dep_vars] = [
+                "".join(v)
+                for v in zip(
+                    *[(s + pv, s + dv) for s, (pv, dv) in zip(state, variants.items())]
+                )
+            ]
+            dependency = " ".join((dep_spec, dep_vars))
+            predicate = " ".join((pkg_spec, pkg_vars))
             depends_on(dependency, when=predicate)
 
     ############################################################
     # Dependencies
     ############################################################
-    variants2deps('adios2+shared+mpi+fortran+python+blosc+sst+ssc+dataman',
-                  '+adios2', ['hdf5', 'sz', 'zfp'])
+    variants2deps(
+        "adios2+shared+mpi+fortran+python+blosc+sst+ssc+dataman",
+        "+adios2",
+        ["hdf5", "sz", "zfp"],
+    )
 
-    depends_on('darshan-runtime+mpi', when='+darshan')
-    depends_on('darshan-util', when='+darshan')
+    depends_on("darshan-runtime+mpi", when="+darshan")
+    depends_on("darshan-util", when="+darshan")
 
-    variants2deps('faodel+shared+mpi network=libfabric', '+faodel', ['hdf5'])
+    variants2deps("faodel+shared+mpi network=libfabric", "+faodel", ["hdf5"])
 
-    depends_on('hdf5 +shared+mpi', when='+hdf5')
+    depends_on("hdf5 +shared+mpi", when="+hdf5")
     # +fortran breaks the concretizer... Needs new concretizer
     # depends_on('hdf5 +shared+mpi+fortran', when='+hdf5')
 
-    depends_on('parallel-netcdf+shared+fortran', when='+pnetcdf')
+    depends_on("parallel-netcdf+shared+fortran", when="+pnetcdf")
 
-    variants2deps('unifyfs', '+unifyfs ', ['hdf5'])
+    variants2deps("unifyfs", "+unifyfs ", ["hdf5"])
 
-    depends_on('veloc', when='+veloc')
+    depends_on("veloc", when="+veloc")
 
-    depends_on('ascent+shared+mpi+fortran+openmp+python+vtkh+dray', when='+ascent')
-    depends_on('catalyst', when='+catalyst')
+    depends_on("ascent+shared+mpi+fortran+openmp+python+vtkh+dray", when="+ascent")
+    depends_on("catalyst", when="+catalyst")
 
-    depends_on('py-cinema-lib', when='+cinema')
-    depends_on('py-cinemasci', when='+cinema')
+    depends_on("py-cinema-lib", when="+cinema")
+    depends_on("py-cinemasci", when="+cinema")
 
-    variants2deps('paraview+shared+mpi+python3+kits', '+paraview', ['hdf5'])
+    variants2deps("paraview+shared+mpi+python3+kits", "+paraview", ["hdf5"])
     # +adios2 is not yet enabled in the paraview package
     # depends_on('paraview+adios2', when='+paraview +adios2')
 
-    depends_on('visit', when='+visit')
+    depends_on("visit", when="+visit")
 
-    depends_on('vtk-m+shared+mpi+openmp+rendering', when='+vtkm')
+    depends_on("vtk-m+shared+mpi+openmp+rendering", when="+vtkm")
 
     # +python is currently broken in sz
     # variants2deps('sz+shared+fortran+python+random_access', '+sz', ['hdf5'])
-    variants2deps('sz+shared+fortran+random_access', '+sz', ['hdf5'])
+    variants2deps("sz+shared+fortran+random_access", "+sz", ["hdf5"])
 
-    depends_on('zfp', when='+zfp')
+    depends_on("zfp", when="+zfp")

@@ -10,6 +10,8 @@ class Grep(AutotoolsPackage):
     a specified pattern"""
 
     homepage = "https://www.gnu.org/software/grep/"
-    url      = "https://ftp.gnu.org/gnu/grep/grep-3.3.tar.xz"
+    url = "https://ftp.gnu.org/gnu/grep/grep-3.3.tar.xz"
 
-    version('3.3', sha256='b960541c499619efd6afe1fa795402e4733c8e11ebf9fafccc0bb4bccdc5b514')
+    version(
+        "3.3", sha256="b960541c499619efd6afe1fa795402e4733c8e11ebf9fafccc0bb4bccdc5b514"
+    )

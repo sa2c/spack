@@ -24,87 +24,103 @@ class Amdfftw(FftwBase):
     Example : spack install amdfftw precision=float
     """
 
-    _name = 'amdfftw'
+    _name = "amdfftw"
     homepage = "https://developer.amd.com/amd-aocl/fftw/"
     url = "https://github.com/amd/amd-fftw/archive/3.0.tar.gz"
     git = "https://github.com/amd/amd-fftw.git"
 
-    maintainers = ['amd-toolchain-support']
+    maintainers = ["amd-toolchain-support"]
 
-    version('3.0', sha256='a69deaf45478a59a69f77c4f7e9872967f1cfe996592dd12beb6318f18ea0bcd')
-    version('2.2', sha256='de9d777236fb290c335860b458131678f75aa0799c641490c644c843f0e246f8')
+    version(
+        "3.0", sha256="a69deaf45478a59a69f77c4f7e9872967f1cfe996592dd12beb6318f18ea0bcd"
+    )
+    version(
+        "2.2", sha256="de9d777236fb290c335860b458131678f75aa0799c641490c644c843f0e246f8"
+    )
 
-    variant('shared', default=True, description="Builds a shared version of the library")
-    variant('openmp', default=True, description="Enable OpenMP support")
-    variant('threads', default=False, description="Enable SMP threads support")
-    variant('debug', default=False, description="Builds a debug version of the library")
     variant(
-        'amd-fast-planner',
+        "shared", default=True, description="Builds a shared version of the library"
+    )
+    variant("openmp", default=True, description="Enable OpenMP support")
+    variant("threads", default=False, description="Enable SMP threads support")
+    variant("debug", default=False, description="Builds a debug version of the library")
+    variant(
+        "amd-fast-planner",
         default=False,
         description="Option to reduce the planning time without much"
-                    "tradeoff in the performance. It is supported for"
-                    "Float and double precisions only.")
+        "tradeoff in the performance. It is supported for"
+        "Float and double precisions only.",
+    )
 
-    depends_on('texinfo')
+    depends_on("texinfo")
 
-    provides('fftw-api@3', when='@2:')
+    provides("fftw-api@3", when="@2:")
 
-    conflicts('precision=quad', when='@2.2 %aocc', msg="AOCC clang doesn't support quad precision")
-    conflicts('+debug', when='@2.2 %aocc', msg="AOCC clang doesn't support debug")
-    conflicts('%gcc@:7.2', when="@2.2:", msg="Required GCC version above 7.2 for AMDFFTW")
-    conflicts('+amd-fast-planner', when="@2.2", msg="amd-fast-planner is supported from 3.0 onwards")
     conflicts(
-        '+amd-fast-planner',
-        when='precision=quad',
-        msg="amd-fast-planner doesn't support quad precision")
+        "precision=quad",
+        when="@2.2 %aocc",
+        msg="AOCC clang doesn't support quad precision",
+    )
+    conflicts("+debug", when="@2.2 %aocc", msg="AOCC clang doesn't support debug")
     conflicts(
-        '+amd-fast-planner',
-        when='precision=long_double',
-        msg="amd-fast-planner doesn't support long_double precision")
+        "%gcc@:7.2", when="@2.2:", msg="Required GCC version above 7.2 for AMDFFTW"
+    )
+    conflicts(
+        "+amd-fast-planner",
+        when="@2.2",
+        msg="amd-fast-planner is supported from 3.0 onwards",
+    )
+    conflicts(
+        "+amd-fast-planner",
+        when="precision=quad",
+        msg="amd-fast-planner doesn't support quad precision",
+    )
+    conflicts(
+        "+amd-fast-planner",
+        when="precision=long_double",
+        msg="amd-fast-planner doesn't support long_double precision",
+    )
 
     def configure(self, spec, prefix):
         """Configure function"""
         # Base options
-        options = [
-            '--prefix={0}'.format(prefix),
-            '--enable-amd-opt'
-        ]
+        options = ["--prefix={0}".format(prefix), "--enable-amd-opt"]
 
         # Check if compiler is AOCC
-        if '%aocc' in spec:
+        if "%aocc" in spec:
             options.append("CC={0}".format(os.path.basename(spack_cc)))
             options.append("FC={0}".format(os.path.basename(spack_fc)))
             options.append("F77={0}".format(os.path.basename(spack_fc)))
 
-        if '+shared' in spec:
-            options.append('--enable-shared')
+        if "+shared" in spec:
+            options.append("--enable-shared")
         else:
-            options.append('--disable-shared')
+            options.append("--disable-shared")
 
-        if '+debug' in spec:
-            options.append('--enable-debug')
+        if "+debug" in spec:
+            options.append("--enable-debug")
 
-        if '+openmp' in spec:
-            options.append('--enable-openmp')
+        if "+openmp" in spec:
+            options.append("--enable-openmp")
         else:
-            options.append('--disable-openmp')
+            options.append("--disable-openmp")
 
-        if '+threads' in spec:
-            options.append('--enable-threads')
+        if "+threads" in spec:
+            options.append("--enable-threads")
         else:
-            options.append('--disable-threads')
+            options.append("--disable-threads")
 
-        if '+mpi' in spec:
-            options.append('--enable-mpi')
-            options.append('--enable-amd-mpifft')
+        if "+mpi" in spec:
+            options.append("--enable-mpi")
+            options.append("--enable-amd-mpifft")
         else:
-            options.append('--disable-mpi')
-            options.append('--disable-amd-mpifft')
+            options.append("--disable-mpi")
+            options.append("--disable-amd-mpifft")
 
-        if '+amd-fast-planner' in spec:
-            options.append('--enable-amd-fast-planner')
+        if "+amd-fast-planner" in spec:
+            options.append("--enable-amd-fast-planner")
         else:
-            options.append('--disable-amd-fast-planner')
+            options.append("--disable-amd-fast-planner")
 
         if not self.compiler.f77 or not self.compiler.fc:
             options.append("--disable-fortran")
@@ -116,16 +132,17 @@ class Amdfftw(FftwBase):
         arch = spec.architecture
         options.append(
             "AMD_ARCH={0}".format(
-                arch.target.optimization_flags(
-                    spec.compiler).split("=")[-1]))
+                arch.target.optimization_flags(spec.compiler).split("=")[-1]
+            )
+        )
 
         # Specific SIMD support.
         # float and double precisions are supported
-        simd_features = ['sse2', 'avx', 'avx2']
+        simd_features = ["sse2", "avx", "avx2"]
 
         simd_options = []
         for feature in simd_features:
-            msg = '--enable-{0}' if feature in spec.target else '--disable-{0}'
+            msg = "--enable-{0}" if feature in spec.target else "--disable-{0}"
             simd_options.append(msg.format(feature))
 
         # When enabling configure option "--enable-amd-opt", do not use the
@@ -135,20 +152,20 @@ class Amdfftw(FftwBase):
         # Double is the default precision, for all the others we need
         # to enable the corresponding option.
         enable_precision = {
-            'float': ['--enable-float'],
-            'double': None,
-            'long_double': ['--enable-long-double'],
-            'quad': ['--enable-quad-precision']
+            "float": ["--enable-float"],
+            "double": None,
+            "long_double": ["--enable-long-double"],
+            "quad": ["--enable-quad-precision"],
         }
 
         # Different precisions must be configured and compiled one at a time
-        configure = Executable('../configure')
+        configure = Executable("../configure")
         for precision in self.selected_precisions:
 
             opts = (enable_precision[precision] or []) + options[:]
 
             # SIMD optimizations are available only for float and double
-            if precision in ('float', 'double'):
+            if precision in ("float", "double"):
                 opts += simd_options
 
             with working_dir(precision, create=True):

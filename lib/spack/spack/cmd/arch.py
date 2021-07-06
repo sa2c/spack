@@ -21,26 +21,39 @@ level = "short"
 
 def setup_parser(subparser):
     subparser.add_argument(
-        '--known-targets', action='store_true',
-        help='show a list of all known targets and exit'
+        "--known-targets",
+        action="store_true",
+        help="show a list of all known targets and exit",
     )
     parts = subparser.add_mutually_exclusive_group()
     parts2 = subparser.add_mutually_exclusive_group()
     parts.add_argument(
-        '-p', '--platform', action='store_true', default=False,
-        help='print only the platform')
+        "-p",
+        "--platform",
+        action="store_true",
+        default=False,
+        help="print only the platform",
+    )
     parts.add_argument(
-        '-o', '--operating-system', action='store_true', default=False,
-        help='print only the operating system')
+        "-o",
+        "--operating-system",
+        action="store_true",
+        default=False,
+        help="print only the operating system",
+    )
     parts.add_argument(
-        '-t', '--target', action='store_true', default=False,
-        help='print only the target')
+        "-t",
+        "--target",
+        action="store_true",
+        default=False,
+        help="print only the target",
+    )
     parts2.add_argument(
-        '-f', '--frontend', action='store_true', default=False,
-        help='print frontend')
+        "-f", "--frontend", action="store_true", default=False, help="print frontend"
+    )
     parts2.add_argument(
-        '-b', '--backend', action='store_true', default=False,
-        help='print backend')
+        "-b", "--backend", action="store_true", default=False, help="print backend"
+    )
 
 
 def display_targets(targets):
@@ -52,11 +65,11 @@ def display_targets(targets):
     def display_target_group(header, target_group):
         print(header)
         colify.colify(target_group, indent=4)
-        print('')
+        print("")
 
-    generic_architectures = by_vendor.pop('generic', None)
+    generic_architectures = by_vendor.pop("generic", None)
     if generic_architectures:
-        header = color.colorize(r'@*B{Generic architectures (families)}')
+        header = color.colorize(r"@*B{Generic architectures (families)}")
         group = sorted(generic_architectures, key=lambda x: str(x))
         display_target_group(header, group)
 
@@ -66,9 +79,9 @@ def display_targets(targets):
             by_family[str(t.family)].append(t)
 
         for family, group in by_family.items():
-            vendor = color.colorize(r'@*B{' + vendor + r'}')
-            family = color.colorize(r'@*B{' + family + r'}')
-            header = ' - '.join([vendor, family])
+            vendor = color.colorize(r"@*B{" + vendor + r"}")
+            family = color.colorize(r"@*B{" + family + r"}")
+            header = " - ".join([vendor, family])
             group = sorted(group, key=lambda x: len(x.ancestors))
             display_target_group(header, group)
 
@@ -79,14 +92,13 @@ def arch(parser, args):
         return
 
     if args.frontend:
-        arch = architecture.Arch(architecture.platform(),
-                                 'frontend', 'frontend')
+        arch = architecture.Arch(architecture.platform(), "frontend", "frontend")
     elif args.backend:
-        arch = architecture.Arch(architecture.platform(),
-                                 'backend', 'backend')
+        arch = architecture.Arch(architecture.platform(), "backend", "backend")
     else:
-        arch = architecture.Arch(architecture.platform(),
-                                 'default_os', 'default_target')
+        arch = architecture.Arch(
+            architecture.platform(), "default_os", "default_target"
+        )
 
     if args.platform:
         print(arch.platform)

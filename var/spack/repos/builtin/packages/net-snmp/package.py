@@ -10,13 +10,15 @@ class NetSnmp(AutotoolsPackage):
     """A SNMP application library, tools and daemon."""
 
     homepage = "http://www.net-snmp.org/"
-    url      = "https://sourceforge.net/projects/net-snmp/files/net-snmp/5.9/net-snmp-5.9.tar.gz"
+    url = "https://sourceforge.net/projects/net-snmp/files/net-snmp/5.9/net-snmp-5.9.tar.gz"
 
-    version('5.9', sha256='04303a66f85d6d8b16d3cc53bde50428877c82ab524e17591dfceaeb94df6071')
+    version(
+        "5.9", sha256="04303a66f85d6d8b16d3cc53bde50428877c82ab524e17591dfceaeb94df6071"
+    )
 
-    depends_on('perl-extutils-makemaker')
-    depends_on('ncurses')
+    depends_on("perl-extutils-makemaker")
+    depends_on("ncurses")
 
     def configure_args(self):
-        args = ['--with-defaults', 'LIBS=-ltinfo']
+        args = ["--with-defaults", "LIBS=-ltinfo"]
         return args

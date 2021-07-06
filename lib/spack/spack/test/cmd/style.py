@@ -41,8 +41,7 @@ def flake8_package_with_errors(scope="function"):
     filename = repo.filename_for_package_name("flake8")
     package = FileFilter(filename)
 
-    package.filter("state = 'unmodified'",
-                   "state    =    'modified'", string=True)
+    package.filter("state = 'unmodified'", "state    =    'modified'", string=True)
     yield filename
     package.filter("state    =    'modified'", "state = 'unmodified'", string=True)
 
@@ -59,10 +58,12 @@ def test_changed_files(flake8_package):
 
 def test_changed_files_all_files(flake8_package):
     # it's hard to guarantee "all files", so do some sanity checks.
-    files = set([
-        os.path.join(spack.paths.prefix, path)
-        for path in changed_files(all_files=True)
-    ])
+    files = set(
+        [
+            os.path.join(spack.paths.prefix, path)
+            for path in changed_files(all_files=True)
+        ]
+    )
 
     # spack has a lot of files -- check that we're in the right ballpark
     assert len(files) > 6000

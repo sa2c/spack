@@ -18,7 +18,10 @@ class PySphinxcontribSerializinghtml(PythonPackage):
     # to import any modules.
     import_modules = []
 
-    version('1.1.3', sha256='c0efb33f8052c04fd7a26c0a07f1678e8512e0faec19f4aa8f2473a8b81d5227')
+    version(
+        "1.1.3",
+        sha256="c0efb33f8052c04fd7a26c0a07f1678e8512e0faec19f4aa8f2473a8b81d5227",
+    )
 
-    depends_on('python@3.5:', type=('build', 'run'))
-    depends_on('py-setuptools', type='build')
+    depends_on("python@3.5:", type=("build", "run"))
+    depends_on("py-setuptools", type="build")

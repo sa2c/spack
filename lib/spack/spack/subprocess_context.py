@@ -23,7 +23,7 @@ from types import ModuleType
 import spack.architecture
 import spack.config
 
-_serialize = sys.version_info >= (3, 8) and sys.platform == 'darwin'
+_serialize = sys.version_info >= (3, 8) and sys.platform == "darwin"
 
 
 patches = None
@@ -54,16 +54,18 @@ class SpackTestProcess(object):
     def create(self):
         test_state = TestState()
         return multiprocessing.Process(
-            target=self._restore_and_run,
-            args=(self.fn, test_state))
+            target=self._restore_and_run, args=(self.fn, test_state)
+        )
 
 
 class PackageInstallContext(object):
     """Captures the in-memory process state of a package installation that
     needs to be transmitted to a child process.
     """
+
     def __init__(self, pkg):
         import spack.environment as ev  # break import cycle
+
         if _serialize:
             self.serialized_pkg = serialize(pkg)
             self.serialized_env = serialize(ev._active_environment)
@@ -75,6 +77,7 @@ class PackageInstallContext(object):
 
     def restore(self):
         import spack.environment as ev  # break import cycle
+
         self.test_state.restore()
         spack.main.spack_working_dir = self.spack_working_dir
         if _serialize:
@@ -91,6 +94,7 @@ class TestState(object):
     applied to a subprocess. This isn't needed outside of a testing environment
     but this logic is designed to behave the same inside or outside of tests.
     """
+
     def __init__(self):
         if _serialize:
             self.repo_dirs = list(r.root for r in spack.repo.path.repos)
@@ -117,10 +121,8 @@ class TestState(object):
 
 class TestPatches(object):
     def __init__(self, module_patches, class_patches):
-        self.module_patches = list(
-            (x, y, serialize(z)) for (x, y, z) in module_patches)
-        self.class_patches = list(
-            (x, y, serialize(z)) for (x, y, z) in class_patches)
+        self.module_patches = list((x, y, serialize(z)) for (x, y, z) in module_patches)
+        self.class_patches = list((x, y, serialize(z)) for (x, y, z) in class_patches)
 
     def restore(self):
         for module_name, attr_name, value in self.module_patches:
@@ -147,7 +149,7 @@ def store_patches():
                 module_patches.append((module_name, name, new_val))
             elif isinstance(target, type):
                 new_val = getattr(target, name)
-                class_fqn = '.'.join([target.__module__, target.__name__])
+                class_fqn = ".".join([target.__module__, target.__name__])
                 class_patches.append((class_fqn, name, new_val))
 
     return TestPatches(module_patches, class_patches)

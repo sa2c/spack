@@ -15,61 +15,74 @@ class W3m(AutotoolsPackage):
     """
 
     homepage = "http://w3m.sourceforge.net/index.en.html"
-    url      = "https://downloads.sourceforge.net/project/w3m/w3m/w3m-0.5.3/w3m-0.5.3.tar.gz"
+    url = "https://downloads.sourceforge.net/project/w3m/w3m/w3m-0.5.3/w3m-0.5.3.tar.gz"
 
-    maintainers = ['ronin_gw']
+    maintainers = ["ronin_gw"]
 
-    version('0.5.3', sha256='e994d263f2fd2c22febfbe45103526e00145a7674a0fda79c822b97c2770a9e3')
+    version(
+        "0.5.3",
+        sha256="e994d263f2fd2c22febfbe45103526e00145a7674a0fda79c822b97c2770a9e3",
+    )
 
     # mandatory dependency
-    depends_on('bdw-gc')
+    depends_on("bdw-gc")
 
     # termlib
-    variant('termlib', default='ncurses', description='select termlib',
-            values=('ncurses', 'termcap', 'none'), multi=False)
-    depends_on('termcap', when='termlib=termcap')
-    depends_on('ncurses+termlib', when='termlib=ncurses')
+    variant(
+        "termlib",
+        default="ncurses",
+        description="select termlib",
+        values=("ncurses", "termcap", "none"),
+        multi=False,
+    )
+    depends_on("termcap", when="termlib=termcap")
+    depends_on("ncurses+termlib", when="termlib=ncurses")
 
     # https support
-    variant('https', default=True, description='support https protocol')
-    depends_on('openssl@:1.0.2u', when='+https')
+    variant("https", default=True, description="support https protocol")
+    depends_on("openssl@:1.0.2u", when="+https")
 
     # X11 support
-    variant('image', default=True, description='enable image')
-    depends_on('libx11', when='+image')
+    variant("image", default=True, description="enable image")
+    depends_on("libx11", when="+image")
 
     # inline image support
-    variant('imagelib', default='imlib2', description='select imagelib',
-            values=('gdk-pixbuf', 'imlib2'), multi=False)
-    depends_on('gdk-pixbuf@2:+x11', when='imagelib=gdk-pixbuf +image')
-    depends_on('imlib2@1.0.5:', when='imagelib=imlib2 +image')
+    variant(
+        "imagelib",
+        default="imlib2",
+        description="select imagelib",
+        values=("gdk-pixbuf", "imlib2"),
+        multi=False,
+    )
+    depends_on("gdk-pixbuf@2:+x11", when="imagelib=gdk-pixbuf +image")
+    depends_on("imlib2@1.0.5:", when="imagelib=imlib2 +image")
 
     # fix for modern libraries
-    patch('fix_redef.patch')
-    patch('fix_gc.patch')
+    patch("fix_redef.patch")
+    patch("fix_gc.patch")
 
     def _add_arg_for_variant(self, args, variant, choices):
         for avail_lib in choices:
             if self.spec.variants[variant].value == avail_lib:
-                args.append('--with-{0}={1}'.format(variant, avail_lib))
+                args.append("--with-{0}={1}".format(variant, avail_lib))
                 return
 
     def configure_args(self):
         args = []
 
-        self._add_arg_for_variant(args, 'termlib', ('termcap', 'ncurses'))
-        if '+image' in self.spec:
-            args.append('--enable-image')
-            self._add_arg_for_variant(args, 'imagelib', ('gdk-pixbuf', 'imlib2'))
+        self._add_arg_for_variant(args, "termlib", ("termcap", "ncurses"))
+        if "+image" in self.spec:
+            args.append("--enable-image")
+            self._add_arg_for_variant(args, "imagelib", ("gdk-pixbuf", "imlib2"))
 
         return args
 
     def setup_build_environment(self, env):
-        if self.spec.variants['termlib'].value == 'ncurses':
-            env.append_flags('LDFLAGS', '-ltinfo')
-            env.append_flags('LDFLAGS', '-lncurses')
-        if '+image' in self.spec:
-            env.append_flags('LDFLAGS', '-lX11')
+        if self.spec.variants["termlib"].value == "ncurses":
+            env.append_flags("LDFLAGS", "-ltinfo")
+            env.append_flags("LDFLAGS", "-lncurses")
+        if "+image" in self.spec:
+            env.append_flags("LDFLAGS", "-lX11")
 
     # parallel build causes build failure
     def build(self, spec, prefix):

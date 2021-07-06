@@ -15,7 +15,10 @@ class PyAntlr4Python3Runtime(PythonPackage):
     homepage = "https://www.antlr.org"
     pypi = "antlr4-python3-runtime/antlr4-python3-runtime-4.7.2.tar.gz"
 
-    version('4.7.2', sha256='168cdcec8fb9152e84a87ca6fd261b3d54c8f6358f42ab3b813b14a7193bb50b')
+    version(
+        "4.7.2",
+        sha256="168cdcec8fb9152e84a87ca6fd261b3d54c8f6358f42ab3b813b14a7193bb50b",
+    )
 
-    depends_on('python@3:', type=('build', 'run'))
-    depends_on('py-setuptools', type='build')
+    depends_on("python@3:", type=("build", "run"))
+    depends_on("py-setuptools", type="build")

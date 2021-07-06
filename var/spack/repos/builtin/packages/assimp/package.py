@@ -11,27 +11,32 @@ class Assimp(CMakePackage):
     import various well-known 3D model formats in a uniform manner."""
 
     homepage = "https://www.assimp.org"
-    url      = "https://github.com/assimp/assimp/archive/v4.0.1.tar.gz"
-    git      = "https://github.com/assimp/assimp.git"
+    url = "https://github.com/assimp/assimp/archive/v4.0.1.tar.gz"
+    git = "https://github.com/assimp/assimp.git"
 
-    version('master', branch='master')
-    version('5.0.1', sha256='11310ec1f2ad2cd46b95ba88faca8f7aaa1efe9aa12605c55e3de2b977b3dbfc')
-    version('4.0.1', sha256='60080d8ab4daaab309f65b3cffd99f19eb1af8d05623fff469b9b652818e286e')
+    version("master", branch="master")
+    version(
+        "5.0.1",
+        sha256="11310ec1f2ad2cd46b95ba88faca8f7aaa1efe9aa12605c55e3de2b977b3dbfc",
+    )
+    version(
+        "4.0.1",
+        sha256="60080d8ab4daaab309f65b3cffd99f19eb1af8d05623fff469b9b652818e286e",
+    )
 
-    variant('shared',  default=True,
-            description='Enables the build of shared libraries')
+    variant("shared", default=True, description="Enables the build of shared libraries")
 
-    depends_on('boost')
+    depends_on("boost")
 
     def cmake_args(self):
         args = [
-            '-DASSIMP_BUILD_TESTS=OFF',
-            self.define_from_variant('BUILD_SHARED_LIBS', 'shared'),
+            "-DASSIMP_BUILD_TESTS=OFF",
+            self.define_from_variant("BUILD_SHARED_LIBS", "shared"),
         ]
         return args
 
     def flag_handler(self, name, flags):
         flags = list(flags)
-        if name == 'cxxflags':
+        if name == "cxxflags":
             flags.append(self.compiler.cxx11_flag)
         return (None, None, flags)

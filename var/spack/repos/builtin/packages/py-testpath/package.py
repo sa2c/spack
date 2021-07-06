@@ -13,4 +13,7 @@ class PyTestpath(PythonPackage):
     homepage = "https://github.com/jupyter/testpath"
     pypi = "testpath/testpath-0.4.2.tar.gz"
 
-    version('0.4.2', sha256='b694b3d9288dbd81685c5d2e7140b81365d46c29f5db4bc659de5aa6b98780f8')
+    version(
+        "0.4.2",
+        sha256="b694b3d9288dbd81685c5d2e7140b81365d46c29f5db4bc659de5aa6b98780f8",
+    )

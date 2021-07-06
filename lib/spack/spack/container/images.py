@@ -19,7 +19,7 @@ def data():
     global _data
     if not _data:
         json_dir = os.path.abspath(os.path.dirname(__file__))
-        json_file = os.path.join(json_dir, 'images.json')
+        json_file = os.path.join(json_dir, "images.json")
         with open(json_file) as f:
             _data = json.load(f)
     return _data
@@ -39,17 +39,20 @@ def build_info(image, spack_version):
     # Don't handle error here, as a wrong image should have been
     # caught by the JSON schema
     image_data = data()["images"][image]
-    build_image = image_data['build']
+    build_image = image_data["build"]
 
     # Try to check if we have a tag for this Spack version
     try:
         # Translate version from git to docker if necessary
-        build_tag = image_data['build_tags'].get(spack_version, spack_version)
+        build_tag = image_data["build_tags"].get(spack_version, spack_version)
     except KeyError:
-        msg = ('the image "{0}" has no tag for Spack version "{1}" '
-               '[valid versions are {2}]')
-        msg = msg.format(build_image, spack_version,
-                         ', '.join(image_data['build_tags'].keys()))
+        msg = (
+            'the image "{0}" has no tag for Spack version "{1}" '
+            "[valid versions are {2}]"
+        )
+        msg = msg.format(
+            build_image, spack_version, ", ".join(image_data["build_tags"].keys())
+        )
         raise ValueError(msg)
 
     return build_image, build_tag
@@ -81,4 +84,4 @@ def commands_for(package_manager):
         A tuple of (update, install, clean) commands.
     """
     info = data()["os_package_managers"][package_manager]
-    return info['update'], info['install'], info['clean']
+    return info["update"], info["install"], info["clean"]

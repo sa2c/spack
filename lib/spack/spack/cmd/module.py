@@ -18,11 +18,11 @@ level = "short"
 
 _subcommands = {}  # type: Dict[str, Callable]
 
-_deprecated_commands = ('refresh', 'find', 'rm', 'loads')
+_deprecated_commands = ("refresh", "find", "rm", "loads")
 
 
 def setup_parser(subparser):
-    sp = subparser.add_subparsers(metavar='SUBCOMMAND', dest='module_command')
+    sp = subparser.add_subparsers(metavar="SUBCOMMAND", dest="module_command")
     spack.cmd.modules.lmod.add_command(sp, _subcommands)
     spack.cmd.modules.tcl.add_command(sp, _subcommands)
 
@@ -33,22 +33,25 @@ def setup_parser(subparser):
 def add_deprecated_command(subparser, name):
     parser = subparser.add_parser(name)
     parser.add_argument(
-        '-m', '--module-type', help=argparse.SUPPRESS,
-        choices=spack.modules.module_types.keys(), action='append'
+        "-m",
+        "--module-type",
+        help=argparse.SUPPRESS,
+        choices=spack.modules.module_types.keys(),
+        action="append",
     )
 
 
 def handle_deprecated_command(args, unknown_args):
     command = args.module_command
-    unknown = ' '.join(unknown_args)
+    unknown = " ".join(unknown_args)
 
-    module_types = args.module_type or ['tcl']
+    module_types = args.module_type or ["tcl"]
 
-    msg = '`spack module {0} {1}` has moved. Use these commands instead:\n'
-    msg = msg.format(command, ' '.join('-m ' + x for x in module_types))
+    msg = "`spack module {0} {1}` has moved. Use these commands instead:\n"
+    msg = msg.format(command, " ".join("-m " + x for x in module_types))
     for x in module_types:
-        msg += '\n\t$ spack module {0} {1} {2}'.format(x, command, unknown)
-    msg += '\n'
+        msg += "\n\t$ spack module {0} {1} {2}".format(x, command, unknown)
+    msg += "\n"
     tty.die(msg)
 
 
@@ -61,6 +64,6 @@ def module(parser, args, unknown_args):
     # Fail if unknown arguments are present, once we excluded a deprecated
     # command
     if unknown_args:
-        tty.die('unrecognized arguments: {0}'.format(' '.join(unknown_args)))
+        tty.die("unrecognized arguments: {0}".format(" ".join(unknown_args)))
 
     _subcommands[args.module_command](parser, args)

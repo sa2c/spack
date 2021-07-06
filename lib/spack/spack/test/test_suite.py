@@ -12,9 +12,9 @@ import spack.spec
 
 def test_test_log_pathname(mock_packages, config):
     """Ensure test log path is reasonable."""
-    spec = spack.spec.Spec('libdwarf').concretized()
+    spec = spack.spec.Spec("libdwarf").concretized()
 
-    test_name = 'test_name'
+    test_name = "test_name"
 
     test_suite = spack.install_test.TestSuite([spec], test_name)
     logfile = test_suite.log_file_for_spec(spec)
@@ -25,9 +25,9 @@ def test_test_log_pathname(mock_packages, config):
 
 def test_test_ensure_stage(mock_test_stage):
     """Make sure test stage directory is properly set up."""
-    spec = spack.spec.Spec('libdwarf').concretized()
+    spec = spack.spec.Spec("libdwarf").concretized()
 
-    test_name = 'test_name'
+    test_name = "test_name"
 
     test_suite = spack.install_test.TestSuite([spec], test_name)
     test_suite.ensure_stage()
@@ -38,16 +38,16 @@ def test_test_ensure_stage(mock_test_stage):
 
 def test_write_test_result(mock_packages, mock_test_stage):
     """Ensure test results written to a results file."""
-    spec = spack.spec.Spec('libdwarf').concretized()
-    result = 'TEST'
-    test_name = 'write-test'
+    spec = spack.spec.Spec("libdwarf").concretized()
+    result = "TEST"
+    test_name = "write-test"
 
     test_suite = spack.install_test.TestSuite([spec], test_name)
     test_suite.ensure_stage()
     results_file = test_suite.results_file
     test_suite.write_test_result(spec, result)
 
-    with open(results_file, 'r') as f:
+    with open(results_file, "r") as f:
         lines = f.readlines()
         assert len(lines) == 1
 
@@ -58,9 +58,9 @@ def test_write_test_result(mock_packages, mock_test_stage):
 
 def test_do_test(mock_packages, mock_test_stage, install_mockery):
     """Perform a stand-alone test with files to copy."""
-    spec = spack.spec.Spec('trivial-smoke-test').concretized()
-    test_name = 'test_do_test'
-    test_filename = 'test_file.in'
+    spec = spack.spec.Spec("trivial-smoke-test").concretized()
+    test_name = "test_do_test"
+    test_filename = "test_file.in"
 
     pkg = spec.package
     pkg.create_extra_test_source()
@@ -72,10 +72,10 @@ def test_do_test(mock_packages, mock_test_stage, install_mockery):
 
     # Save off target paths for current spec since test suite processing
     # assumes testing multiple specs.
-    cached_filename = fs.join_path(test_suite.current_test_cache_dir,
-                                   pkg.test_source_filename)
-    data_filename = fs.join_path(test_suite.current_test_data_dir,
-                                 test_filename)
+    cached_filename = fs.join_path(
+        test_suite.current_test_cache_dir, pkg.test_source_filename
+    )
+    data_filename = fs.join_path(test_suite.current_test_data_dir, test_filename)
 
     # Run the test, making sure to retain the test stage directory
     # so we can ensure the files were copied.

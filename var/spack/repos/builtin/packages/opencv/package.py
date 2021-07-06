@@ -344,15 +344,15 @@ class Opencv(CMakePackage, CudaPackage):
     # Defined in `apps/*/CMakeLists.txt` using `ocv_add_application(...)`
     # Different apps require different modules, but no way to control which apps
     # are installed. If +apps is requested, make sure all apps can be built.
-    conflicts('+apps', when='~calib3d')
-    conflicts('+apps', when='~core')
-    conflicts('+apps', when='~dnn')
-    conflicts('+apps', when='~features2d')
-    conflicts('+apps', when='~highgui')
-    conflicts('+apps', when='~imgcodecs')
-    conflicts('+apps', when='~imgproc')
-    conflicts('+apps', when='~objdetect')
-    conflicts('+apps', when='~videoio')
+    conflicts("+apps", when="~calib3d")
+    conflicts("+apps", when="~core")
+    conflicts("+apps", when="~dnn")
+    conflicts("+apps", when="~features2d")
+    conflicts("+apps", when="~highgui")
+    conflicts("+apps", when="~imgcodecs")
+    conflicts("+apps", when="~imgproc")
+    conflicts("+apps", when="~objdetect")
+    conflicts("+apps", when="~videoio")
     # Defined in `modules/*/CMakeLists.txt` using
     # `ocv_add_module(...)` and `ocv_define_module(...)`
     # If these required dependencies aren't found, CMake will silently

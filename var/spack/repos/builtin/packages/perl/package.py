@@ -3,6 +3,8 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
+import os
+
 #
 # Author: Milton Woods <milton.woods@bom.gov.au>
 # Date: March 22, 2017
@@ -12,7 +14,6 @@
 # Date: September 6, 2015
 #
 import re
-import os
 from contextlib import contextmanager
 
 from llnl.util.lang import match_predicate

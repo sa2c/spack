@@ -3,27 +3,27 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 """Test detection of compiler version"""
-import pytest
 import os
+
+import pytest
 
 import llnl.util.filesystem as fs
 
+import spack.compilers.aocc
 import spack.compilers.arm
 import spack.compilers.cce
 import spack.compilers.clang
 import spack.compilers.fj
 import spack.compilers.gcc
 import spack.compilers.intel
-import spack.compilers.oneapi
 import spack.compilers.nag
 import spack.compilers.nvhpc
+import spack.compilers.oneapi
 import spack.compilers.pgi
 import spack.compilers.xl
 import spack.compilers.xl_r
-import spack.compilers.aocc
-
-from spack.operating_systems.cray_frontend import CrayFrontend
 import spack.util.module_cmd
+from spack.operating_systems.cray_frontend import CrayFrontend
 
 
 @pytest.mark.parametrize('version_str,expected_version', [

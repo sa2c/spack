@@ -29,21 +29,28 @@ import os.path
 import re
 import shutil
 import sys
-from typing import Optional, List  # novm
+from typing import List, Optional  # novm
 
-import llnl.util.tty as tty
 import six
 import six.moves.urllib.parse as urllib_parse
+
+import llnl.util.tty as tty
+from llnl.util.filesystem import (
+    get_single_file,
+    mkdirp,
+    temp_cwd,
+    temp_rename,
+    working_dir,
+)
+
 import spack.config
 import spack.error
 import spack.util.crypto as crypto
 import spack.util.pattern as pattern
 import spack.util.url as url_util
 import spack.util.web as web_util
-from llnl.util.filesystem import (
-    working_dir, mkdirp, temp_rename, temp_cwd, get_single_file)
 from spack.util.compression import decompressor_for, extension
-from spack.util.executable import which, CommandNotFoundError
+from spack.util.executable import CommandNotFoundError, which
 from spack.util.string import comma_and, quote
 from spack.version import Version, ver
 

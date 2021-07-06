@@ -26,10 +26,13 @@ except ImportError:
     def parse_date(string):  # type: ignore
         pytest.skip("dateutil package not available")
 
-import archspec.cpu.microarchitecture
-import archspec.cpu.schema
 import py
 import pytest
+
+import archspec.cpu.microarchitecture
+import archspec.cpu.schema
+
+from llnl.util.filesystem import mkdirp, remove_linked_tree, working_dir
 
 import spack.architecture
 import spack.caches
@@ -49,9 +52,7 @@ import spack.subprocess_context
 import spack.util.executable
 import spack.util.gpg
 import spack.util.spack_yaml as syaml
-from llnl.util.filesystem import mkdirp, remove_linked_tree, working_dir
-from spack.fetch_strategy import FetchError
-from spack.fetch_strategy import FetchStrategyComposite, URLFetchStrategy
+from spack.fetch_strategy import FetchError, FetchStrategyComposite, URLFetchStrategy
 from spack.util.pattern import Bunch
 
 

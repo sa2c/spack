@@ -1,5 +1,5 @@
 # -*- conf -*-
-# flake8 settings for Spack core files.
+# flake8 settings for Spack.
 #
 # These exceptions are for Spack core files. We're slightly more lenient
 # with packages.  See .flake8_packages for that.
@@ -36,7 +36,7 @@
 # - W503: see above, already ignored for line-breaks
 #
 [flake8]
-ignore = E129,E221,E241,E272,E731,W503,W504,F999,N801,N813,N814,F403,F405
+ignore = E129,E731,W503,W504,F999,N801,N813,N814,F403,F405,E203
 max-line-length = 88
 
 # F4: Import

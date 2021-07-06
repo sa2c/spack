@@ -44,8 +44,8 @@ class BashCompletion(AutotoolsPackage):
         print("")
         print("# Use bash-completion, if available")
         print(
-            "[[ $PS1 && -f %s/share/bash-completion/bash_completion ]] && \ " % prefix
-        )  # NOQA: ignore=E501
+            "[[ $PS1 && -f %s/share/bash-completion/bash_completion ]] && \\" % prefix
+        )
         print("    . %s/share/bash-completion/bash_completion" % prefix)
         print("")
         print("=====================================================")

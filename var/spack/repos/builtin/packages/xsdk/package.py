@@ -88,27 +88,27 @@ class Xsdk(BundlePackage):
     depends_on("superlu-dist@xsdk-0.2.0", when="@xsdk-0.2.0")
 
     depends_on(
-        "trilinos@develop+hypre+superlu-dist+metis+hdf5~mumps+boost~suite-sparse+tpetra+nox+ifpack2+zoltan2+amesos2~exodus~dtk+intrepid2+shards+stratimikos gotype=int cxxstd=14",
+        "trilinos@develop+hypre+superlu-dist+metis+hdf5~mumps+boost~suite-sparse+tpetra+nox+ifpack2+zoltan2+amesos2~exodus~dtk+intrepid2+shards+stratimikos gotype=int cxxstd=14",  # noqa
         when="@develop +trilinos",
     )
     depends_on(
-        "trilinos@13.0.1+hypre+superlu-dist+metis+hdf5~mumps+boost~suite-sparse+tpetra+nox+ifpack2+zoltan2+amesos2~exodus~dtk+intrepid2+shards gotype=int",
+        "trilinos@13.0.1+hypre+superlu-dist+metis+hdf5~mumps+boost~suite-sparse+tpetra+nox+ifpack2+zoltan2+amesos2~exodus~dtk+intrepid2+shards gotype=int",  # noqa
         when="@0.6.0 +trilinos",
     )
     depends_on(
-        "trilinos@12.18.1+hypre+superlu-dist+metis+hdf5~mumps+boost~suite-sparse+tpetra+nox+ifpack2+zoltan2+amesos2~exodus+dtk+intrepid2+shards",
+        "trilinos@12.18.1+hypre+superlu-dist+metis+hdf5~mumps+boost~suite-sparse+tpetra+nox+ifpack2+zoltan2+amesos2~exodus+dtk+intrepid2+shards",  # noqa
         when="@0.5.0 +trilinos",
     )
     depends_on(
-        "trilinos@12.14.1+hypre+superlu-dist+metis+hdf5~mumps+boost~suite-sparse+tpetra+nox+ifpack2+zoltan2+amesos2~exodus+dtk+intrepid2+shards",
+        "trilinos@12.14.1+hypre+superlu-dist+metis+hdf5~mumps+boost~suite-sparse+tpetra+nox+ifpack2+zoltan2+amesos2~exodus+dtk+intrepid2+shards",  # noqa
         when="@0.4.0 +trilinos",
     )
     depends_on(
-        "trilinos@12.12.1+hypre+superlu-dist+metis+hdf5~mumps+boost~suite-sparse~tpetra~ifpack2~zoltan2~amesos2~exodus",
+        "trilinos@12.12.1+hypre+superlu-dist+metis+hdf5~mumps+boost~suite-sparse~tpetra~ifpack2~zoltan2~amesos2~exodus",  # noqa
         when="@0.3.0 +trilinos",
     )
     depends_on(
-        "trilinos@xsdk-0.2.0+hypre+superlu-dist+metis+hdf5~mumps+boost~suite-sparse~tpetra~ifpack2~zoltan2~amesos2~exodus",
+        "trilinos@xsdk-0.2.0+hypre+superlu-dist+metis+hdf5~mumps+boost~suite-sparse~tpetra~ifpack2~zoltan2~amesos2~exodus",  # noqa
         when="@xsdk-0.2.0 +trilinos",
     )
 
@@ -146,19 +146,19 @@ class Xsdk(BundlePackage):
     depends_on("dealii +trilinos~adol-c", when="+trilinos +dealii")
     depends_on("dealii ~trilinos", when="~trilinos +dealii")
     depends_on(
-        "dealii@master~assimp~python~doc~gmsh+petsc+slepc+mpi~int64+hdf5~netcdf+metis~sundials~ginkgo~symengine~nanoflann",
+        "dealii@master~assimp~python~doc~gmsh+petsc+slepc+mpi~int64+hdf5~netcdf+metis~sundials~ginkgo~symengine~nanoflann",  # noqa
         when="@develop +dealii",
     )
     depends_on(
-        "dealii@9.2.0~assimp~python~doc~gmsh+petsc+slepc+mpi~int64+hdf5~netcdf+metis~sundials~ginkgo~symengine~simplex~arborx",
+        "dealii@9.2.0~assimp~python~doc~gmsh+petsc+slepc+mpi~int64+hdf5~netcdf+metis~sundials~ginkgo~symengine~simplex~arborx",  # noqa
         when="@0.6.0 +dealii",
     )
     depends_on(
-        "dealii@9.1.1~assimp~python~doc~gmsh+petsc+slepc+mpi~int64+hdf5~netcdf+metis~sundials~ginkgo~symengine",
+        "dealii@9.1.1~assimp~python~doc~gmsh+petsc+slepc+mpi~int64+hdf5~netcdf+metis~sundials~ginkgo~symengine",  # noqa
         when="@0.5.0 +dealii",
     )
     depends_on(
-        "dealii@9.0.1~assimp~python~doc~gmsh+petsc~slepc+mpi~int64+hdf5~netcdf+metis~ginkgo~symengine",
+        "dealii@9.0.1~assimp~python~doc~gmsh+petsc~slepc+mpi~int64+hdf5~netcdf+metis~ginkgo~symengine",  # noqa
         when="@0.4.0 +dealii",
     )
 

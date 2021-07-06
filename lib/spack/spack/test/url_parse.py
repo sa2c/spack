@@ -80,9 +80,9 @@ from spack.version import Version
         # PyPI - wheel
         ("entrypoints-0.2.2-py2.py3-none-any.whl", "entrypoints-0.2.2"),
         (
-            "numpy-1.12.0-cp27-cp27m-macosx_10_6_intel.macosx_10_9_intel.macosx_10_9_x86_64.macosx_10_10_intel.macosx_10_10_x86_64.whl",
+            "numpy-1.12.0-cp27-cp27m-macosx_10_6_intel.macosx_10_9_intel.macosx_10_9_x86_64.macosx_10_10_intel.macosx_10_10_x86_64.whl",  # noqa
             "numpy-1.12.0",
-        ),  # noqa
+        ),
         # PyPI - exe
         ("PyYAML-3.12.win-amd64-py3.5.exe", "PyYAML-3.12"),
         # Combinations of multiple patterns - bin, release

@@ -62,7 +62,7 @@ class LlvmAmdgpu(CMakePackage):
     variant(
         "rocm-device-libs",
         default=True,
-        description="Build ROCm device libs as external LLVM project instead of a standalone spack package.",
+        description="Build ROCm device libs as external LLVM project instead of a standalone spack package.",  # noqa
     )
     variant("openmp", default=True, description="Enable OpenMP")
 

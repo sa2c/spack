@@ -32,12 +32,14 @@ class Recorder(AutotoolsPackage):
     variant(
         "mpi",
         default=True,
-        description="Enable MPI level tracing. MPI is required even with this option disabled.",
+        description="Enable MPI level tracing. "
+        "MPI is required even with this option disabled.",
     )
     variant(
         "hdf5",
         default=True,
-        description="Enable HDF5 level tracing. HDF5 is required even with this option disabled.",
+        description="Enable HDF5 level tracing. "
+        "HDF5 is required even with this option disabled.",
     )
 
     depends_on("autoconf", type="build")

@@ -258,11 +258,11 @@ class Dealii(CMakePackage, CudaPackage):
     # TODO: temporary disable Tpetra when using CUDA due to
     # namespace "Kokkos::Impl" has no member "cuda_abort"
     depends_on(
-        "trilinos@master+amesos+aztec+epetra+ifpack+ml+muelu+rol+sacado+teuchos~amesos2~ifpack2~intrepid2~kokkos~tpetra~zoltan2",
+        "trilinos@master+amesos+aztec+epetra+ifpack+ml+muelu+rol+sacado+teuchos~amesos2~ifpack2~intrepid2~kokkos~tpetra~zoltan2",  # noqa
         when="+trilinos+mpi~int64+cuda",
     )
     depends_on(
-        "trilinos@master+amesos+aztec+epetra+ifpack+ml+muelu+rol+sacado+teuchos~hypre~amesos2~ifpack2~intrepid2~kokkos~tpetra~zoltan2",
+        "trilinos@master+amesos+aztec+epetra+ifpack+ml+muelu+rol+sacado+teuchos~hypre~amesos2~ifpack2~intrepid2~kokkos~tpetra~zoltan2",  # noqa
         when="+trilinos+mpi+int64+cuda",
     )
 

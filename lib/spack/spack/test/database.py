@@ -57,7 +57,13 @@ def upstream_and_downstream_db(tmpdir_factory, gen_mock_layout):
         downstream_db._write_to_file(db_file)
     downstream_layout = gen_mock_layout("/b/")
 
-    yield upstream_write_db, upstream_db, upstream_layout, downstream_db, downstream_layout
+    yield (
+        upstream_write_db,
+        upstream_db,
+        upstream_layout,
+        downstream_db,
+        downstream_layout,
+    )
 
 
 @pytest.mark.usefixtures("config")

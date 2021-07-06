@@ -16,10 +16,10 @@ class Flake8(Package):
 
     # Make sure pre-existing noqa is not interfered with
     blatant_violation = (
-        "line-that-has-absolutely-no-execuse-for-being-over-79-characters"  # noqa
+        "line-that-has-absolutely-no-execuse-for-being-over-79-characters"
     )
     blatant_violation = (
-        "line-that-has-absolutely-no-execuse-for-being-over-79-characters"  # noqa: E501
+        "line-that-has-absolutely-no-execuse-for-being-over-79-characters"
     )
 
     # Keywords exempt from line-length checks
@@ -59,7 +59,7 @@ class Flake8(Package):
     )
 
     depends_on(
-        "boost+atomic+chrono+date_time~debug+filesystem~graph~icu+iostreams+locale+log+math~mpi+multithreaded+program_options~python+random+regex+serialization+shared+signals~singlethreaded+system~taggedlayout+test+thread+timer+wave"
+        "boost+atomic+chrono+date_time~debug+filesystem~graph~icu+iostreams+locale+log+math~mpi+multithreaded+program_options~python+random+regex+serialization+shared+signals~singlethreaded+system~taggedlayout+test+thread+timer+wave"  # noqa
     )
 
     conflicts("+super-awesome-feature", when="%intel@16:17+somewhat-awesome-feature")
@@ -73,7 +73,7 @@ class Flake8(Package):
     )
 
     patch(
-        "hyper-specific-patch-that-fixes-some-random-bug-that-probably-only-affects-one-user.patch",
+        "hyper-specific-patch-that-fixes-some-random-bug-that-probably-only-affects-one-user.patch",  # noqa
         when="%gcc@3.2.2:3.2.3",
     )
 

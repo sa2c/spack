@@ -83,7 +83,8 @@ class SuperluDist(CMakePackage, CudaPackage):
     variant(
         "openmp",
         default=False,
-        description="Build with OpenMP support (needs a good multithreaded BLAS implementation for good performance)",
+        description="Build with OpenMP support "
+        "(needs a good multithreaded BLAS implementation for good performance)",
     )
     variant("shared", default=True, description="Build shared libraries")
 

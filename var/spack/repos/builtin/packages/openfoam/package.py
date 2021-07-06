@@ -573,7 +573,9 @@ class Openfoam(Package):
         # Avoid WM_PROJECT_INST_DIR for ThirdParty
         # This modification is non-critical
         edits = {
-            "WM_THIRD_PARTY_DIR": r"$WM_PROJECT_DIR/ThirdParty  #SPACK: No separate third-party",
+            "WM_THIRD_PARTY_DIR": (
+                r"$WM_PROJECT_DIR/ThirdParty  #SPACK: No separate third-party"
+            ),
         }
         rewrite_environ_files(  # etc/{bashrc,cshrc}
             edits, posix=join_path("etc", "bashrc"), cshell=join_path("etc", "cshrc")

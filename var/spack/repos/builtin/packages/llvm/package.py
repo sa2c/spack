@@ -27,36 +27,115 @@ class Llvm(CMakePackage, CudaPackage):
 
     family = "compiler"  # Used by lmod
 
-    # fmt: off
-    version('main', branch='main')
-    version('12.0.0', sha256='8e6c99e482bb16a450165176c2d881804976a2d770e0445af4375e78a1fbf19c')
-    version('11.1.0', sha256='53a0719f3f4b0388013cfffd7b10c7d5682eece1929a9553c722348d1f866e79')
-    version('11.0.1', sha256='9c7ad8e8ec77c5bde8eb4afa105a318fd1ded7dff3747d14f012758719d7171b')
-    version('11.0.0', sha256='8ad4ddbafac4f2c8f2ea523c2c4196f940e8e16f9e635210537582a48622a5d5')
-    version('10.0.1', sha256='c7ccb735c37b4ec470f66a6c35fbae4f029c0f88038f6977180b1a8ddc255637')
-    version('10.0.0', sha256='b81c96d2f8f40dc61b14a167513d87c0d813aae0251e06e11ae8a4384ca15451')
-    version('9.0.1', sha256='be7b034641a5fda51ffca7f5d840b1a768737779f75f7c4fd18fe2d37820289a')
-    version('9.0.0', sha256='7807fac25330e24e9955ca46cd855dd34bbc9cc4fdba8322366206654d1036f2')
-    version('8.0.1', sha256='5b18f6111c7aee7c0933c355877d4abcfe6cb40c1a64178f28821849c725c841')
-    version('8.0.0', sha256='d81238b4a69e93e29f74ce56f8107cbfcf0c7d7b40510b7879e98cc031e25167')
-    version('7.1.0', sha256='71c93979f20e01f1a1cc839a247945f556fa5e63abf2084e8468b238080fd839')
-    version('7.0.1', sha256='f17a6cd401e8fd8f811fbfbb36dcb4f455f898c9d03af4044807ad005df9f3c0')
-    version('6.0.1', sha256='aefadceb231f4c195fe6d6cd3b1a010b269c8a22410f339b5a089c2e902aa177')
-    version('6.0.0', sha256='1946ec629c88d30122afa072d3c6a89cc5d5e4e2bb28dc63b2f9ebcc7917ee64')
-    version('5.0.2', sha256='fe87aa11558c08856739bfd9bd971263a28657663cb0c3a0af01b94f03b0b795')
-    version('5.0.1', sha256='84ca454abf262579814a2a2b846569f6e0cb3e16dc33ca3642b4f1dff6fbafd3')
-    version('5.0.0', sha256='1f1843315657a4371d8ca37f01265fa9aae17dbcf46d2d0a95c1fdb3c6a4bab6')
-    version('4.0.1', sha256='cd664fb3eec3208c08fb61189c00c9118c290b3be5adb3215a97b24255618be5')
-    version('4.0.0', sha256='28ca4b2fc434cb1f558e8865386c233c2a6134437249b8b3765ae745ffa56a34')
-    version('3.9.1', sha256='f5b6922a5c65f9232f83d89831191f2c3ccf4f41fdd8c63e6645bbf578c4ab92')
-    version('3.9.0', sha256='9c6563a72c8b5b79941c773937d997dd2b1b5b3f640136d02719ec19f35e0333')
-    version('3.8.1', sha256='69360f0648fde0dc3d3c4b339624613f3bc2a89c4858933bc3871a250ad02826')
-    version('3.8.0', sha256='b5cc5974cc2fd4e9e49e1bbd0700f872501a8678bd9694fa2b36c65c026df1d1')
-    version('3.7.1', sha256='d2cb0eb9b8eb21e07605bfe5e7a5c6c5f5f8c2efdac01ec1da6ffacaabe4195a')
-    version('3.7.0', sha256='dc00bc230be2006fb87b84f6fe4800ca28bc98e6692811a98195da53c9cb28c6')
-    version('3.6.2', sha256='f75d703a388ba01d607f9cf96180863a5e4a106827ade17b221d43e6db20778a')
-    version('3.5.1', sha256='5d739684170d5b2b304e4fb521532d5c8281492f71e1a8568187bfa38eb5909d')
-    # fmt: on
+    version("main", branch="main")
+    version(
+        "12.0.0",
+        sha256="8e6c99e482bb16a450165176c2d881804976a2d770e0445af4375e78a1fbf19c",
+    )
+    version(
+        "11.1.0",
+        sha256="53a0719f3f4b0388013cfffd7b10c7d5682eece1929a9553c722348d1f866e79",
+    )
+    version(
+        "11.0.1",
+        sha256="9c7ad8e8ec77c5bde8eb4afa105a318fd1ded7dff3747d14f012758719d7171b",
+    )
+    version(
+        "11.0.0",
+        sha256="8ad4ddbafac4f2c8f2ea523c2c4196f940e8e16f9e635210537582a48622a5d5",
+    )
+    version(
+        "10.0.1",
+        sha256="c7ccb735c37b4ec470f66a6c35fbae4f029c0f88038f6977180b1a8ddc255637",
+    )
+    version(
+        "10.0.0",
+        sha256="b81c96d2f8f40dc61b14a167513d87c0d813aae0251e06e11ae8a4384ca15451",
+    )
+    version(
+        "9.0.1",
+        sha256="be7b034641a5fda51ffca7f5d840b1a768737779f75f7c4fd18fe2d37820289a",
+    )
+    version(
+        "9.0.0",
+        sha256="7807fac25330e24e9955ca46cd855dd34bbc9cc4fdba8322366206654d1036f2",
+    )
+    version(
+        "8.0.1",
+        sha256="5b18f6111c7aee7c0933c355877d4abcfe6cb40c1a64178f28821849c725c841",
+    )
+    version(
+        "8.0.0",
+        sha256="d81238b4a69e93e29f74ce56f8107cbfcf0c7d7b40510b7879e98cc031e25167",
+    )
+    version(
+        "7.1.0",
+        sha256="71c93979f20e01f1a1cc839a247945f556fa5e63abf2084e8468b238080fd839",
+    )
+    version(
+        "7.0.1",
+        sha256="f17a6cd401e8fd8f811fbfbb36dcb4f455f898c9d03af4044807ad005df9f3c0",
+    )
+    version(
+        "6.0.1",
+        sha256="aefadceb231f4c195fe6d6cd3b1a010b269c8a22410f339b5a089c2e902aa177",
+    )
+    version(
+        "6.0.0",
+        sha256="1946ec629c88d30122afa072d3c6a89cc5d5e4e2bb28dc63b2f9ebcc7917ee64",
+    )
+    version(
+        "5.0.2",
+        sha256="fe87aa11558c08856739bfd9bd971263a28657663cb0c3a0af01b94f03b0b795",
+    )
+    version(
+        "5.0.1",
+        sha256="84ca454abf262579814a2a2b846569f6e0cb3e16dc33ca3642b4f1dff6fbafd3",
+    )
+    version(
+        "5.0.0",
+        sha256="1f1843315657a4371d8ca37f01265fa9aae17dbcf46d2d0a95c1fdb3c6a4bab6",
+    )
+    version(
+        "4.0.1",
+        sha256="cd664fb3eec3208c08fb61189c00c9118c290b3be5adb3215a97b24255618be5",
+    )
+    version(
+        "4.0.0",
+        sha256="28ca4b2fc434cb1f558e8865386c233c2a6134437249b8b3765ae745ffa56a34",
+    )
+    version(
+        "3.9.1",
+        sha256="f5b6922a5c65f9232f83d89831191f2c3ccf4f41fdd8c63e6645bbf578c4ab92",
+    )
+    version(
+        "3.9.0",
+        sha256="9c6563a72c8b5b79941c773937d997dd2b1b5b3f640136d02719ec19f35e0333",
+    )
+    version(
+        "3.8.1",
+        sha256="69360f0648fde0dc3d3c4b339624613f3bc2a89c4858933bc3871a250ad02826",
+    )
+    version(
+        "3.8.0",
+        sha256="b5cc5974cc2fd4e9e49e1bbd0700f872501a8678bd9694fa2b36c65c026df1d1",
+    )
+    version(
+        "3.7.1",
+        sha256="d2cb0eb9b8eb21e07605bfe5e7a5c6c5f5f8c2efdac01ec1da6ffacaabe4195a",
+    )
+    version(
+        "3.7.0",
+        sha256="dc00bc230be2006fb87b84f6fe4800ca28bc98e6692811a98195da53c9cb28c6",
+    )
+    version(
+        "3.6.2",
+        sha256="f75d703a388ba01d607f9cf96180863a5e4a106827ade17b221d43e6db20778a",
+    )
+    version(
+        "3.5.1",
+        sha256="5d739684170d5b2b304e4fb521532d5c8281492f71e1a8568187bfa38eb5909d",
+    )
 
     # NOTE: The debug version of LLVM is an order of magnitude larger than
     # the release version, and may take up 20-30 GB of space. If you want

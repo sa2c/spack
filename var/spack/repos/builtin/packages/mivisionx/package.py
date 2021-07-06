@@ -83,7 +83,7 @@ class Mivisionx(CMakePackage):
     depends_on("ffmpeg@:4", type="build")
     depends_on("protobuf@:3", type="build")
     depends_on(
-        "opencv@:3.4 +calib3d+core+features2d+highgui+imgcodecs+imgproc+video+videoio+flann+photo+objdetect",
+        "opencv@:3.4 +calib3d+core+features2d+highgui+imgcodecs+imgproc+video+videoio+flann+photo+objdetect",  # noqa
         type="build",
     )
     depends_on("rocm-opencl@3.5.0", when="@1.7")

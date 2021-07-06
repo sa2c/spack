@@ -133,7 +133,7 @@ def test_patch_order(mock_packages, config):
     spec = Spec("dep-diamond-patch-top")
     spec.concretize()
 
-    mid2_sha256 = "mid21234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234"
+    mid2_sha256 = "abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234"
     mid1_sha256 = "0b62284961dab49887e31319843431ee5b037382ac02c4fe436955abef11f094"
     top_sha256 = "f7de2947c64cb6435e15fb2bef359d1ed5f6356b2aebb7b20535e3772904e6db"
 

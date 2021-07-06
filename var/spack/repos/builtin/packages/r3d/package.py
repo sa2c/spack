@@ -30,7 +30,8 @@ class R3d(CMakePackage):
     variant(
         "r3d_max_verts",
         default="0",
-        description="Maximum number of vertices allowed in a polyhedron (versions 2021-03-10 or later)",
+        description="Maximum number of vertices allowed in a polyhedron "
+        "(versions 2021-03-10 or later)",
     )
 
     # Bypass CMake for older builds

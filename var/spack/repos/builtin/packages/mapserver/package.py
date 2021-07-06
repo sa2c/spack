@@ -26,16 +26,8 @@ class Mapserver(CMakePackage):
     variant(
         "curl",
         default=False,
-        description="Enable Curl HTTP support (required for wms/wfs client, and remote SLD)",
+        description="Enable Curl HTTP support (required for wms/wfs client, and remote SLD",  # noqa
     )
-    variant("ruby", default=False, description="Enable Ruby mapscript support")
-    variant("java", default=False, description="Enable Java mapscript support")
-    variant("perl", default=False, description="Enable Perl mapscript support")
-
-    depends_on("libpng")
-    depends_on("freetype")
-    depends_on("jpeg")
-    depends_on("zlib")
     depends_on("proj")
     depends_on("proj@:5", when="@:7.3")
     depends_on("proj@6:", when="@7.4:")

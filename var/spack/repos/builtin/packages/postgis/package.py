@@ -32,7 +32,8 @@ class Postgis(AutotoolsPackage):
     variant(
         "gui",
         default=False,
-        description="Build with GUI support, creating shp2pgsql-gui graphical interface to shp2pgsql",
+        description="Build with GUI support, "
+        "creating shp2pgsql-gui graphical interface to shp2pgsql",
     )
 
     # Refs:

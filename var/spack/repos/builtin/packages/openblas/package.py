@@ -118,7 +118,7 @@ class Openblas(MakefilePackage):
     variant(
         "bignuma",
         default=False,
-        description="Enable experimental support for up to 1024 CPUs/Cores and 128 numa nodes",
+        description="Enable experimental support for up to 1024 CPUs/Cores and 128 numa nodes",  # noqa
     )
 
     variant("locking", default=True, description="Build with thread safety")

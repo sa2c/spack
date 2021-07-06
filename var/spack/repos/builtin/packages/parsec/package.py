@@ -46,7 +46,7 @@ class Parsec(CMakePackage, CudaPackage):
     variant(
         "debug_verbose",
         default=False,
-        description="Debug version with verbose and paranoid (incurs performance overhead!)",
+        description="Debug version with verbose and paranoid (incurs performance overhead!)",  # noqa
     )
     conflicts(
         "+debug_verbose build_type=Release",

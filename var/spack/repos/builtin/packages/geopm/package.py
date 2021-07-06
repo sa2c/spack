@@ -66,7 +66,7 @@ class Geopm(AutotoolsPackage):
     variant(
         "overhead",
         default=False,
-        description="Enable GEOPM to calculate and display time spent in GEOPM API calls.",
+        description="Enable GEOPM to calculate and display time spent in GEOPM API calls.",  # noqa
     )
     variant(
         "procfs",

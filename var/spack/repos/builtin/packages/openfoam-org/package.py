@@ -254,7 +254,9 @@ class OpenfoamOrg(Package):
         #
         # Filtering: bashrc,cshrc (using a patch is less flexible)
         edits = {
-            "WM_THIRD_PARTY_DIR": r"$WM_PROJECT_DIR/ThirdParty #SPACK: No separate third-party",
+            "WM_THIRD_PARTY_DIR": (
+                r"$WM_PROJECT_DIR/ThirdParty #SPACK: No separate third-party"
+            ),
             "WM_VERSION": str(self.version),  # consistency
             "FOAMY_HEX_MESH": "",  # This is horrible (unset variable?)
         }

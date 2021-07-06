@@ -533,7 +533,7 @@ def parse_version_offset(path):
         (
             r"[?&](?:sha|ref|version)=[a-zA-Z\d+-]*[_-]?v?(\d[\da-zA-Z._-]*)$",
             suffix,
-        ),  # noqa: E501
+        ),
         # e.g. http://slepc.upv.es/download/download.php?filename=slepc-3.6.2.tar.gz
         # e.g. http://laws-green.lanl.gov/projects/data/eos/get_file.php?package=eospac&filename=eospac_v6.4.0beta.1_r20171213193219.tgz
         # e.g. https://evtgen.hepforge.org/downloads?f=EvtGen-01.07.00.tar.gz
@@ -543,9 +543,9 @@ def parse_version_offset(path):
         # github.com/repo/name/releases/download/vver/name
         # e.g. https://github.com/nextflow-io/nextflow/releases/download/v0.20.1/nextflow
         (
-            r"github\.com/[^/]+/[^/]+/releases/download/[a-zA-Z+._-]*v?(\d[\da-zA-Z._-]*)/",
+            r"github\.com/[^/]+/[^/]+/releases/download/[a-zA-Z+._-]*v?(\d[\da-zA-Z._-]*)/",  # noqa
             path,
-        ),  # noqa: E501
+        ),
         # e.g. ftp://ftp.ncbi.nlm.nih.gov/blast/executables/legacy.NOTSUPPORTED/2.2.26/ncbi.tar.gz
         (r"(\d[\da-zA-Z._-]*)/[^/]+$", path),
     ]

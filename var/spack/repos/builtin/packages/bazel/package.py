@@ -365,7 +365,8 @@ class Bazel(Package):
     variant(
         "nodepfail",
         default=True,
-        description="Disable failing dependency checks due to injected absolute paths - required for most builds using bazel with spack",
+        description="Disable failing dependency checks due to injected absolute paths "
+        "- required for most builds using bazel with spack",
     )
 
     depends_on("java", type=("build", "run"))

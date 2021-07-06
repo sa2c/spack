@@ -64,7 +64,7 @@ class Libfuse(MesonPackage):
     variant(
         "useroot",
         default=False,
-        description="Use root privileges to make fusermount a setuid binary after installation",
+        description="Use root privileges to make fusermount a setuid binary after installation",  # noqa
     )
     variant(
         "system_install",

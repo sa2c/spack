@@ -27,7 +27,7 @@ class Alps(CMakePackage):
 
     # Package failed to build with boost version >= 1.64
     depends_on(
-        "boost@:1.63.0 +chrono +date_time +filesystem +iostreams +mpi +numpy +program_options +python +regex +serialization +system +test +thread +timer"
+        "boost@:1.63.0 +chrono +date_time +filesystem +iostreams +mpi +numpy +program_options +python +regex +serialization +system +test +thread +timer"  # noqa
     )
     depends_on("fftw")
     depends_on("hdf5 ~mpi+hl")

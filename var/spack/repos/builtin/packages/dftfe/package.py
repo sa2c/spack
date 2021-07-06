@@ -33,7 +33,7 @@ class Dftfe(CMakePackage):
     variant(
         "scalapack",
         default=True,
-        description="Use ScaLAPACK, strongly recommended for problem sizes >5000 electrons",
+        description="Use ScaLAPACK, strongly recommended for problems >5000 electrons",
     )
     variant(
         "build_type",

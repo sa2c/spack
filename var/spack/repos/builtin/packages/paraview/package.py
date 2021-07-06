@@ -127,7 +127,7 @@ class Paraview(CMakePackage, CudaPackage):
     variant(
         "advanced_debug",
         default=False,
-        description="Enable all other debug flags beside build_type, such as VTK_DEBUG_LEAK",
+        description="Enable all other debug flags beside build_type, such as VTK_DEBUG_LEAK",  # noqa
     )
 
     conflicts("+python", when="+python3")

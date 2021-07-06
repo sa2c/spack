@@ -78,7 +78,8 @@ class DarshanRuntime(Package):
     variant(
         "apmpi_sync",
         default=False,
-        description="Compile with AutoPerf MPI module (with collective synchronization timing)",
+        description="Compile with AutoPerf MPI module "
+        "(with collective synchronization timing)",
     )
     variant("apxc", default=False, description="Compile with AutoPerf XC module")
     variant(

@@ -134,7 +134,7 @@ class Fenics(CMakePackage):
             )
         else:
             depends_on(
-                "boost+filesystem+program_options+system+iostreams+timer+regex+chrono@1.68.0"
+                "boost+filesystem+program_options+system+iostreams+timer+regex+chrono@1.68.0"  # noqa
             )
 
     depends_on("mpi", when="+mpi")

@@ -52,11 +52,13 @@ class Xyce(CMakePackage):
 
     # Xyce is built against an older version of Trilinos unlikely to be
     # used for any other purpose.
-    depends_on('trilinos@12.12.1 +amesos+amesos2+anasazi+aztec+belos+complex+epetra+epetraext+explicit_template_instantiation+fortran+hdf5+ifpack+isorropia+kokkos+nox+sacado+suite-sparse+teuchos+trilinoscouplings+zoltan+stokhos+amesos2basker+epetraextbtf+epetraextexperimental+epetraextgraphreorderings gotype=all')
+    depends_on(
+        "trilinos@12.12.1 +amesos+amesos2+anasazi+aztec+belos+complex+epetra+epetraext+explicit_template_instantiation+fortran+hdf5+ifpack+isorropia+kokkos+nox+sacado+suite-sparse+teuchos+trilinoscouplings+zoltan+stokhos+amesos2basker+epetraextbtf+epetraextexperimental+epetraextgraphreorderings gotype=all"  # noqa
+    )
 
     # MPI options must be consistent with Trilinos
-    depends_on('trilinos~mpi', when='~mpi')
-    depends_on('trilinos+mpi', when='+mpi')
+    depends_on("trilinos~mpi", when="~mpi")
+    depends_on("trilinos+mpi", when="+mpi")
 
     # The default settings for various Trilinos variants would require the
     # installation of many more packages than are needed for Xyce.
@@ -66,11 +68,11 @@ class Xyce(CMakePackage):
     # point, these ~variants can be removed from the following recipes.
 
     depends_on(
-        "trilinos@12.12.1~adios2~alloptpkgs+amesos+amesos2+anasazi+aztec+belos~boost~cgns~chaco+complex~cuda~cuda_rdc~debug~dtk+epetra+epetraext~exodus+explicit_template_instantiation~float+fortran~glm~gtest+hdf5~hwloc~hypre+ifpack~ifpack2~intrepid~intrepid2~ipo+isorropia+kokkos~matio~mesquite~metis~minitensor~ml+mpi~muelu~mumps~netcdf+nox~openmp~phalanx~piro~pnetcdf~python~rol~rythmos+sacado~shards~shared~shylu~stk~stratimikos~strumpack+suite-sparse~superlu~superlu-dist~teko~tempus+teuchos+tpetra+trilinoscouplings~wrapper~x11~xsdkflags~zlib+zoltan~zoltan2+stokhos+amesos2basker+epetraextbtf+epetraextexperimental+epetraextgraphreorderings gotype='none'",
+        "trilinos@12.12.1~adios2~alloptpkgs+amesos+amesos2+anasazi+aztec+belos~boost~cgns~chaco+complex~cuda~cuda_rdc~debug~dtk+epetra+epetraext~exodus+explicit_template_instantiation~float+fortran~glm~gtest+hdf5~hwloc~hypre+ifpack~ifpack2~intrepid~intrepid2~ipo+isorropia+kokkos~matio~mesquite~metis~minitensor~ml+mpi~muelu~mumps~netcdf+nox~openmp~phalanx~piro~pnetcdf~python~rol~rythmos+sacado~shards~shared~shylu~stk~stratimikos~strumpack+suite-sparse~superlu~superlu-dist~teko~tempus+teuchos+tpetra+trilinoscouplings~wrapper~x11~xsdkflags~zlib+zoltan~zoltan2+stokhos+amesos2basker+epetraextbtf+epetraextexperimental+epetraextgraphreorderings gotype='none'",  # noqa
         when="+mpi",
     )
     depends_on(
-        "trilinos@12.12.1~adios2~alloptpkgs+amesos+amesos2+anasazi+aztec+belos~boost~cgns~chaco+complex~cuda~cuda_rdc~debug~dtk+epetra+epetraext~exodus+explicit_template_instantiation~float+fortran~glm~gtest+hdf5~hwloc~hypre+ifpack~ifpack2~intrepid~intrepid2~ipo+isorropia+kokkos~matio~mesquite~metis~minitensor~ml~mpi~muelu~mumps~netcdf+nox~openmp~phalanx~piro~pnetcdf~python~rol~rythmos+sacado~shards~shared~shylu~stk~stratimikos~strumpack+suite-sparse~superlu~superlu-dist~teko~tempus+teuchos+tpetra+trilinoscouplings~wrapper~x11~xsdkflags~zlib+zoltan~zoltan2+stokhos+amesos2basker+epetraextbtf+epetraextexperimental+epetraextgraphreorderings gotype='none'",
+        "trilinos@12.12.1~adios2~alloptpkgs+amesos+amesos2+anasazi+aztec+belos~boost~cgns~chaco+complex~cuda~cuda_rdc~debug~dtk+epetra+epetraext~exodus+explicit_template_instantiation~float+fortran~glm~gtest+hdf5~hwloc~hypre+ifpack~ifpack2~intrepid~intrepid2~ipo+isorropia+kokkos~matio~mesquite~metis~minitensor~ml~mpi~muelu~mumps~netcdf+nox~openmp~phalanx~piro~pnetcdf~python~rol~rythmos+sacado~shards~shared~shylu~stk~stratimikos~strumpack+suite-sparse~superlu~superlu-dist~teko~tempus+teuchos+tpetra+trilinoscouplings~wrapper~x11~xsdkflags~zlib+zoltan~zoltan2+stokhos+amesos2basker+epetraextbtf+epetraextexperimental+epetraextgraphreorderings gotype='none'",  # noqa
         when="~mpi",
     )
 

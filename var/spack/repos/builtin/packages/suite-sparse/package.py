@@ -92,7 +92,8 @@ class SuiteSparse(Package):
     variant(
         "pic",
         default=True,
-        description="Build position independent code (required to link with shared libraries)",
+        description="Build position independent code "
+        "(required to link with shared libraries)",
     )
     variant("cuda", default=False, description="Build with CUDA")
     variant("openmp", default=False, description="Build with OpenMP")

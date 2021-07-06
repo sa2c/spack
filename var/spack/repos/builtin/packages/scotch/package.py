@@ -158,8 +158,10 @@ class Scotch(Package):
                         "CLIBFLAGS = -dynamiclib {0}".format(self.compiler.cc_pic_flag),
                         "RANLIB    = echo",
                         "AR        = $(CC)",
-                        "ARFLAGS   = -dynamiclib $(LDFLAGS) -Wl,-install_name -Wl,%s/$(notdir $@) -undefined dynamic_lookup -o "
-                        % prefix.lib,  # noqa
+                        (
+                            "ARFLAGS   = -dynamiclib $(LDFLAGS) -Wl,-install_name -Wl,%s/$(notdir $@) -undefined dynamic_lookup -o "  # noqa
+                            % prefix.lib
+                        ),
                     ]
                 )
             else:

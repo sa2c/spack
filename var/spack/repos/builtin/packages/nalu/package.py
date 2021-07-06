@@ -37,11 +37,11 @@ class Nalu(CMakePackage):
     # which is why we have a 'shared' variant for Nalu
     # https://github.com/trilinos/Trilinos/issues/2994
     depends_on(
-        "trilinos+exodus+tpetra+muelu+belos+ifpack2+amesos2+zoltan+stk+boost~superlu-dist+superlu+hdf5+zlib+pnetcdf+shards~hypre@master,develop",
+        "trilinos+exodus+tpetra+muelu+belos+ifpack2+amesos2+zoltan+stk+boost~superlu-dist+superlu+hdf5+zlib+pnetcdf+shards~hypre@master,develop",  # noqa
         when="+shared",
     )
     depends_on(
-        "trilinos~shared+exodus+tpetra+muelu+belos+ifpack2+amesos2+zoltan+stk+boost~superlu-dist+superlu+hdf5+zlib+pnetcdf+shards~hypre@master,develop",
+        "trilinos~shared+exodus+tpetra+muelu+belos+ifpack2+amesos2+zoltan+stk+boost~superlu-dist+superlu+hdf5+zlib+pnetcdf+shards~hypre@master,develop",  # noqa
         when="~shared",
     )
     # Optional dependencies

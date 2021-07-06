@@ -61,7 +61,8 @@ class Relion(CMakePackage, CudaPackage):
     variant(
         "allow_ctf_in_sagd",
         default=True,
-        description="Allow CTF-modulation in SAGD, as specified in Claim 1 of patent US10,282,513B2",
+        description="Allow CTF-modulation in SAGD, "
+        "as specified in Claim 1 of patent US10,282,513B2",
     )
 
     depends_on("mpi")

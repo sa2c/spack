@@ -125,12 +125,6 @@ def setup_parser(subparser):
         help="check all files, not just changed files",
     )
     subparser.add_argument(
-        "-o",
-        "--output",
-        action="store_true",
-        help="send filtered files to stdout as well as temp files",
-    )
-    subparser.add_argument(
         "-r",
         "--root-relative",
         action="store_true",

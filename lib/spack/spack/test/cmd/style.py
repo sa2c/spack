@@ -3,32 +3,26 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-import argparse
 import os
-import pytest
 import sys
+
+import pytest
 
 from llnl.util.filesystem import FileFilter
 
+import spack.main
 import spack.paths
-from spack.cmd.style import style, setup_parser, changed_files
+from spack.cmd.style import changed_files
 from spack.repo import Repo
 from spack.util.executable import which
 
-
-@pytest.fixture(scope="module")
-def parser():
-    """Returns the parser for the ``flake8`` command"""
-    parser = argparse.ArgumentParser()
-    setup_parser(parser)
-    return parser
+style = spack.main.SpackCommand("style")
 
 
 @pytest.fixture(scope="module")
 def flake8_package():
-    """Flake8 only checks files that have been modified.
-    This fixture makes a small change to the ``flake8``
-    mock package, yields the filename, then undoes the
+    """Style only checks files that have been modified. This fixture makes a small
+    change to the ``flake8`` mock package, yields the filename, then undoes the
     change on cleanup.
     """
     repo = Repo(spack.paths.mock_packages_path)
@@ -44,13 +38,10 @@ def flake8_package():
     package.filter("state = 'modified'", "state = 'unmodified'", string=True)
 
 
-def test_changed_files(parser, flake8_package):
-    args = parser.parse_args([])
-
+def test_changed_files(flake8_package):
     # changed_files returns file paths relative to the root
     # directory of Spack. Convert to absolute file paths.
-    files = changed_files(args)
-    files = [os.path.join(spack.paths.prefix, path) for path in files]
+    files = [os.path.join(spack.paths.prefix, path) for path in changed_files()]
 
     # There will likely be other files that have changed
     # when these tests are run
@@ -64,14 +55,17 @@ def test_changed_files(parser, flake8_package):
     reason="flake8 no longer supports Python 2.6 or 3.3 and older",
 )
 @pytest.mark.skipif(not which("flake8"), reason="flake8 is not installed.")
-def test_flake8(parser, flake8_package):
-    # Only test the flake8_package that we modified
-    # Otherwise, the unit tests would fail every time
-    # the flake8 tests fail
-    args = parser.parse_args(["--no-mypy", flake8_package])
-    style(parser, args)
-    # Get even more coverage
-    args = parser.parse_args(
-        ["--no-mypy", "--output", "--root-relative", flake8_package]
-    )
-    style(parser, args)
+def test_flake8(flake8_package, tmpdir):
+    root_relative = os.path.relpath(flake8_package, spack.paths.prefix)
+
+    # use a working directory to test cwd-relative paths, as tests run in
+    # the spack prefix by default
+    with tmpdir.as_cwd():
+        relative = os.path.relpath(flake8_package)
+        output = style(flake8_package)
+        assert relative in output
+        assert "spack style checks were clean" in output
+
+    output = style("--output", "--root-relative", flake8_package)
+    assert root_relative in output
+    assert "spack style checks were clean" in output

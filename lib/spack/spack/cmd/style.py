@@ -38,6 +38,9 @@ def grouper(iterable, n, fillvalue=None):
         yield filter(None, group)
 
 
+#: directory where spack style started, for relativizing paths
+initial_working_dir = None
+
 #: List of directories to exclude from checks.
 exclude_directories = [spack.paths.external_path]
 
@@ -45,15 +48,19 @@ exclude_directories = [spack.paths.external_path]
 #: double-check the results of other tools (if, e.g., --fix was provided)
 tool_order = ["isort", "mypy", "black", "flake8"]
 
+#: tools we run in spack style
+tools = {}
 
-def is_package(f):
-    """Whether flake8 should consider a file as a core file or a package.
 
-    We run flake8 with different exceptions for the core and for
-    packages, since we allow `from spack import *` and poking globals
-    into packages.
-    """
-    return f.startswith("var/spack/repos/") or "docs/tutorial/examples" in f
+#: decorator for adding tools to the list
+class tool(object):
+    def __init__(self, name, required=False):
+        self.name = name
+        self.required = required
+
+    def __call__(self, fun):
+        tools[self.name] = (fun, self.required)
+        return fun
 
 
 def changed_files(base=None, untracked=True, all_files=False):
@@ -143,74 +150,76 @@ def setup_parser(subparser):
         "--fix",
         action="store_true",
         default=False,
-        help="If the tool supports automatically editing file contents, do that.",
+        help="format automatically if possible (e.g., with isort, black)",
     )
     subparser.add_argument(
         "--no-isort",
         dest="isort",
         action="store_false",
-        help="Do not run isort, default is run isort if available",
+        help="do not run isort (default: run isort if available)",
     )
     subparser.add_argument(
         "--no-flake8",
         dest="flake8",
         action="store_false",
-        help="Do not run flake8, default is run flake8",
+        help="do not run flake8 (default: run flake8 or fail)",
     )
     subparser.add_argument(
         "--no-mypy",
         dest="mypy",
         action="store_false",
-        help="Do not run mypy, default is run mypy if available",
+        help="do not run mypy (default: run mypy if available)",
     )
     subparser.add_argument(
         "--black",
         dest="black",
         action="store_true",
-        help="Run black checks, default is skip",
+        help="run black if available (default: skip black)",
     )
     subparser.add_argument(
         "files", nargs=argparse.REMAINDER, help="specific files to check"
     )
 
 
+def cwd_relative(path):
+    """Translate prefix-relative path to current working directory-relative."""
+    return os.path.relpath(os.path.join(spack.paths.prefix, path), initial_working_dir)
+
+
 def rewrite_and_print_output(
     output, args, re_obj=re.compile(r"^(.+):([0-9]+):"), replacement=r"{0}:{1}:"
 ):
     """rewrite ouput with <file>:<line>: format to respect path args"""
-    if args.root_relative or re_obj is None:
-        # print results relative to repo root.
-        for line in output.split("\n"):
-            print("  " + output)
-    else:
-        # print results relative to current working directory
-        def cwd_relative(path):
-            return replacement.format(
-                os.path.relpath(
-                    os.path.join(spack.paths.prefix, path.group(1)), os.getcwd()
-                ),
-                *list(path.groups()[1:])
-            )
+    # print results relative to current working directory
+    def translate(match):
+        return replacement.format(
+            cwd_relative(match.group(1)), *list(match.groups()[1:])
+        )
 
-        for line in output.split("\n"):
-            if not line:
-                continue
-            print("  " + re_obj.sub(cwd_relative, line))
+    for line in output.split("\n"):
+        if not line:
+            continue
+        if not args.root_relative and re_obj:
+            line = re_obj.sub(translate, line)
+        print("  " + line)
 
 
 def print_style_header(file_list, args):
-    tools = [
-        tool for tool in tool_order
-        if getattr(args, tool)
-    ]
+    tools = [tool for tool in tool_order if getattr(args, tool)]
     tty.msg("Running style checks on spack:", "selected: " + ", ".join(tools))
-    tty.msg("Modified files:", *[filename.strip() for filename in file_list])
+
+    # translate modified paths to cwd_relative if needed
+    paths = [filename.strip() for filename in file_list]
+    if not args.root_relative:
+        paths = [cwd_relative(filename) for filename in paths]
+
+    tty.msg("Modified files:", *paths)
     sys.stdout.flush()
 
 
 def print_tool_header(tool):
     sys.stdout.flush()
-    tty.msg("Running %s checks." % tool)
+    tty.msg("Running %s checks" % tool)
     sys.stdout.flush()
 
 
@@ -221,11 +230,9 @@ def print_tool_result(tool, returncode):
         color.cprint("  @r{%s found errors}" % tool)
 
 
-def run_flake8(file_list, args):
+@tool("flake8", required=True)
+def run_flake8(flake8_cmd, file_list, args):
     returncode = 0
-    print_tool_header("flake8")
-    flake8_cmd = which("flake8", required=True)
-
     output = ""
     # run in chunks of 100 at a time to avoid line length limit
     # filename parameter in config *does not work* for this reliably
@@ -248,13 +255,8 @@ def run_flake8(file_list, args):
     return returncode
 
 
-def run_mypy(file_list, args):
-    mypy_cmd = which("mypy")
-    if mypy_cmd is None:
-        tty.error("mypy is not available in path, skipping")
-        return 1
-
-    print_tool_header("mypy")
+@tool("mypy")
+def run_mypy(mypy_cmd, file_list, args):
     mpy_args = ["--package", "spack", "--package", "llnl", "--show-error-codes"]
     # not yet, need other updates to enable this
     # if any([is_package(f) for f in file_list]):
@@ -269,17 +271,12 @@ def run_mypy(file_list, args):
     return returncode
 
 
-def run_isort(file_list, args):
-    isort_cmd = which("isort")
-    if isort_cmd is None:
-        tty.error("isort is not available in path, skipping")
-        return 1
-
-    print_tool_header("isort")
+@tool("isort")
+def run_isort(isort_cmd, file_list, args):
     check_fix_args = () if args.fix else ("--check", "--diff")
 
     pat = re.compile("ERROR: (.*) Imports are incorrectly sorted")
-    replacement = "ERROR: {0} Imports are incorrectly sorted and/or formatted"
+    replacement = "ERROR: {0} Imports are incorrectly sorted"
     returncode = 0
     for chunk in grouper(file_list, 100):
         packed_args = check_fix_args + tuple(chunk)
@@ -292,13 +289,8 @@ def run_isort(file_list, args):
     return returncode
 
 
-def run_black(file_list, args):
-    black_cmd = which("black")
-    if black_cmd is None:
-        tty.error("black is not available in path, skipping")
-        return 1
-
-    print_tool_header("black")
+@tool("black")
+def run_black(black_cmd, file_list, args):
     check_fix_args = () if args.fix else ("--check", "--diff", "--color")
 
     pat = re.compile("would reformat +(.*)")
@@ -308,8 +300,7 @@ def run_black(file_list, args):
     # run in chunks of 100 at a time to avoid line length limit
     # filename parameter in config *does not work* for this reliably
     for chunk in grouper(file_list, 100):
-        # TODO: py2 does not support multiple * unpacking expressions in a single call.
-        packed_args = check_fix_args + chunk
+        packed_args = check_fix_args + tuple(chunk)
         output = black_cmd(*packed_args, fail_on_error=False, output=str, error=str)
         returncode |= black_cmd.returncode
 
@@ -320,6 +311,10 @@ def run_black(file_list, args):
 
 
 def style(parser, args):
+    # save initial working directory for relativizing paths later
+    global initial_working_dir
+    initial_working_dir = os.getcwd()
+
     file_list = args.files
     if file_list:
 
@@ -338,14 +333,21 @@ def style(parser, args):
 
         # run tools in order defined in tool_order
         returncode = 0
-        for tool in tool_order:
-            if getattr(args, tool):
-                run_function = globals()["run_" + tool]
-                returncode |= run_function(file_list, args)
+        for tool_name in tool_order:
+            if getattr(args, tool_name):
+                run_function, required = tools[tool_name]
+                print_tool_header(tool_name)
+
+                cmd = which(tool_name, required=required)
+                if not cmd:
+                    color.cprint("  @y{%s not in PATH, skipped}" % tool_name)
+                    continue
+
+                returncode |= run_function(cmd, file_list, args)
 
     if returncode == 0:
-        tty.msg(color.colorize("@*{spack style checks were clean.}"))
+        tty.msg(color.colorize("@*{spack style checks were clean}"))
     else:
-        tty.error(color.colorize("@*{spack style found errors.}"))
+        tty.error(color.colorize("@*{spack style found errors}"))
 
     return returncode
